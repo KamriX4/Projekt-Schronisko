@@ -1,0 +1,6 @@
+@Backend_schronisko_HostAddress = http://localhost:5145
+
+GET {{Backend_schronisko_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
