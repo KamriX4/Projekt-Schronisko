@@ -9,9 +9,19 @@ builder.Services.AddDbContext<SchroniskoContext>(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Konfiguracja CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp",
+        policyBuilder =>
+        {
+            policyBuilder.WithOrigins("http://localhost:5173") // Dokładny adres serwera Vue
+                         .AllowAnyHeader()  // Pozwala na dowolne nagłówki
+                         .AllowAnyMethod(); // Pozwala na GET, POST, PUT, DELETE itd.
+        });
+});
 
+builder.Services.AddOpenApi();
 // 1. Rejestracja Swaggera
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,6 +42,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowVueApp");
 
 app.UseAuthorization();
 
