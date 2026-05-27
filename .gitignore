@@ -12,32 +12,33 @@ Thumbs.db
 # =========================
 # BACKEND (C# .NET)
 # =========================
-# Skompilowane pliki (generują się automatycznie przy budowaniu, nie wrzucamy ich na GitHuba)
+# Skompilowane pliki (generują się automatycznie przy budowaniu)
 bin/
 obj/
 
-# Lokalne pliki baz danych (chroni przed nadpisaniem bazy innego dewelopera)
+# Lokalne pliki baz danych SQLite (jeśli używasz SQL Server/LocalDB, te pliki Cię nie dotyczą)
 *.db
 *.sqlite
 *.db-shm
 *.db-wal
 
-# Pliki konfiguracyjne, które mogą zawierać lokalne hasła do bazy
-appsettings.Development.json
+# Ignorujemy tylko supertajne pliki. 
+# appsettings.Development.json ZOSTAŁ USUNIĘTY z ignorowanych, aby inni widzieli ConnectionString!
 appsettings.Local.json
 secrets.json
 
 # =========================
 # FRONTEND (Vue.js / Node.js)
 # =========================
-# Pobrane biblioteki (ważą setki MB i generują się u każdego z pliku package.json komendą npm install)
+# Pobrane biblioteki (ważą setki MB, instalowane przez pnpm install)
 node_modules/
 
-# Skompilowana aplikacja gotowa na produkcję (wynik npm run build)
+# Skompilowana aplikacja gotowa na produkcję (wynik pnpm run build)
 dist/
 dist-ssr/
 
-# Lokalne zmienne środowiskowe (często trzymają klucze API i hasła)
+# Jeśli używasz pliku .env do przechowywania adresu API (np. VITE_API_URL=https://localhost:7295),
+# możesz usunąć z poniższej listy ".env", aby inni nie musieli go ręcznie tworzyć.
 .env
 .env.local
 .env.*.local
