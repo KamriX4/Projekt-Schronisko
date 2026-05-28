@@ -1,0 +1,17 @@
+1. Połączenie bazy danych w backendzie
+
+Otwórz terminal w folderze C:\Projekt schronisko\Backend schronisko\Backend schronisko>
+Instalacja narzędzia (wykonuje się tylko raz na danym komputerze):
+C:\Projekt schronisko\Backend schronisko\Backend schronisko> dotnet tool install --global dotnet-ef
+
+Budowa struktury bazy danych ze skryptów w folderze Migrations:
+C:\Projekt schronisko\Backend schronisko\Backend schronisko> dotnet ef database update
+
+2. Uruchomienie frontendu
+
+Otwórz terminal w folderze C:\Projekt schronisko\Frontend schronisko>
+Aby pobrać silnik Vue, Tailwind, DaisyUI oraz wszystkie inne biblioteki, wpisz w terminalu:
+C:\Projekt schronisko\Frontend schronisko> pnpm install
+
+Uruchom serwer deweloperski
+C:\Projekt schronisko\Frontend schronisko> pnpm dev
