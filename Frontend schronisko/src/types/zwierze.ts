@@ -25,3 +25,4 @@ export interface Zwierze {
   akceptuje?: string
   zdjecieUrl?: string
 }
+export type NoweZwierze = Omit<Zwierze, 'id' | 'gatunek'>

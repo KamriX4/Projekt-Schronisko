@@ -21,6 +21,7 @@ namespace Backend_schronisko.Controllers
         public async Task<ActionResult<IEnumerable<Zwierze>>> PobierzWszystkie()
         {
             var zwierzeta = await _context.Zwierzeta
+                .Include(z => z.Gatunek)
                 .AsNoTracking()
                 .ToListAsync();
 
