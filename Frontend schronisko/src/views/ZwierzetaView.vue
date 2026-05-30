@@ -4,6 +4,10 @@ import { useZwierzetaStore } from '@/stores/zwierzeta'
 import ZwierzeCard from '@/components/ZwierzeCard.vue'
 import AddZwierzeModal from '@/components/AddZwierzeModal.vue'
 import type { NoweZwierze } from '@/types/zwierze'
+import InputText from 'primevue/inputtext'
+import IconField from 'primevue/iconfield'
+import InputIcon from 'primevue/inputicon'
+import Button from 'primevue/button'
 
 // Inicjalizacja Store'a
 const store = useZwierzetaStore()
@@ -42,20 +46,18 @@ onMounted(() => {
   <div class="container mx-auto p-6">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
       <h1 class="text-3xl font-bold">Nasi podopieczni</h1>
-
       <div class="flex items-center gap-4 w-full md:w-auto">
-        <div class="form-control w-full md:w-80">
-          <input
-            v-model="searchInput"
-            type="text"
-            placeholder="Szukaj zwierzaka..."
-            class="input input-bordered w-full p-4 shadow-lg focus:input-primary"
-          />
-        </div>
-
-        <button @click="czyModalOtwarty = true" class="btn bg-success p-4 font-semibold shadow-lg">
-          Dodaj
-        </button>
+        <IconField>
+          <InputIcon class="pi pi-search" />
+          <InputText v-model="searchInput" placeholder="Szukaj zwierzaka..." />
+        </IconField>
+        <Button
+          label="Dodaj"
+          icon="pi pi-plus"
+          severity="success"
+          @click="czyModalOtwarty = true"
+          class="p-4 font-semibold shadow-lg"
+        />
       </div>
     </div>
 

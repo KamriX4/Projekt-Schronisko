@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Zwierze } from '@/types/zwierze'
+import Badge from 'primevue/badge'
 
 // Kafelek po prostu przyjmuje obiekt Zwierze z zewnątrz
 defineProps<{
@@ -32,14 +33,13 @@ const domyslneZdjecie = 'https://placehold.co/400x300?text=Brak+zdjęcia'
             Płeć: <span class="font-bold">{{ zwierze.plec }}</span>
           </p>
         </div>
-        <div
-          :class="[
-            'badge badge-lg p-4 font-semibold',
-            zwierze.status === 'Do Adopcji' ? 'badge-success' : 'badge-warning',
-          ]"
+        <Badge
+          size="xlarge"
+          :severity="zwierze.status === 'Do Adopcji' ? 'success' : 'warning'"
+          class="p-4 font-semibold shadow-sm"
         >
           {{ zwierze.status }}
-        </div>
+        </Badge>
       </div>
     </div>
   </div>

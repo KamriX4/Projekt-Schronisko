@@ -48,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 app.UseCors("AllowVueApp");
 
 app.UseAuthorization();

@@ -1,7 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Button from 'primevue/button'
+</script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <Button label="Przycisk PrimeVue" icon="pi pi-check" />
 </template>

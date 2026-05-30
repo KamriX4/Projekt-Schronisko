@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Zwierze } from '@/types/zwierze'
+import type { Zwierze, NoweZwierze } from '@/types/zwierze'
 
 export const useZwierzetaStore = defineStore('zwierzeta', () => {
   // Stan (State)
@@ -19,7 +19,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
   }
 
   // Akcja: Dodawanie
-  const dodajZwierze = async (noweZwierze: Partial<Zwierze>) => {
+  const dodajZwierze = async (noweZwierze: NoweZwierze) => {
     try {
       const response = await fetch('https://localhost:7295/api/zwierze', {
         method: 'POST',
