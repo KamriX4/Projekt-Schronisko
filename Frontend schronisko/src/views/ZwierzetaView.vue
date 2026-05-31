@@ -43,13 +43,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container mx-auto p-6">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+  <div class="container mx-auto p-6 sm:p-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8">
       <h1 class="text-3xl font-bold">Nasi podopieczni</h1>
-      <div class="flex items-center gap-4 w-full md:w-auto">
-        <IconField>
+      <div class="flex flex-row items-center gap-3 w-full sm:w-auto">
+        <IconField class="flex-1">
           <InputIcon class="pi pi-search" />
-          <InputText v-model="searchInput" placeholder="Szukaj zwierzaka..." />
+          <InputText v-model="searchInput" placeholder="Szukaj zwierzaka..." class="w-full" />
         </IconField>
         <Button
           label="Dodaj"

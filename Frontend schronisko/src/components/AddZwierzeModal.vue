@@ -78,7 +78,7 @@ const handleDodaj = async () => {
     @update:visible="emit('zamknij')"
     modal
     header="Dodaj nowego zwierzaka"
-    :style="{ width: '30rem' }"
+    :style="{ width: '40rem' }"
   >
     <span class="text-surface-500 dark:text-surface-400 block mb-8">
       Wypełnij dane, aby dodać podopiecznego do bazy.

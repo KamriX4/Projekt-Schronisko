@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Zwierze } from '@/types/zwierze'
 import type { FileUploadSelectEvent } from 'primevue/fileupload'
-
+import { computed } from 'vue'
 import InputText from 'primevue/inputtext'
 import SelectButton from 'primevue/selectbutton'
 import Select from 'primevue/select'
@@ -64,11 +64,31 @@ const onFileClear = () => {
   emit('fileSelected', null) // Informujemy, że anulowano plik
 }
 
+// Automatyczne wyliczanie wieku w miesiącach
+const wiekMiesiace = computed(() => {
+  const dataUrodzenia = modelValue.value.przyblizonaDataUrodzenia
+
+  // Jeśli użytkownik jeszcze nie wybrał daty, nic nie pokazujemy
+  if (!dataUrodzenia) return 'Wybierz datę urodzenia...'
+
+  const birthDate = new Date(dataUrodzenia)
+  const dzisiaj = new Date()
+
+  // Opcjonalne: zabezpieczenie przed datą z przyszłości
+  if (birthDate > dzisiaj) return 0
+
+  // Przeliczanie czasu na dni
+  const roznicaCzasu = dzisiaj.getTime() - birthDate.getTime()
+  const roznicaDni = roznicaCzasu / (1000 * 3600 * 24)
+
+  // Zastosowanie dokładnie tego samego przelicznika co w C# (30.436875)
+  return Math.floor(roznicaDni / 30.436875)
+})
 </script>
 
 <template>
   <div class="flex items-center gap-4 mb-4">
-    <label for="imie" class="font-semibold w-24">Imię</label>
+    <label for="imie" class="font-semibold w-36">Imię</label>
     <InputText
       id="imie"
       v-model="modelValue.imie"
@@ -81,7 +101,7 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="gatunek" class="font-semibold w-24">Gatunek</label>
+    <label for="gatunek" class="font-semibold w-36">Gatunek</label>
     <SelectButton
       id="gatunek"
       v-model="modelValue.gatunekId"
@@ -94,7 +114,7 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="plec" class="font-semibold w-24">Płeć</label>
+    <label for="plec" class="font-semibold w-36">Płeć</label>
     <SelectButton
       id="plec"
       v-model="modelValue.plec"
@@ -106,7 +126,7 @@ const onFileClear = () => {
     />
   </div>
   <div class="flex items-center gap-4 mb-4">
-    <label for="status" class="font-semibold w-24">Status</label>
+    <label for="status" class="font-semibold w-36">Status</label>
     <Select
       id="status"
       v-model="modelValue.status"
@@ -121,7 +141,7 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-start gap-4 mb-4">
-    <label class="font-semibold w-24 pt-2">Zdjęcie</label>
+    <label class="font-semibold w-36 pt-2">Zdjęcie</label>
 
     <div class="flex-auto flex flex-col gap-4">
       <FileUpload
@@ -161,7 +181,7 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="numerEwidencyjny" class="font-semibold w-24">Numer ewidencyjny</label>
+    <label for="numerEwidencyjny" class="font-semibold w-36">Numer ewidencyjny</label>
     <InputMask
       id="numerEwidencyjny"
       v-model="modelValue.numerEwidencyjny"
@@ -174,9 +194,10 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="dataPrzyjecia" class="font-semibold w-24">Data przyjęcia</label>
+    <label for="dataPrzyjecia" class="font-semibold w-36">Data przyjęcia</label>
     <DatePicker
       id="dataPrzyjecia"
+      dateFormat="dd.mm.yy"
       required
       :model-value="modelValue.dataPrzyjecia ? new Date(modelValue.dataPrzyjecia) : null"
       @update:model-value="
@@ -197,9 +218,10 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="przyblizonaDataUrodzenia" class="font-semibold w-24">Data urodzenia</label>
+    <label for="przyblizonaDataUrodzenia" class="font-semibold w-36">Data urodzenia</label>
     <DatePicker
       id="przyblizonaDataUrodzenia"
+      dateFormat="dd.mm.yy"
       required
       :model-value="
         modelValue.przyblizonaDataUrodzenia ? new Date(modelValue.przyblizonaDataUrodzenia) : null
@@ -222,7 +244,12 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="czyZachipowany" class="font-semibold w-24">Czy zachipowany?</label>
+    <label for="wiekMiesiace" class="font-semibold w-36">Wiek w miesiącach</label>
+    <InputText id="wiekMiesiace" :value="wiekMiesiace" disabled class="flex-auto" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-4">
+    <label for="czyZachipowany" class="font-semibold w-36">Czy zachipowany?</label>
     <Checkbox
       id="czyZachipowany"
       v-model="modelValue.czyZachipowany"
@@ -234,7 +261,7 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="czySzczepiony" class="font-semibold w-24">Czy szczepiony?</label>
+    <label for="czySzczepiony" class="font-semibold w-36">Czy szczepiony?</label>
     <Checkbox
       id="czySzczepiony"
       v-model="modelValue.czySzczepiony"
@@ -246,7 +273,7 @@ const onFileClear = () => {
   </div>
 
   <div class="flex items-center gap-4 mb-4">
-    <label for="czyKastrowanySterylizowany" class="font-semibold w-24">Czy kastrowany?</label>
+    <label for="czyKastrowanySterylizowany" class="font-semibold w-36">Czy kastrowany?</label>
     <Checkbox
       id="czyKastrowanySterylizowany"
       v-model="modelValue.czyKastrowanySterylizowany"

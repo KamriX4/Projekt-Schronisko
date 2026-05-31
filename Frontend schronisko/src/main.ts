@@ -8,6 +8,7 @@ import App from './App.vue'
 import router from './router'
 import 'primeicons/primeicons.css'
 import { definePreset } from '@primevue/themes'
+import ConfirmationService from 'primevue/confirmationservice';
 
 const SzaryMotyw = definePreset(Aura, {
   semantic: {
@@ -35,9 +36,29 @@ app.use(PrimeVue, {
     options: {
       darkModeSelector: '.p-dark', // Zostawiamy to, żeby nie wymuszał czarnego tła
     }
+  },
+  locale: {
+    // 1 oznacza poniedziałek (0 to niedziela, domyślnie w USA)
+    firstDayOfWeek: 1,
+
+    // Dni tygodnia
+    dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+    dayNamesShort: ['Nie', 'Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob'],
+    dayNamesMin: ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb'],
+
+    // Miesiące
+    monthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
+    monthNamesShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
+
+    // Dodatkowe przydatne słowa w kalendarzu
+    today: 'Dzisiaj',
+    clear: 'Wyczyść',
+    emptyMessage: 'Brak wyników',
+    emptyFilterMessage: 'Brak wyników wyszukiwania'
   }
 })
+app.use(ConfirmationService)
 app.use(createPinia())
 app.use(router)
-
+;
 app.mount('#app')

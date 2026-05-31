@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
 import { uploadZdjecia } from '@/stores/pliki'
 import type { Zwierze } from '@/types/zwierze'
@@ -8,10 +8,20 @@ import type { Zwierze } from '@/types/zwierze'
 import ZwierzeForm from '@/components/ZwierzeForm.vue' // Twój nowy klocek!
 import ToggleSwitch from 'primevue/toggleswitch'
 import Button from 'primevue/button'
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from 'primevue/useconfirm'
 
 const route = useRoute()
+const router = useRouter()
 const store = useZwierzetaStore()
+const confirm = useConfirm()
 
+// Funkcja cofająca
+const wroc = () => {
+  // router.back() cofa do poprzedniej strony w historii przeglądarki.
+  // Alternatywnie możesz użyć: router.push('/zwierzeta')
+  router.back()
+}
 // Stany widoku
 const trybEdycji = ref(false)
 const lokalneZwierze = ref<Zwierze | null>(null) // Lokalna kopia do edycji
@@ -75,8 +85,6 @@ const zapiszZmiany = async () => {
 
     // (Opcjonalnie) aktualizujemy Store, żeby miał nowe dane
     store.aktualneZwierze = { ...lokalneZwierze.value }
-
-    alert('Sukces! Zmiany zostały zapisane.')
   } catch (error) {
     console.error('Błąd zapisu:', error)
     alert('Wystąpił błąd podczas zapisywania danych w bazie.')
@@ -101,6 +109,47 @@ const anulujEdycje = () => {
     } as unknown as Zwierze
   }
 }
+
+const potwierdzUsuniecie = () => {
+  confirm.require({
+    message: `Czy na pewno chcesz usunąć zwierzaka: ${lokalneZwierze.value?.imie}?`,
+    header: 'Potwierdzenie usunięcia',
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: 'Anuluj',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Usuń',
+      severity: 'danger'
+    },
+    accept: async () => {
+      // Ta funkcja wykona się tylko, gdy użytkownik kliknie "Usuń"
+      await usunZwierzaka()
+    }
+  })
+}
+
+// 5. Usuwanie zwierzaka
+const usunZwierzaka = async () => {
+  if (!lokalneZwierze.value) return
+
+  try {
+    // Zakładam, że w pliku zwierzeta.ts masz funkcję do usuwania (np. DELETE do API)
+    const sukces = await store.usunZwierze(lokalneZwierze.value.id)
+
+    if (sukces) {
+      // Jeśli się udało, wracamy do głównej listy
+      router.push('/zwierzeta')
+    } else {
+      alert('Nie udało się usunąć zwierzaka. Sprawdź logi konsoli.')
+    }
+  } catch (error) {
+    console.error('Błąd podczas usuwania:', error)
+    alert('Wystąpił błąd serwera podczas usuwania.')
+  }
+}
 </script>
 
 <template>
@@ -110,6 +159,16 @@ const anulujEdycje = () => {
     </div>
 
     <div v-else class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-gray-100">
+      <div class="mb-6 -mt-2">
+        <Button
+          icon="pi pi-arrow-left"
+          label="Wróć"
+          text
+          severity="secondary"
+          class="!px-0 hover:bg-transparent hover:text-primary transition-colors font-semibold"
+          @click="wroc"
+        />
+      </div>
       <div
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-b border-gray-100 pb-6 gap-4"
       >
@@ -124,7 +183,7 @@ const anulujEdycje = () => {
 
         <div
           class="flex items-center gap-3 bg-gray-50 px-5 py-3 rounded-xl border border-gray-200 shadow-sm transition-colors"
-          :class="{ 'border-primary bg-primary/5': trybEdycji }"
+          :class="{ 'border-yellow-400 bg-primary/5': trybEdycji }"
         >
           <label for="edycja" class="font-semibold text-gray-700 cursor-pointer select-none">
             {{ trybEdycji ? 'Tryb edycji: Wł.' : 'Tryb edycji: Wył.' }}
@@ -141,18 +200,18 @@ const anulujEdycje = () => {
 
       <div v-if="trybEdycji" class="mt-10 flex justify-end gap-3 border-t border-gray-100 pt-6">
         <Button
-          label="Anuluj zmiany"
+          label="Anuluj"
           severity="secondary"
           icon="pi pi-times"
           outlined
           @click="anulujEdycje"
         />
-        <Button
-          label="Zapisz zmiany w bazie"
-          severity="success"
-          icon="pi pi-check"
-          @click="zapiszZmiany"
-        />
+        <Button label="Zapisz zmiany" severity="success" icon="pi pi-check" @click="zapiszZmiany" />
+      </div>
+
+      <div v-if="!trybEdycji" class="mt-10 flex justify-end gap-3 border-t border-gray-100 pt-6">
+        <ConfirmDialog></ConfirmDialog>
+        <Button label="Usuń" icon="pi pi-trash" severity="danger" outlined @click="potwierdzUsuniecie" />
       </div>
     </div>
   </div>
