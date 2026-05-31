@@ -34,6 +34,9 @@ const domyslnyStan = (): NoweZwierze => ({
 const formularzZwierze = ref<NoweZwierze>(domyslnyStan())
 const wybranyPlikRaw = ref<File | null>(null) // Przechowuje fizyczny plik przekazany z ZwierzeForm
 
+// 1. ZDEFINIUJ REFERENCJĘ DO FORMULARZA
+const formularzRef = ref<InstanceType<typeof ZwierzeForm> | null>(null)
+
 watch(
   () => props.otwarty,
   (czyOtwarty) => {
@@ -50,9 +53,16 @@ const odbierzPlikZFormularza = (plik: File | null) => {
 }
 
 const handleDodaj = async () => {
-  if (!formularzZwierze.value.imie) return alert('Imię jest wymagane!')
-  if (formularzZwierze.value.gatunekId === 0) return alert('Wybierz gatunek!')
+  // 2. WYWOŁAJ WALIDACJĘ Z DZIECKA (ZwierzeForm)
+  const czyPoprawny = formularzRef.value?.walidujFormularz()
 
+  // 3. ZABLOKUJ ZAPIS JEŚLI SĄ BŁĘDY
+  if (!czyPoprawny) {
+    alert('Popraw zaznaczone błędy przed dodaniem zwierzaka!')
+    return // PRZERYWAMY DZIAŁANIE! Zwierzak nie zostanie dodany.
+  }
+
+  // === Reszta wykonuje się tylko, gdy walidacja przeszła ===
   if (formularzZwierze.value.numerEwidencyjny) {
     formularzZwierze.value.numerEwidencyjny = formularzZwierze.value.numerEwidencyjny.toUpperCase()
   }
@@ -85,6 +95,7 @@ const handleDodaj = async () => {
     </span>
 
     <ZwierzeForm
+      ref="formularzRef"
       v-model="formularzZwierze"
       :isReadonly="false"
       @fileSelected="odbierzPlikZFormularza"

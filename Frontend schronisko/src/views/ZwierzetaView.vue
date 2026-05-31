@@ -8,6 +8,7 @@ import InputText from 'primevue/inputtext'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import Button from 'primevue/button'
+import GenericList from '@/components/GenericList.vue'
 
 // Inicjalizacja Store'a
 const store = useZwierzetaStore()
@@ -61,13 +62,15 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="flex flex-wrap gap-6 justify-center">
-      <ZwierzeCard v-for="zwierze in filtrowaneZwierzeta" :key="zwierze.id" :zwierze="zwierze" />
-
-      <div v-if="filtrowaneZwierzeta.length === 0" class="text-center text-gray-500 mt-8 w-full">
+    <GenericList :items="filtrowaneZwierzeta">
+      <template #item="{ item }">
+        <ZwierzeCard :zwierze="item" />
+      </template>
+      <template #empty>
         Nie znaleziono zwierząt spełniających kryteria wyszukiwania.
-      </div>
-    </div>
+      </template>
+    </GenericList>
+    
 
     <AddZwierzeModal
       :otwarty="czyModalOtwarty"

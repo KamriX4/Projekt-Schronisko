@@ -6,6 +6,7 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import router from './router'
+import i18n from './i18n' // 1. Importujesz konfigurację
 import 'primeicons/primeicons.css'
 import { definePreset } from '@primevue/themes'
 import ConfirmationService from 'primevue/confirmationservice';
@@ -60,5 +61,6 @@ app.use(PrimeVue, {
 app.use(ConfirmationService)
 app.use(createPinia())
 app.use(router)
+app.use(i18n) // 2. Rejestrujesz i18n w aplikacji, dzięki czemu będzie dostępny globalnie
 ;
 app.mount('#app')
