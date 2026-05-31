@@ -9,9 +9,9 @@ export interface Zwierze {
   numerEwidencyjny: string
   status: string
   numerBoksu?: string
-  dataPrzyjecia: string
+  dataPrzyjecia: Date | string | null
   plec: string
-  przyblizonaDataUrodzenia: string
+  przyblizonaDataUrodzenia: Date | string | null
   wiekMiesiace: number
   rasa?: string
   czyZachipowany: boolean
@@ -25,8 +25,5 @@ export interface Zwierze {
   akceptuje?: string
   zdjecieUrl?: string
 }
-export type NoweZwierze = Omit<Zwierze, 'id' | 'gatunek' | 'gatunekId' | 'dataPrzyjecia' | 'przyblizonaDataUrodzenia'> & {
-  gatunekId: number | null;
-  dataPrzyjecia: Date | null;
-  przyblizonaDataUrodzenia: Date | null;
-};
+// NoweZwierze to po prostu Zwierze bez ID
+export type NoweZwierze = Omit<Zwierze, 'id'>;

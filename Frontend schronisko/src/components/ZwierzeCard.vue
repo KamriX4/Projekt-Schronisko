@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { Zwierze } from '@/types/zwierze'
+import { useRouter } from 'vue-router'
 import Badge from 'primevue/badge'
+
+
 
 // Kafelek po prostu przyjmuje obiekt Zwierze z zewnątrz
 defineProps<{
@@ -9,10 +12,16 @@ defineProps<{
 
 // Domyślne zdjęcie, jeśli w bazie zdjecieUrl to null
 const domyslneZdjecie = 'https://placehold.co/400x300?text=Brak+zdjęcia'
+
+const router = useRouter()
+
+const otworzSzczegoly = (id: number) => {
+  router.push(`/zwierze/${id}`)
+}
 </script>
 
 <template>
-  <div class="card bg-base-100 w-96 h-96 shadow-lg hover:shadow-xl transition-shadow">
+  <div @click="otworzSzczegoly(zwierze.id)" class="card bg-base-100 w-96 h-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
     <figure>
       <img
         :src="zwierze.zdjecieUrl || domyslneZdjecie"
