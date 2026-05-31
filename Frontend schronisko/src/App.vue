@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import '@/assets/main.css'
 import { RouterLink, RouterView } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import Button from 'primevue/button'
+
+const { locale } = useI18n()
 
 // Funkcja zamykająca dropdown z DaisyUI po kliknięciu w link
 const zamknijMenu = () => {
@@ -8,6 +12,9 @@ const zamknijMenu = () => {
   if (aktywnyElement) {
     aktywnyElement.blur()
   }
+}
+const zmienJezyk = (nowyJezyk: string) => {
+  locale.value = nowyJezyk // Zmiana tej wartości natychmiast tłumaczy całą stronę!
 }
 </script>
 
@@ -80,10 +87,28 @@ const zamknijMenu = () => {
             <li><a>Wyloguj</a></li>
           </ul>
         </div>
+        <div class="flex gap-2 p-4 justify-end">
+          <Button
+            label="PL"
+            :outlined="locale !== 'pl'"
+            severity="secondary"
+            @click="zmienJezyk('pl')"
+          />
+          <Button
+            label="EN"
+            :outlined="locale !== 'en'"
+            severity="secondary"
+            @click="zmienJezyk('en')"
+          />
+        </div>
       </div>
     </header>
     <main class="flex-grow">
-      <RouterView />
+      <RouterView v-slot="{ Component, route }">
+        <Transition name="slide-fade" mode="out-in">
+          <component :is="Component" :key="route.path" />
+        </Transition>
+      </RouterView>
     </main>
     <footer class="footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
       <aside>
@@ -93,4 +118,27 @@ const zamknijMenu = () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* Definiujemy czas trwania i rodzaj krzywej przejścia.
+  Wartość 0.3s daje płynny, ale nienużący efekt.
+*/
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+/* Stan początkowy przy wchodzeniu na stronę (enter-from)
+  oraz stan końcowy przy wychodzeniu z niej (leave-to).
+
+  transform: translateY(20px) sprawi, że nowa strona delikatnie
+  wjedzie z dołu do góry, przy okazji stając się w pełni widoczna (opacity).
+*/
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+</style>

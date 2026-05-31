@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "animals": "Our animals",
+    "analytics": "Analytics"
+  },
+  "analytics": {
+    "subtitle": "Current statistics and shelter capacity.",
+    "capacity": "Shelter capacity"
+  }
+}

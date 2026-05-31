@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "animals": "Nasi podopieczni",
+    "analytics": "Analityka"
+  },
+  "analytics": {
+    "subtitle": "Bieżące statystyki i pojemność schroniska.",
+    "capacity": "Pojemność schroniska"
+  }
+}
