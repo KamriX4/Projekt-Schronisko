@@ -210,9 +210,10 @@ const usunZwierzaka = async () => {
       </div>
 
       <div v-if="!trybEdycji" class="mt-10 flex justify-end gap-3 border-t border-gray-100 pt-6">
-        <ConfirmDialog></ConfirmDialog>
+
         <Button label="Usuń" icon="pi pi-trash" severity="danger" outlined @click="potwierdzUsuniecie" />
       </div>
     </div>
   </div>
+  <ConfirmDialog />
 </template>
