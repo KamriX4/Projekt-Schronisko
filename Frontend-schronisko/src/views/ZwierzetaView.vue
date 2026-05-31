@@ -66,11 +66,8 @@ onMounted(() => {
       <template #item="{ item }">
         <ZwierzeCard :zwierze="item" />
       </template>
-      <template #empty>
-        Nie znaleziono zwierząt spełniających kryteria wyszukiwania.
-      </template>
+      <template #empty> Nie znaleziono zwierząt spełniających kryteria wyszukiwania. </template>
     </GenericList>
-    
 
     <AddZwierzeModal
       :otwarty="czyModalOtwarty"
