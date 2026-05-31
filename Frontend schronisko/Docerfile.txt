@@ -1,0 +1,20 @@
+# ETAP 1: Budowanie aplikacji Vue
+FROM node:20-alpine as build-stage
+WORKDIR /app
+# Kopiowanie plików konfiguracji i instalacja zależności
+COPY package*.json ./
+RUN npm install
+# Kopiowanie reszty kodu i budowanie wersji produkcyjnej (folder dist)
+COPY . .
+RUN npm run build
+
+# ETAP 2: Serwowanie plików przez Nginx
+FROM nginx:alpine as production-stage
+# Kopiowanie zbudowanych plików Vue do publicznego folderu Nginxa
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+# Nasłuchiwanie na porcie 8080 (OpenShift domyślnie blokuje port 80 dla bezpieczeństwa)
+EXPOSE 8080
+# Podmiana domyślnego portu w konfiguracji Nginx
+RUN sed -i 's/listen  *80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
+# Start serwera
+CMD ["nginx", "-g", "daemon off;"]
