@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
+
+//Importujemy magazyn pamięci, żeby sprawdzić, kto jest zalogowany
+import { useAuthStore } from '@/stores/auth'
+
 import ZwierzeCard from '@/components/ZwierzeCard.vue'
 import AddZwierzeModal from '@/components/AddZwierzeModal.vue'
 import type { NoweZwierze } from '@/types/zwierze'
@@ -10,10 +14,13 @@ import InputIcon from 'primevue/inputicon'
 import Button from 'primevue/button'
 import GenericList from '@/components/GenericList.vue'
 
-// Inicjalizacja Store'a
+// Inicjalizacja Store'a (magazynu z danymi o zwierzętach)
 const store = useZwierzetaStore()
 
-// Lokalny stan UI
+// DODANE: Uruchamiamy magazyn pamięci logowania
+const authStore = useAuthStore()
+
+// Lokalny stan UI (interfejsu użytkownika)
 const searchInput = ref('')
 const czyModalOtwarty = ref(false)
 
@@ -52,13 +59,13 @@ onMounted(() => {
           <InputIcon class="pi pi-search" />
           <InputText v-model="searchInput" placeholder="Szukaj zwierzaka..." class="w-full" />
         </IconField>
-        <Button
-          label="Dodaj"
-          icon="pi pi-plus"
-          severity="success"
-          @click="czyModalOtwarty = true"
-          class="p-4 font-semibold shadow-lg"
-        />
+
+        <Button v-if="authStore.rola === 'pracownik'"
+                label="Dodaj"
+                icon="pi pi-plus"
+                severity="success"
+                @click="czyModalOtwarty = true"
+                class="p-4 font-semibold shadow-lg" />
       </div>
     </div>
 
@@ -66,13 +73,13 @@ onMounted(() => {
       <template #item="{ item }">
         <ZwierzeCard :zwierze="item" />
       </template>
-      <template #empty> Nie znaleziono zwierząt spełniających kryteria wyszukiwania. </template>
+      <template #empty>
+        Nie znaleziono zwierząt spełniających kryteria wyszukiwania.
+      </template>
     </GenericList>
 
-    <AddZwierzeModal
-      :otwarty="czyModalOtwarty"
-      @zamknij="czyModalOtwarty = false"
-      @zapisz="obsluzDodanie"
-    />
+    <AddZwierzeModal :otwarty="czyModalOtwarty"
+                     @zamknij="czyModalOtwarty = false"
+                     @zapisz="obsluzDodanie" />
   </div>
 </template>

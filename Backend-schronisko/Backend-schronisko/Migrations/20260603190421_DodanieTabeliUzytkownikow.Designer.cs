@@ -4,6 +4,7 @@ using Backend_schronisko.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_schronisko.Migrations
 {
     [DbContext(typeof(SchroniskoContext))]
-    partial class SchroniskoContextModelSnapshot : ModelSnapshot
+    [Migration("20260603190421_DodanieTabeliUzytkownikow")]
+    partial class DodanieTabeliUzytkownikow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,9 +82,9 @@ namespace Backend_schronisko.Migrations
                         new
                         {
                             Id = 1,
-                            Haslo = "gosc123",
-                            Login = "gosc",
-                            Rola = "gosc"
+                            Haslo = "admin123",
+                            Login = "admin",
+                            Rola = "admin"
                         },
                         new
                         {
@@ -89,42 +92,7 @@ namespace Backend_schronisko.Migrations
                             Haslo = "haslo123",
                             Login = "pracownik1",
                             Rola = "pracownik"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Haslo = "haslo123",
-                            Login = "pracownik2",
-                            Rola = "pracownik"
                         });
-                });
-
-            modelBuilder.Entity("Backend_schronisko.Models.Wiadomosc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DataDodania")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Nadawca")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Odbiorca")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tresc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Wiadomosci");
                 });
 
             modelBuilder.Entity("Backend_schronisko.Models.Zwierze", b =>
@@ -349,35 +317,6 @@ namespace Backend_schronisko.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Komentarz", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Autor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DataDodania")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Tresc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WiadomoscId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WiadomoscId");
-
-                    b.ToTable("Komentarze");
-                });
-
             modelBuilder.Entity("Backend_schronisko.Models.Zwierze", b =>
                 {
                     b.HasOne("Backend_schronisko.Models.Gatunek", "Gatunek")
@@ -387,20 +326,6 @@ namespace Backend_schronisko.Migrations
                         .IsRequired();
 
                     b.Navigation("Gatunek");
-                });
-
-            modelBuilder.Entity("Komentarz", b =>
-                {
-                    b.HasOne("Backend_schronisko.Models.Wiadomosc", null)
-                        .WithMany("Komentarze")
-                        .HasForeignKey("WiadomoscId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Backend_schronisko.Models.Wiadomosc", b =>
-                {
-                    b.Navigation("Komentarze");
                 });
 #pragma warning restore 612, 618
         }

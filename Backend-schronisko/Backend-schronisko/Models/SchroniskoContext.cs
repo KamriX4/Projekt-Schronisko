@@ -8,14 +8,24 @@ namespace Backend_schronisko.Models
         {
 
         }
+
         // Te właściwości reprezentują tabele w bazie MSSQL
         public DbSet<Zwierze> Zwierzeta { get; set; }
         public DbSet<Gatunek> Gatunki { get; set; }
+        public DbSet<Uzytkownik> Uzytkownicy { get; set; }
+        public DbSet<Wiadomosc> Wiadomosci { get; set; }
+        public DbSet<Komentarz> Komentarze { get; set; }
 
         // Główne miejsce do wpisywania danych na sztywno
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Uzytkownik>().HasData( // dodanie admina i pracownika
+                new Uzytkownik { Id = 1, Login = "gosc", Haslo = "gosc123", Rola = "gosc" },
+                new Uzytkownik { Id = 2, Login = "pracownik1", Haslo = "haslo123", Rola = "pracownik" },
+                new Uzytkownik { Id = 3, Login = "pracownik2", Haslo = "haslo123", Rola = "pracownik" }
+            );
 
             // 1. Wstawianie danych dla tabeli Gatunek
             modelBuilder.Entity<Gatunek>().HasData(

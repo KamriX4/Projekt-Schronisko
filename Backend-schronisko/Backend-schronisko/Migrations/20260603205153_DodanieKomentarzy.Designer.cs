@@ -4,6 +4,7 @@ using Backend_schronisko.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_schronisko.Migrations
 {
     [DbContext(typeof(SchroniskoContext))]
-    partial class SchroniskoContextModelSnapshot : ModelSnapshot
+    [Migration("20260603205153_DodanieKomentarzy")]
+    partial class DodanieKomentarzy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -375,7 +378,7 @@ namespace Backend_schronisko.Migrations
 
                     b.HasIndex("WiadomoscId");
 
-                    b.ToTable("Komentarze");
+                    b.ToTable("Komentarz");
                 });
 
             modelBuilder.Entity("Backend_schronisko.Models.Zwierze", b =>

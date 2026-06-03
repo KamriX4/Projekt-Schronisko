@@ -24,7 +24,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
   // Akcja: Pobieranie
   const pobierzZwierzeta = async () => {
     try {
-      const response = await fetch('https://localhost:7295/api/zwierze')
+      const response = await fetch('http://localhost:5145/api/zwierze')
       if (response.ok) {
         zwierzeta.value = await response.json()
       }
@@ -38,7 +38,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
     try {
       aktualneZwierze.value = null // Czyścimy stare dane, żeby nie "mignęły" na ekranie
 
-      const response = await fetch(`https://localhost:7295/api/zwierze/${id}`)
+      const response = await fetch(`http://localhost:5145/api/zwierze/${id}`)
 
       if (response.ok) {
         aktualneZwierze.value = await response.json()
@@ -60,7 +60,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
         przyblizonaDataUrodzenia: formatujDateLokalnie(noweZwierze.przyblizonaDataUrodzenia),
       }
 
-      const response = await fetch('https://localhost:7295/api/zwierze', {
+      const response = await fetch('http://localhost:5145/api/zwierze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadDoWyslania), // 2. Wysyłamy bezpieczny ładunek
@@ -88,7 +88,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
         przyblizonaDataUrodzenia: formatujDateLokalnie(zaktualizowaneDane.przyblizonaDataUrodzenia),
       }
 
-      const response = await fetch(`https://localhost:7295/api/zwierze/${id}`, {
+      const response = await fetch(`http://localhost:5145/api/zwierze/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadDoWyslania), // 2. Wysyłamy bezpieczny ładunek
@@ -120,7 +120,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
   // Akcja: Usuwanie (DELETE)
   const usunZwierze = async (id: number) => {
     try {
-      const response = await fetch(`https://localhost:7295/api/zwierze/${id}`, {
+      const response = await fetch(`http://localhost:5145/api/zwierze/${id}`, {
         method: 'DELETE',
       })
 

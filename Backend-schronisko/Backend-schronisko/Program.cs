@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Rejestracja SchroniskoContext z użyciem MSSQL
 builder.Services.AddDbContext<SchroniskoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Add services to the container.
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -14,19 +13,21 @@ builder.Services.AddControllers()
         // Ignoruje zapętlenia relacji podczas generowania JSON-a
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
+
 // Konfiguracja CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVueApp",
         policyBuilder =>
         {
-            policyBuilder.WithOrigins("http://localhost:5173") // Dokładny adres serwera Vue
+            policyBuilder.WithOrigins("http://localhost:5173", "http://localhost:5174") // dozwolone adresy
                          .AllowAnyHeader()  // Pozwala na dowolne nagłówki
                          .AllowAnyMethod(); // Pozwala na GET, POST, PUT, DELETE itd.
         });
 });
 
 builder.Services.AddOpenApi();
+
 // 1. Rejestracja Swaggera
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -46,8 +47,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("AllowVueApp");

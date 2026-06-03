@@ -27,6 +27,11 @@ const router = createRouter({
       name: 'analityka',
       component: AnalitykaView,
     },
+    {
+      path: '/wiadomosci',
+      name: 'wiadomosci',
+      component: () => import('../views/WiadomosciView.vue')
+    },
   ],
 })
 

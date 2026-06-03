@@ -3,6 +3,10 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
 import { uploadZdjecia } from '@/stores/pliki'
+
+// DODANE: Importujemy magazyn pamięci, żeby wiedzieć, kto jest zalogowany
+import { useAuthStore } from '@/stores/auth'
+
 import type { Zwierze } from '@/types/zwierze'
 import BaseKarta from '@/components/BaseKarta.vue'
 import ZwierzeForm from '@/components/ZwierzeForm.vue' // Twój nowy klocek!
@@ -17,12 +21,16 @@ const router = useRouter()
 const store = useZwierzetaStore()
 const confirm = useConfirm()
 const pokazSukcesModal = ref(false)
+
+// magazyn pamięci z logowaniem
+const authStore = useAuthStore()
+
 // Funkcja cofająca
 const wroc = () => {
-  // router.back() cofa do poprzedniej strony w historii przeglądarki.
-  // Alternatywnie możesz użyć: router.push('/zwierzeta')
+  // router.back() cofa do poprzedniej strony w historii przeglądarki
   router.back()
 }
+
 // Stany widoku
 const trybEdycji = ref(false)
 const lokalneZwierze = ref<Zwierze | null>(null) // Lokalna kopia do edycji
@@ -176,14 +184,12 @@ const usunZwierzaka = async () => {
       <BaseKarta v-else>
         <template #header>
           <div class="mb-6 -mt-2">
-            <Button
-              icon="pi pi-arrow-left"
-              label="Wróć"
-              text
-              severity="secondary"
-              class="!px-0 hover:bg-transparent hover:text-primary transition-colors font-semibold"
-              @click="wroc"
-            />
+            <Button icon="pi pi-arrow-left"
+                    label="Wróć"
+                    text
+                    severity="secondary"
+                    class="!px-0 hover:bg-transparent hover:text-primary transition-colors font-semibold"
+                    @click="wroc" />
           </div>
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
@@ -192,62 +198,50 @@ const usunZwierzaka = async () => {
               </p>
               <h1 class="text-3xl font-bold text-gray-800">{{ lokalneZwierze.imie }}</h1>
             </div>
-            <div
-              class="flex items-center gap-3 bg-gray-50 px-5 py-3 rounded-xl border border-gray-200 shadow-sm transition-colors"
-              :class="{ 'border-yellow-400 bg-primary/5': trybEdycji }"
-            >
+            <div v-if="authStore.rola === 'pracownik'"
+                 class="flex items-center gap-3 bg-gray-50 px-5 py-3 rounded-xl border border-gray-200 shadow-sm transition-colors"
+                 :class="{ 'border-yellow-400 bg-primary/5': trybEdycji }">
               <label for="edycja" class="font-semibold text-gray-700 cursor-pointer select-none">
                 {{ trybEdycji ? 'Tryb edycji: Wł.' : 'Tryb edycji: Wył.' }}
               </label>
-              <ToggleSwitch
-                id="edycja"
-                v-model="trybEdycji"
-                @change="!trybEdycji && anulujEdycje()"
-              />
+              <ToggleSwitch id="edycja"
+                            v-model="trybEdycji"
+                            @change="!trybEdycji && anulujEdycje()" />
             </div>
           </div>
         </template>
 
-        <ZwierzeForm
-          ref="formularzRef"
-          v-model="lokalneZwierze"
-          :isReadonly="!trybEdycji"
-          @fileSelected="odbierzPlikZFormularza"
-        />
+        <ZwierzeForm ref="formularzRef"
+                     v-model="lokalneZwierze"
+                     :isReadonly="!trybEdycji"
+                     @fileSelected="odbierzPlikZFormularza" />
 
         <template #footer>
           <template v-if="trybEdycji">
-            <Button
-              label="Anuluj"
-              severity="secondary"
-              icon="pi pi-times"
-              outlined
-              @click="anulujEdycje"
-            />
-            <Button
-              label="Zapisz zmiany"
-              severity="success"
-              icon="pi pi-check"
-              @click="zapiszZmiany"
-            />
+            <Button label="Anuluj"
+                    severity="secondary"
+                    icon="pi pi-times"
+                    outlined
+                    @click="anulujEdycje" />
+            <Button label="Zapisz zmiany"
+                    severity="success"
+                    icon="pi pi-check"
+                    @click="zapiszZmiany" />
           </template>
           <template v-else>
-            <Button
-              label="Usuń"
-              icon="pi pi-trash"
-              severity="danger"
-              outlined
-              @click="potwierdzUsuniecie"
-            />
+            <Button v-if="authStore.rola === 'pracownik'"
+                    label="Usuń"
+                    icon="pi pi-trash"
+                    severity="danger"
+                    outlined
+                    @click="potwierdzUsuniecie" />
           </template>
         </template>
       </BaseKarta>
     </div>
     <ConfirmDialog />
-    <SukcesModal
-      :widoczny="pokazSukcesModal"
-      tytul="Zapisano zmiany!"
-      @zamknij="pokazSukcesModal = false"
-    />
+    <SukcesModal :widoczny="pokazSukcesModal"
+                 tytul="Zapisano zmiany!"
+                 @zamknij="pokazSukcesModal = false" />
   </div>
 </template>
