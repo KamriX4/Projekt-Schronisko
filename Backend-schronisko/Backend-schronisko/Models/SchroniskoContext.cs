@@ -11,6 +11,8 @@ namespace Backend_schronisko.Models
         // Te właściwości reprezentują tabele w bazie MSSQL
         public DbSet<Zwierze> Zwierzeta { get; set; }
         public DbSet<Gatunek> Gatunki { get; set; }
+        public DbSet<WniosekAdopcyjny> WnioskiAdopcyjne { get; set; }
+        public DbSet<WniosekOddania> WnioskiOddania { get; set; }
 
         // Główne miejsce do wpisywania danych na sztywno
         protected override void OnModelCreating(ModelBuilder modelBuilder)
