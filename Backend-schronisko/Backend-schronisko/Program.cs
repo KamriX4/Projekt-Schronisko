@@ -14,22 +14,26 @@ builder.Services.AddControllers()
         // Ignoruje zapętlenia relacji podczas generowania JSON-a
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
+
 // Konfiguracja CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVueApp",
         policyBuilder =>
         {
-            policyBuilder.WithOrigins("http://localhost:5173") // Dokładny adres serwera Vue
+            policyBuilder.WithOrigins("https://localhost:5173", "https://localhost:5174") // dozwolone adresy
                          .AllowAnyHeader()  // Pozwala na dowolne nagłówki
                          .AllowAnyMethod(); // Pozwala na GET, POST, PUT, DELETE itd.
         });
 });
 
 builder.Services.AddOpenApi();
+
 // 1. Rejestracja Swaggera
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// Wysyłanie maila
+builder.Services.AddScoped<Backend_schronisko.Services.EmailService>();
 
 var app = builder.Build();
 
@@ -46,8 +50,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("AllowVueApp");

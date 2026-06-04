@@ -2,6 +2,10 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useDebounceFn, useLocalStorage } from '@vueuse/core'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
+
+//Importujemy magazyn pamięci, żeby sprawdzić, kto jest zalogowany
+import { useAuthStore } from '@/stores/auth'
+
 import ZwierzeCard from '@/components/ZwierzeCard.vue'
 import AddZwierzeModal from '@/components/AddZwierzeModal.vue'
 import type { NoweZwierze } from '@/types/zwierze'
@@ -10,6 +14,13 @@ import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import Button from 'primevue/button'
 import GenericList from '@/components/GenericList.vue'
+
+// Inicjalizacja Store'a (magazynu z danymi o zwierzętach)
+const store = useZwierzetaStore()
+
+// DODANE: Uruchamiamy magazyn pamięci logowania
+const authStore = useAuthStore()
+
 
 const store = useZwierzetaStore()
 
@@ -67,6 +78,7 @@ onMounted(() => {
           />
         </IconField>
         <Button
+          v-if="authStore.rola === 'pracownik'"
           :label="$t('animals.add')"
           icon="pi pi-plus"
           severity="success"
@@ -83,10 +95,8 @@ onMounted(() => {
       <template #empty> {{ $t('animals.notFound') }} </template>
     </GenericList>
 
-    <AddZwierzeModal
-      :otwarty="czyModalOtwarty"
-      @zamknij="czyModalOtwarty = false"
-      @zapisz="obsluzDodanie"
-    />
+    <AddZwierzeModal :otwarty="czyModalOtwarty"
+                     @zamknij="czyModalOtwarty = false"
+                     @zapisz="obsluzDodanie" />
   </div>
 </template>

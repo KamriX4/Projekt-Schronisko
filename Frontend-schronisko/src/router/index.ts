@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import ZwierzetaView from '@/views/ZwierzetaView.vue'
 import ZwierzeSzczegolyView from '../views/ZwierzeSzczegolyView.vue'
 import AnalitykaView from '../views/AnalitykaView.vue'
+import OddajZwierzeView from '../views/OddajZwierzeView.vue'
+
 import HarmonogramView from '@/views/HarmonogramView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +30,15 @@ const router = createRouter({
       component: AnalitykaView,
     },
     {
+      path: '/wiadomosci',
+      name: 'wiadomosci',
+      component: () => import('../views/WiadomosciView.vue')
+    },
+    {
+      path: '/oddaj-zwierze',
+      name: 'oddaj-zwierze',
+      component: OddajZwierzeView,
+    },
       path: '/harmonogram',
       name: 'harmonogram',
       component: HarmonogramView
