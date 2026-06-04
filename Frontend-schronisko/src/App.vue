@@ -48,6 +48,7 @@ const zmienJezyk = (nowyJezyk: string) => {
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
             <li><RouterLink to="/analityka">Analityka</RouterLink></li>
+            <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
           </ul>
         </div>
 
@@ -58,6 +59,7 @@ const zmienJezyk = (nowyJezyk: string) => {
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
             <li><RouterLink to="/analityka">Analityka</RouterLink></li>
+            <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
           </ul>
         </div>
       </div>
@@ -103,6 +105,7 @@ const zmienJezyk = (nowyJezyk: string) => {
         </div>
       </div>
     </header>
+
     <main class="flex-grow">
       <RouterView v-slot="{ Component, route }">
         <Transition name="slide-fade" mode="out-in">
@@ -110,6 +113,7 @@ const zmienJezyk = (nowyJezyk: string) => {
         </Transition>
       </RouterView>
     </main>
+
     <footer class="footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
       <aside>
         <p>Copyright © {new Date().getFullYear()} - All right reserved by ACME Industries Ltd</p>
@@ -119,9 +123,7 @@ const zmienJezyk = (nowyJezyk: string) => {
 </template>
 
 <style scoped>
-/* Definiujemy czas trwania i rodzaj krzywej przejścia.
-  Wartość 0.3s daje płynny, ale nienużący efekt.
-*/
+/* Definiujemy czas trwania i rodzaj krzywej przejścia. */
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }
@@ -130,12 +132,7 @@ const zmienJezyk = (nowyJezyk: string) => {
   transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
-/* Stan początkowy przy wchodzeniu na stronę (enter-from)
-  oraz stan końcowy przy wychodzeniu z niej (leave-to).
-
-  transform: translateY(20px) sprawi, że nowa strona delikatnie
-  wjedzie z dołu do góry, przy okazji stając się w pełni widoczna (opacity).
-*/
+/* Stan początkowy przy wchodzeniu na stronę oraz końcowy przy wychodzeniu. */
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: translateY(20px);
