@@ -6,10 +6,12 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import router from './router'
-import i18n from './i18n' // 1. Importujesz konfigurację
+import i18n from './i18n'
 import 'primeicons/primeicons.css'
 import { definePreset } from '@primevue/themes'
-import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmationService from 'primevue/confirmationservice'
+import { vFocus } from '@/directives/vFocus'
+import { initSentry } from '@/plugins/sentry'
 
 const SzaryMotyw = definePreset(Aura, {
   semantic: {
@@ -19,48 +21,60 @@ const SzaryMotyw = definePreset(Aura, {
       200: '#e2e8f0',
       300: '#cbd5e1',
       400: '#94a3b8',
-      500: '#64748b', /* Główny akcent - np. kolor ramki przy kliknięciu */
+      500: '#64748b',
       600: '#475569',
       700: '#334155',
       800: '#1e293b',
       900: '#0f172a',
-      950: '#020617'
-    }
-  }
-});
-
+      950: '#020617',
+    },
+  },
+})
 
 const app = createApp(App)
+
+/** [8] SENTRY — inicjalizacja monitorowania (przed mount) */
+initSentry(app)
+
+/** [4] WŁASNA DYREKTYWA — globalna rejestracja v-focus */
+app.directive('focus', vFocus)
+
 app.use(PrimeVue, {
   theme: {
-    preset: SzaryMotyw, // <-- Podmieniamy Aura na SzaryMotyw
+    preset: SzaryMotyw,
     options: {
-      darkModeSelector: '.p-dark', // Zostawiamy to, żeby nie wymuszał czarnego tła
-    }
+      darkModeSelector: '.p-dark',
+    },
   },
   locale: {
-    // 1 oznacza poniedziałek (0 to niedziela, domyślnie w USA)
     firstDayOfWeek: 1,
-
-    // Dni tygodnia
     dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
     dayNamesShort: ['Nie', 'Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob'],
     dayNamesMin: ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb'],
-
-    // Miesiące
-    monthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
+    monthNames: [
+      'Styczeń',
+      'Luty',
+      'Marzec',
+      'Kwiecień',
+      'Maj',
+      'Czerwiec',
+      'Lipiec',
+      'Sierpień',
+      'Wrzesień',
+      'Październik',
+      'Listopad',
+      'Grudzień',
+    ],
     monthNamesShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
-
-    // Dodatkowe przydatne słowa w kalendarzu
     today: 'Dzisiaj',
     clear: 'Wyczyść',
     emptyMessage: 'Brak wyników',
-    emptyFilterMessage: 'Brak wyników wyszukiwania'
-  }
+    emptyFilterMessage: 'Brak wyników wyszukiwania',
+  },
 })
 app.use(ConfirmationService)
 app.use(createPinia())
 app.use(router)
-app.use(i18n) // 2. Rejestrujesz i18n w aplikacji, dzięki czemu będzie dostępny globalnie
-;
+app.use(i18n)
+
 app.mount('#app')

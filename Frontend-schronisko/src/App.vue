@@ -1,10 +1,25 @@
 <script setup lang="ts">
 import '@/assets/main.css'
+import { provide, ref, watchEffect } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
+import { schroniskoContextKey } from '@/context/schroniskoContext'
 
 const { locale } = useI18n()
+
+/** [5] PROVIDE / INJECT — kontekst udostępniany całemu drzewu komponentów */
+const kolorAkcentu = ref('#22c55e')
+const ustawKolorAkcentu = (hex: string) => {
+  kolorAkcentu.value = hex
+}
+provide(schroniskoContextKey, { kolorAkcentu, ustawKolorAkcentu })
+
+/** [3] WATCHEFFECT — automatyczna synchronizacja atrybutu lang w <html> z locale i18n */
+watchEffect(() => {
+  document.documentElement.lang = locale.value
+  document.documentElement.dataset.locale = locale.value
+})
 
 const zamknijMenu = () => {
   const aktywnyElement = document.activeElement as HTMLElement | null
@@ -12,6 +27,7 @@ const zamknijMenu = () => {
     aktywnyElement.blur()
   }
 }
+
 const zmienJezyk = (nowyJezyk: string) => {
   locale.value = nowyJezyk
 }

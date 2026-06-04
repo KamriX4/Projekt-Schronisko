@@ -1,14 +1,14 @@
+/** [1] VITEST — testy w useWiekZwierzecia.spec.ts */
 import { computed, type Ref } from 'vue'
-import { useI18n } from 'vue-i18n' // <-- Import i18n
+import { useI18n } from 'vue-i18n'
 
 
 
 // Eksportujemy funkcję, która przyjmuje datę (jako zmienną reaktywną Ref)
 export function useWiekZwierzecia(dataUrodzenia: Ref<Date | string | null | undefined>) {
+  const { t } = useI18n()
 
   const wiekMiesiace = computed(() => {
-
-    const { t } = useI18n() // <-- Inicjalizacja i18n
     if (!dataUrodzenia.value) return t('validation.missing_date')
 
     const birthDate = new Date(dataUrodzenia.value)

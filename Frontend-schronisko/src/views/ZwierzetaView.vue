@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useDebounceFn, useLocalStorage } from '@vueuse/core'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
 import ZwierzeCard from '@/components/ZwierzeCard.vue'
 import AddZwierzeModal from '@/components/AddZwierzeModal.vue'
@@ -10,16 +11,23 @@ import InputIcon from 'primevue/inputicon'
 import Button from 'primevue/button'
 import GenericList from '@/components/GenericList.vue'
 
-// Inicjalizacja Store'a
 const store = useZwierzetaStore()
 
-// Lokalny stan UI
-const searchInput = ref('')
+/** [7] VUEUSE — useLocalStorage: zapamiętanie frazy wyszukiwania między wizytami */
+const searchInput = useLocalStorage('schronisko-search', '')
+const searchDebounced = ref(searchInput.value)
+
+/** [7] VUEUSE — useDebounceFn: opóźnienie filtrowania przy pisaniu (mniej przeliczeń) */
+const aktualizujDebounced = useDebounceFn((wartosc: string) => {
+  searchDebounced.value = wartosc
+}, 300)
+
+watch(searchInput, (v) => aktualizujDebounced(v), { immediate: true })
+
 const czyModalOtwarty = ref(false)
 
-// Obliczana logika wyszukiwarki (korzysta ze Store'a)
 const filtrowaneZwierzeta = computed(() => {
-  const query = searchInput.value.toLowerCase().trim()
+  const query = searchDebounced.value.toLowerCase().trim()
   if (!query) return store.zwierzeta
 
   return store.zwierzeta.filter((z) => {
@@ -50,14 +58,20 @@ onMounted(() => {
       <div class="flex flex-row items-center gap-3 w-full sm:w-auto">
         <IconField class="flex-1">
           <InputIcon class="pi pi-search" />
-          <InputText v-model="searchInput" :placeholder="$t('animals.search')" class="w-full" />
+          <!-- [4] WŁASNA DYREKTYWA v-focus — fokus na polu wyszukiwania po wejściu na widok -->
+          <InputText
+            v-model="searchInput"
+            v-focus
+            :placeholder="$t('animals.search')"
+            class="w-full"
+          />
         </IconField>
         <Button
           :label="$t('animals.add')"
           icon="pi pi-plus"
           severity="success"
-          @click="czyModalOtwarty = true"
           class="p-4 font-semibold shadow-lg"
+          @click="czyModalOtwarty = true"
         />
       </div>
     </div>

@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import type { Zwierze } from '@/types/zwierze'
+import { computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import Badge from 'primevue/badge'
+import { schroniskoContextKey } from '@/context/schroniskoContext'
 
-
-
-// Kafelek po prostu przyjmuje obiekt Zwierze z zewnątrz
 defineProps<{
   zwierze: Zwierze
 }>()
 
-// Domyślne zdjęcie, jeśli w bazie zdjecieUrl to null
+/** [5] PROVIDE/INJECT — kolor ramki karty z kontekstu App */
+const schroniskoCtx = inject(schroniskoContextKey)
+const stylRamki = computed(() =>
+  schroniskoCtx
+    ? { boxShadow: `0 0 0 2px ${schroniskoCtx.kolorAkcentu.value}33` }
+    : undefined,
+)
+
 const domyslneZdjecie = 'https://placehold.co/400x300?text=Brak+zdjęcia'
 
 const router = useRouter()
@@ -21,7 +27,11 @@ const otworzSzczegoly = (id: number) => {
 </script>
 
 <template>
-  <div @click="otworzSzczegoly(zwierze.id)" class="card bg-base-100 w-96 h-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+  <div
+    class="card bg-base-100 w-96 h-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+    :style="stylRamki"
+    @click="otworzSzczegoly(zwierze.id)"
+  >
     <figure>
       <img
         :src="zwierze.zdjecieUrl || domyslneZdjecie"

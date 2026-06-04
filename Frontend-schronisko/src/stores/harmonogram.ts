@@ -83,6 +83,20 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
     await pobierzZadania()
   }
 
+  /** [6] DRAG & DROP — lokalna zmiana kolejności zadań w kolumnie (kategoria) */
+  const ustawKolejnoscKategorii = (kategoria: string, nowaLista: ZadanieHarmonogramu[]) => {
+    const kolejnoscKategorii = ['Zywienie', 'Szczepienia', 'Leki', 'Sprzatanie'] as const
+    const wynik: ZadanieHarmonogramu[] = []
+    for (const kat of kolejnoscKategorii) {
+      if (kat === kategoria) {
+        wynik.push(...nowaLista)
+      } else {
+        wynik.push(...zadania.value.filter((z) => z.kategoria === kat))
+      }
+    }
+    zadania.value = wynik
+  }
+
   return {
     zadania,
     pobierzZadania,
@@ -90,5 +104,6 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
     edytujZadanie,
     usunZadanie,
     przelaczStatus,
+    ustawKolejnoscKategorii,
   }
 })
