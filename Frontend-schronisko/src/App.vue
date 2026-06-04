@@ -6,7 +6,6 @@ import Button from 'primevue/button'
 
 const { locale } = useI18n()
 
-// Funkcja zamykająca dropdown z DaisyUI po kliknięciu w link
 const zamknijMenu = () => {
   const aktywnyElement = document.activeElement as HTMLElement | null
   if (aktywnyElement) {
@@ -14,7 +13,7 @@ const zamknijMenu = () => {
   }
 }
 const zmienJezyk = (nowyJezyk: string) => {
-  locale.value = nowyJezyk // Zmiana tej wartości natychmiast tłumaczy całą stronę!
+  locale.value = nowyJezyk
 }
 </script>
 
@@ -52,7 +51,10 @@ const zmienJezyk = (nowyJezyk: string) => {
           </ul>
         </div>
 
-        <a class="btn btn-ghost text-lg font-semibold">"Nazwa Schroniska"</a>
+        <div class="flex items-center gap-2 bg-emerald-50 text-emerald-600 font-black px-4 py-2 rounded-xl shadow-sm mr-2 select-none">
+          <span class="text-2xl leading-none">🐾</span>
+          <span class="text-xl tracking-tight">Nasze Ogonki</span>
+        </div>
 
         <div class="hidden lg:flex ml-2">
           <ul class="menu menu-horizontal px-1 gap-2">
@@ -121,9 +123,6 @@ const zmienJezyk = (nowyJezyk: string) => {
 </template>
 
 <style scoped>
-/* Definiujemy czas trwania i rodzaj krzywej przejścia.
-  Wartość 0.3s daje płynny, ale nienużący efekt.
-*/
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }
@@ -132,12 +131,6 @@ const zmienJezyk = (nowyJezyk: string) => {
   transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
-/* Stan początkowy przy wchodzeniu na stronę (enter-from)
-  oraz stan końcowy przy wychodzeniu z niej (leave-to).
-
-  transform: translateY(20px) sprawi, że nowa strona delikatnie
-  wjedzie z dołu do góry, przy okazji stając się w pełni widoczna (opacity).
-*/
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: translateY(20px);
