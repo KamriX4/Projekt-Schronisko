@@ -2,7 +2,9 @@
 import Chart from 'primevue/chart'
 import { ref, computed, onMounted } from 'vue'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const store = useZwierzetaStore()
 const MAKSYMALNA_POJEMNOSC = 100
 
@@ -17,7 +19,7 @@ const chartData = computed(() => {
   const wolne = Math.max(0, MAKSYMALNA_POJEMNOSC - zajete)
 
   return {
-    labels: ['Zajęte miejsca', 'Wolne miejsca'],
+    labels: [t('analytics.occupied'), t('analytics.available')],
     datasets: [
       {
         data: [zajete, wolne],
@@ -61,14 +63,11 @@ const chartOptions = ref({
 
 <template>
   <div class="relative w-full flex justify-center">
-    <Chart
-      type="doughnut"
-      :data="chartData"
-      :options="chartOptions"
-      class="w-full max-w-[20rem]"
-    />
+    <Chart type="doughnut" :data="chartData" :options="chartOptions" class="w-full max-w-[20rem]" />
 
-    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none -mt-8">
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none -mt-8"
+    >
       <span class="text-4xl font-bold text-gray-800">{{ store.zwierzeta.length }}</span>
       <span class="text-sm text-gray-500">/ {{ MAKSYMALNA_POJEMNOSC }}</span>
     </div>

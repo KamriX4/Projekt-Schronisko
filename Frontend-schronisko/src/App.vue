@@ -83,12 +83,12 @@ const zmienJezyk = (nowyJezyk: string) => {
           >
             <li>
               <a class="justify-between">
-                Profil
-                <span class="badge badge-primary">Nowy</span>
+                {{ $t('nav.profile') }}
+                <span class="badge badge-primary">{{ $t('nav.new') }}</span>
               </a>
             </li>
-            <li><a>Ustawienia</a></li>
-            <li><a>Wyloguj</a></li>
+            <li><a>{{ $t('nav.settings') }}</a></li>
+            <li><a>{{ $t('nav.logout') }}</a></li>
           </ul>
         </div>
         <div class="flex gap-2 p-4 justify-end">

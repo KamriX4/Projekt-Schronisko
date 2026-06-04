@@ -1,10 +1,98 @@
 {
   "nav": {
-    "animals": "Our animals",
-    "analytics": "Analytics"
+    "animals": "Our Animals",
+    "analytics": "Analytics",
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out",
+    "new": "New"
   },
   "analytics": {
     "subtitle": "Current statistics and shelter capacity.",
-    "capacity": "Shelter capacity"
+    "capacity": "Shelter capacity",
+    "occupied": "Occupied",
+    "available": "Available"
+  },
+  "animals": {
+    "search": "Search for an animal...",
+    "add": "Add",
+    "notFound": "No animals found matching the search criteria.",
+    "name": "Name",
+    "species": "Species",
+    "age": "Age",
+    "actions": "Actions",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "gender": "Gender",
+    "dog": "Dog",
+    "cat": "Cat",
+    "male": "Male",
+    "female": "Female",
+    "status": "Status",
+    "form": {
+      "name_placeholder": "Enter name...",
+      "status_placeholder": "Select status...",
+      "photo": "Photo",
+      "choose_photo": "Choose photo",
+      "cancel": "Cancel",
+      "drag_drop": "Drag and drop a photo here",
+      "photo_preview": "Photo preview",
+      "registry_number": "Registry number",
+      "registry_number_placeholder": "P/2026/001",
+      "admission_date": "Admission date",
+      "birth_date": "Date of birth",
+      "age_months": "Age in months",
+      "chipped": "Is chipped?",
+      "vaccinated": "Is vaccinated?",
+      "castrated": "Is castrated?"
+    },
+    "add_dialog": {
+    "header": "Add a new animal",
+    "description": "Fill in the details to add a ward to the database."
+    },
+    "alerts": {
+      "validation_error": "Please fix the highlighted errors before adding the animal!",
+      "edit_validation_error": "Please fix the errors in the form before saving changes!",
+      "upload_error": "Error uploading the photo to the server!",
+      "save_error": "An error occurred while saving data to the database.",
+      "delete_fail": "Failed to delete the animal. Check the console logs.",
+      "delete_error": "A server error occurred during deletion."
+    },
+    "profile": {
+      "back": "Back",
+      "subtitle": "Ward Profile",
+      "edit_mode_on": "Edit mode: On",
+      "edit_mode_off": "Edit mode: Off",
+      "save_changes": "Save changes",
+      "save_success": "Changes saved!",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    },
+    "delete_dialog": {
+      "header": "Confirm deletion",
+      "message": "Are you sure you want to delete the animal: {name}?"
+    }
+  },
+  "statuses": {
+    "available": "For Adoption",
+    "adopted": "Adopted",
+    "quarantined": "In Quarantine",
+    "reserved": "Reserved",
+    "in_treatment": "In Treatment"
+  },
+  "validation": {
+    "name_required": "Name is required.",
+    "name_min_length": "Name must be at least 2 characters long.",
+    "registry_number_invalid": "Enter a complete registry number.",
+    "status_required": "Please select a status.",
+    "admission_date_required": "Please select an admission date.",
+    "birth_date_required": "Date of birth is required.",
+    "birth_date_future": "Date of birth cannot be in the future.",
+    "birth_date_after_admission": "The animal could not have been born after the admission date.",
+    "registry_number_required": "Registry number is required.",
+    "registry_number_unique": "Registry number must be unique.",
+    "missing_date": "Missing date"
   }
 }

@@ -46,14 +46,14 @@ onMounted(() => {
 <template>
   <div class="container mx-auto p-6 sm:p-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8">
-      <h1 class="text-3xl font-bold">Nasi podopieczni</h1>
+      <h1 class="text-3xl font-bold">{{ $t('nav.animals') }}</h1>
       <div class="flex flex-row items-center gap-3 w-full sm:w-auto">
         <IconField class="flex-1">
           <InputIcon class="pi pi-search" />
-          <InputText v-model="searchInput" placeholder="Szukaj zwierzaka..." class="w-full" />
+          <InputText v-model="searchInput" :placeholder="$t('animals.search')" class="w-full" />
         </IconField>
         <Button
-          label="Dodaj"
+          :label="$t('animals.add')"
           icon="pi pi-plus"
           severity="success"
           @click="czyModalOtwarty = true"
@@ -66,7 +66,7 @@ onMounted(() => {
       <template #item="{ item }">
         <ZwierzeCard :zwierze="item" />
       </template>
-      <template #empty> Nie znaleziono zwierząt spełniających kryteria wyszukiwania. </template>
+      <template #empty> {{ $t('animals.notFound') }} </template>
     </GenericList>
 
     <AddZwierzeModal
