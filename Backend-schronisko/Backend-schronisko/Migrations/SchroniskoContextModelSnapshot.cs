@@ -233,6 +233,42 @@ namespace Backend_schronisko.Migrations
                 b.ToTable("WnioskiOddania");
             });
 
+            modelBuilder.Entity("Backend_schronisko.Models.ZadanieHarmonogramu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("CzyWykonane")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DataCzas")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Kategoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Opis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tytul")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ZwierzeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ZwierzeId");
+
+                    b.ToTable("ZadaniaHarmonogramu");
+                });
+
             modelBuilder.Entity("Backend_schronisko.Models.Zwierze", b =>
             {
                 b.Property<int>("Id")
@@ -465,6 +501,15 @@ namespace Backend_schronisko.Migrations
 
                 b.Navigation("Zwierze");
             });
+
+            modelBuilder.Entity("Backend_schronisko.Models.ZadanieHarmonogramu", b =>
+                {
+                    b.HasOne("Backend_schronisko.Models.Zwierze", "Zwierze")
+                        .WithMany()
+                        .HasForeignKey("ZwierzeId");
+
+                    b.Navigation("Zwierze");
+                });
 
             modelBuilder.Entity("Backend_schronisko.Models.Zwierze", b =>
             {

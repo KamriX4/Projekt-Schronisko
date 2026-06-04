@@ -5,6 +5,7 @@ import ZwierzeSzczegolyView from '../views/ZwierzeSzczegolyView.vue'
 import AnalitykaView from '../views/AnalitykaView.vue'
 import OddajZwierzeView from '../views/OddajZwierzeView.vue'
 
+import HarmonogramView from '@/views/HarmonogramView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,6 +39,10 @@ const router = createRouter({
       name: 'oddaj-zwierze',
       component: OddajZwierzeView,
     },
+      path: '/harmonogram',
+      name: 'harmonogram',
+      component: HarmonogramView
+    }
   ],
 })
 

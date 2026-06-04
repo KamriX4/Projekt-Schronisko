@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Zwierze } from '@/types/zwierze'
+import { computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import Badge from 'primevue/badge'
 import Button from 'primevue/button'
@@ -8,11 +9,20 @@ import Dialog from 'primevue/dialog'
 import FormularzAdopcyjny from './FormularzAdopcyjny.vue'
 
 // Kafelek przyjmuje obiekt Zwierze z zewnątrz
+import { schroniskoContextKey } from '@/context/schroniskoContext'
+
 defineProps<{
   zwierze: Zwierze
 }>()
 
-// Domyślne zdjęcie
+/** [5] PROVIDE/INJECT — kolor ramki karty z kontekstu App */
+const schroniskoCtx = inject(schroniskoContextKey)
+const stylRamki = computed(() =>
+  schroniskoCtx
+    ? { boxShadow: `0 0 0 2px ${schroniskoCtx.kolorAkcentu.value}33` }
+    : undefined,
+)
+
 const domyslneZdjecie = 'https://placehold.co/400x300?text=Brak+zdjęcia'
 const router = useRouter()
 
@@ -43,10 +53,10 @@ const otworzSzczegoly = (id: number) => {
             {{ zwierze.imie }}
           </h2>
           <p class="text-gray-500">
-            Gatunek: <span class="font-bold">{{ zwierze.gatunek?.nazwa }}</span>
+            {{ $t('animals.species') }}: <span class="font-bold">{{ zwierze.gatunek?.nazwa }}</span>
           </p>
           <p class="text-gray-500">
-            Płeć: <span class="font-bold">{{ zwierze.plec }}</span>
+            {{ $t('animals.gender') }}: <span class="font-bold">{{ zwierze.plec }}</span>
           </p>
         </div>
         <Badge

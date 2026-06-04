@@ -1,17 +1,31 @@
 <script setup lang="ts">
 import '@/assets/main.css'
-import { ref } from 'vue' // Potrzebne do obsługi okienka
+import { provide, ref, watchEffect } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import Button from 'primevue/button'
 import { useAuthStore } from '@/stores/auth'
 import LoginModal from '@/components/LoginModal.vue' // Podłączamy nasz nowy klocek
+import { useI18n } from 'vue-i18n'
+import Button from 'primevue/button'
+import { schroniskoContextKey } from '@/context/schroniskoContext'
 
 const { locale } = useI18n()
 const authStore = useAuthStore()
 const router = useRouter()
 
 const pokazModalLogowania = ref(false) // Zmienna sterująca okienkiem
+
+/** [5] PROVIDE / INJECT — kontekst udostępniany całemu drzewu komponentów */
+const kolorAkcentu = ref('#22c55e')
+const ustawKolorAkcentu = (hex: string) => {
+  kolorAkcentu.value = hex
+}
+provide(schroniskoContextKey, { kolorAkcentu, ustawKolorAkcentu })
+
+/** [3] WATCHEFFECT — automatyczna synchronizacja atrybutu lang w <html> z locale i18n */
+watchEffect(() => {
+  document.documentElement.lang = locale.value
+  document.documentElement.dataset.locale = locale.value
+})
 
 const zamknijMenu = () => {
   const aktywnyElement = document.activeElement as HTMLElement | null
@@ -51,7 +65,10 @@ const wylogujSie = () => {
           </ul>
         </div>
 
-        <a class="btn btn-ghost text-lg font-semibold">"Nazwa Schroniska"</a>
+        <div class="flex items-center gap-2 bg-emerald-50 text-emerald-600 font-black px-4 py-2 rounded-xl shadow-sm mr-2 select-none">
+          <span class="text-2xl leading-none">🐾</span>
+          <span class="text-xl tracking-tight">Nasze Ogonki</span>
+        </div>
 
         <div class="hidden lg:flex ml-2">
           <ul class="menu menu-horizontal px-1 gap-2">
@@ -107,7 +124,7 @@ const wylogujSie = () => {
 
     <footer class="footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
       <aside>
-        <p>Copyright © {{ new Date().getFullYear() }} - All right reserved by ACME Industries Ltd</p>
+        <p>{{ $t('footer.copyright') }}</p>
       </aside>
     </footer>
 

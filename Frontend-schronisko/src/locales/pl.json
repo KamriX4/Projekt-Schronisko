@@ -1,10 +1,161 @@
 {
   "nav": {
     "animals": "Nasi podopieczni",
-    "analytics": "Analityka"
+    "analytics": "Analityka",
+    "home": "Strona główna",
+    "profile": "Profil",
+    "settings": "Ustawienia",
+    "logout": "Wyloguj",
+    "new": "Nowy",
+    "schedule": "Harmonogram"
+  },
+  "footer": {
+    "copyright": "Copyright © 2026 - Wszelkie prawa zastrzeżone przez Schronisko \"Nasze Ogonki\""
   },
   "analytics": {
     "subtitle": "Bieżące statystyki i pojemność schroniska.",
-    "capacity": "Pojemność schroniska"
+    "capacity": "Pojemność schroniska",
+    "occupied": "Zajęte miejsce",
+    "available": "Wolne miejsce"
+  },
+  "animals": {
+    "search": "Szukaj zwierzaka...",
+    "add": "Dodaj",
+    "notFound": "Nie znaleziono zwierząt spełniających kryteria wyszukiwania.",
+    "name": "Imię",
+    "species": "Gatunek",
+    "age": "Wiek",
+    "actions": "Akcje",
+    "view": "Zobacz",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "gender": "Płeć",
+    "dog": "Pies",
+    "cat": "Kot",
+    "male": "Samiec",
+    "female": "Samica",
+    "status": "Status",
+    "form": {
+      "name_placeholder": "Wpisz imię...",
+      "status_placeholder": "Wybierz status...",
+      "photo": "Zdjęcie",
+      "choose_photo": "Wybierz zdjęcie",
+      "cancel": "Anuluj",
+      "drag_drop": "Przeciągnij i upuść zdjęcie tutaj",
+      "photo_preview": "Podgląd zdjęcia",
+      "registry_number": "Numer ewidencyjny",
+      "registry_number_placeholder": "P/2026/001",
+      "admission_date": "Data przyjęcia",
+      "birth_date": "Data urodzenia",
+      "age_months": "Wiek w miesiącach",
+      "chipped": "Czy zachipowany?",
+      "vaccinated": "Czy szczepiony?",
+      "castrated": "Czy kastrowany?"
+    },
+    "add_dialog": {
+      "header": "Dodaj nowego zwierzaka",
+      "description": "Wypełnij dane, aby dodać podopiecznego do bazy."
+    },
+    "alerts": {
+      "validation_error": "Popraw zaznaczone błędy przed dodaniem zwierzaka!",
+      "edit_validation_error": "Popraw błędy w formularzu przed zapisaniem zmian!",
+      "upload_error": "Błąd podczas wgrywania zdjęcia na serwer!",
+      "save_error": "Wystąpił błąd podczas zapisywania danych w bazie.",
+      "delete_fail": "Nie udało się usunąć zwierzaka. Sprawdź logi konsoli.",
+      "delete_error": "Wystąpił błąd serwera podczas usuwania."
+    },
+    "profile": {
+      "back": "Wróć",
+      "subtitle": "Profil Podopiecznego",
+      "edit_mode_on": "Tryb edycji: Wł.",
+      "edit_mode_off": "Tryb edycji: Wył.",
+      "save_changes": "Zapisz zmiany",
+      "save_success": "Zapisano zmiany!",
+      "delete": "Usuń",
+      "cancel": "Anuluj"
+    },
+    "delete_dialog": {
+      "header": "Potwierdzenie usunięcia",
+      "message": "Czy na pewno chcesz usunąć zwierzaka: {name}?"
+    }
+  },
+  "statuses": {
+    "available": "Do Adopcji",
+    "adopted": "Adoptowany",
+    "quarantined": "W kwarantannie",
+    "reserved": "Zarezerwowany",
+    "in_treatment": "W leczeniu"
+  },
+  "validation": {
+    "name_required": "Imię jest wymagane.",
+    "name_min_length": "Imię musi mieć co najmniej 2 znaki.",
+    "registry_number_invalid": "Podaj pełny numer ewidencyjny.",
+    "status_required": "Wybierz status.",
+    "admission_date_required": "Wybierz datę przyjęcia.",
+    "birth_date_required": "Data urodzenia jest wymagana.",
+    "birth_date_future": "Data urodzenia nie może być z przyszłości.",
+    "birth_date_after_admission": "Zwierzak nie mógł urodzić się po dacie przyjęcia.",
+    "registry_number_required": "Numer ewidencyjny jest wymagany.",
+    "registry_number_unique": "Numer ewidencyjny musi być unikalny.",
+    "missing_date": "Brak daty"
+  },
+  "home": {
+    "hero": {
+      "badge": "Wspólnie tworzymy lepsze jutro",
+      "title": "Schronisko dla Zwierząt",
+      "shelter_name": "\"Nasze Ogonki\"",
+      "description": "Jesteśmy bezpieczną przystanią dla skrzywdzonych, porzuconych i potrzebujących zwierząt. Naszą misją jest nie tylko opieka, ale przede wszystkim szukanie kochających, odpowiedzialnych domów. Każde merdanie ogona to dla nas dowód, że warto walczyć.",
+      "btn_meet": "Poznaj podopiecznych",
+      "btn_contact": "Skontaktuj się",
+      "img_alt": "Podopieczni schroniska"
+    },
+    "stats": {
+      "animals": "Zwierzaków pod opieką",
+      "adoptions": "Udana adopcja w tym roku",
+      "volunteers": "Cudownych wolontariuszy"
+    },
+    "quiz": {
+      "title": "Znajdź swojego przyjaciela",
+      "description": "Rozwiąż nasz szybki, interaktywny quiz i sprawdź, jaki typ zwierzaka najbardziej pasuje do Twojego codziennego stylu życia!",
+      "step_0": {
+        "question": "Gdzie mieszkasz?",
+        "house": "Dom z ogrodem",
+        "apartment": "Mieszkanie w bloku"
+      },
+      "step_1": {
+        "question": "Ile czasu dziennie możesz poświęcić na aktywność ze zwierzakiem?",
+        "lot_of_time": "Dużo (długie spacery i zabawy)",
+        "little_time": "Mało (głównie czas w domu)"
+      },
+      "step_2": {
+        "result_title": "Twój idealny kompan to:",
+        "restart": "Spróbuj ponownie 🔄",
+        "results": {
+          "active_dog": "Energetyczny pies (np. Beagle) – uwielbia przestrzeń i długie spacery!",
+          "calm_cat": "Spokojny kot – idealny towarzysz do leniwych popołudni na kanapie.",
+          "independent": "Niezależny kot lub starszy piesek, który ceni sobie ciszę i spokój.",
+          "young": "Młody psiak lub energiczny kotek – gotowy na mnóstwo zabawy!"
+        }
+      }
+    },
+    "contact": {
+      "title": "Skontaktuj się z nami",
+      "description": "Masz pytania dotyczące adopcji? Chcesz wesprzeć wolontariat? Jesteśmy do Twojej dyspozycji!",
+      "phone": {
+        "title": "Telefon",
+        "hours": "Pn - Pt: 8:00 - 16:00"
+      },
+      "address": {
+        "title": "Adres schroniska"
+      },
+      "email": {
+        "title": "Napisz do nas",
+        "response_time": "Odpowiadamy w 24h"
+      },
+      "krs": {
+        "title": "KRS (Darowizny)",
+        "purpose": "Cel: Pomoc Ogonkom"
+      }
+    }
   }
 }

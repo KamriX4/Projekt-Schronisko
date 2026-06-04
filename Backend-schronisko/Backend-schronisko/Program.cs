@@ -5,7 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Rejestracja SchroniskoContext z użyciem MSSQL
 builder.Services.AddDbContext<SchroniskoContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SchroniskoContext")));
+// Add services to the container.
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -20,7 +21,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVueApp",
         policyBuilder =>
         {
-            policyBuilder.WithOrigins("http://localhost:5173", "http://localhost:5174") // dozwolone adresy
+            policyBuilder.WithOrigins("https://localhost:5173", "https://localhost:5174") // dozwolone adresy
                          .AllowAnyHeader()  // Pozwala na dowolne nagłówki
                          .AllowAnyMethod(); // Pozwala na GET, POST, PUT, DELETE itd.
         });
