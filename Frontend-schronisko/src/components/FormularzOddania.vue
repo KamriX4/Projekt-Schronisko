@@ -117,7 +117,7 @@ const wyslijWniosek = async () => {
   wiadomoscE.value = ''
 
   try {
-    const odpowiedz = await fetch('https://localhost:7295/api/Wnioski/oddanie', {
+    const odpowiedz = await fetch('http://localhost:5145/api/Wnioski/oddanie', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formularz.value),
