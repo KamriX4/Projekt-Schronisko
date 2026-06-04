@@ -6,6 +6,9 @@ import Dialog from 'primevue/dialog'
 import Button from 'primevue/button'
 import ZwierzeForm from '@/components/ZwierzeForm.vue'
 // import InputNumber from 'primevue/inputnumber'
+import { useI18n } from 'vue-i18n' // <-- Import i18n
+
+const { t } = useI18n() // <-- Wyciągnięcie funkcji tłumaczącej
 
 const props = defineProps<{
   otwarty: boolean
@@ -58,7 +61,7 @@ const handleDodaj = async () => {
 
   // 3. ZABLOKUJ ZAPIS JEŚLI SĄ BŁĘDY
   if (!czyPoprawny) {
-    alert('Popraw zaznaczone błędy przed dodaniem zwierzaka!')
+    alert(t('animals.alerts.validation_error')) // Użyj tłumaczenia z i18n
     return // PRZERYWAMY DZIAŁANIE! Zwierzak nie zostanie dodany.
   }
 
@@ -73,7 +76,7 @@ const handleDodaj = async () => {
       formularzZwierze.value.zdjecieUrl = wygenerowanyLink
     } catch (error) {
       console.error('Szczegóły błędu uploadu:', error)
-      alert('Błąd podczas wgrywania zdjęcia na serwer!')
+      alert(t('animals.alerts.upload_error')) // Użyj tłumaczenia z i18n
       return
     }
   }
@@ -87,11 +90,11 @@ const handleDodaj = async () => {
     :visible="otwarty"
     @update:visible="emit('zamknij')"
     modal
-    header="Dodaj nowego zwierzaka"
+    :header="$t('animals.add_dialog.header')"
     :style="{ width: '40rem' }"
   >
     <span class="text-surface-500 dark:text-surface-400 block mb-8">
-      Wypełnij dane, aby dodać podopiecznego do bazy.
+      {{ $t('animals.add_dialog.description') }}
     </span>
 
     <ZwierzeForm
@@ -102,8 +105,18 @@ const handleDodaj = async () => {
     />
 
     <div class="flex justify-end gap-2">
-      <Button type="button" label="Anuluj" severity="secondary" @click="emit('zamknij')"></Button>
-      <Button type="button" label="Dodaj" severity="success" @click="handleDodaj"></Button>
+      <Button
+        type="button"
+        :label="$t('animals.form.cancel')"
+        severity="secondary"
+        @click="emit('zamknij')"
+      ></Button>
+      <Button
+        type="button"
+        :label="$t('animals.add')"
+        severity="success"
+        @click="handleDodaj"
+      ></Button>
     </div>
   </Dialog>
 </template>

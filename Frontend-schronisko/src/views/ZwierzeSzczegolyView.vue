@@ -11,6 +11,9 @@ import Button from 'primevue/button'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
 import SukcesModal from '@/components/SukcesModal.vue'
+import { useI18n } from 'vue-i18n' // <-- Import i18n
+
+const { t } = useI18n() // <-- Inicjalizacja i18n
 
 const route = useRoute()
 const router = useRouter()
@@ -67,7 +70,7 @@ const zapiszZmiany = async () => {
 
   // 3. ZABLOKUJ ZAPIS JEŚLI SĄ BŁĘDY
   if (!czyPoprawny) {
-    alert('Popraw błędy w formularzu przed zapisaniem zmian!')
+    alert(t('animals.alerts.edit_validation_error')) // <-- Użycie tłumaczenia
     return // PRZERYWAMY DZIAŁANIE! Zmiany nie zostaną zapisane.
   }
 
@@ -83,7 +86,7 @@ const zapiszZmiany = async () => {
       lokalneZwierze.value.zdjecieUrl = wygenerowanyLink
     } catch (error) {
       console.error('Błąd uploadu:', error)
-      alert('Błąd podczas wgrywania nowego zdjęcia na serwer!')
+      alert(t('animals.alerts.upload_error'))
       return
     }
   }
@@ -101,7 +104,7 @@ const zapiszZmiany = async () => {
     pokazSukcesModal.value = true // Pokazujemy modal sukcesu
   } catch (error) {
     console.error('Błąd zapisu:', error)
-    alert('Wystąpił błąd podczas zapisywania danych w bazie.')
+    alert(t('animals.alerts.save_error'))
   }
 }
 
@@ -126,16 +129,16 @@ const anulujEdycje = () => {
 
 const potwierdzUsuniecie = () => {
   confirm.require({
-    message: `Czy na pewno chcesz usunąć zwierzaka: ${lokalneZwierze.value?.imie}?`,
-    header: 'Potwierdzenie usunięcia',
+    message: t('animals.delete_dialog.message', { name: lokalneZwierze.value?.imie }),
+    header: t('animals.delete_dialog.header'),
     icon: 'pi pi-exclamation-triangle',
     rejectProps: {
-      label: 'Anuluj',
+      label: t('animals.profile.cancel'),
       severity: 'secondary',
       outlined: true,
     },
     acceptProps: {
-      label: 'Usuń',
+      label: t('animals.profile.delete'),
       severity: 'danger',
     },
     accept: async () => {
@@ -157,11 +160,11 @@ const usunZwierzaka = async () => {
       // Jeśli się udało, wracamy do głównej listy
       router.push('/zwierzeta')
     } else {
-      alert('Nie udało się usunąć zwierzaka. Sprawdź logi konsoli.')
+      alert(t('animals.alerts.delete_fail'))
     }
   } catch (error) {
     console.error('Błąd podczas usuwania:', error)
-    alert('Wystąpił błąd serwera podczas usuwania.')
+    alert(t('animals.alerts.delete_error'))
   }
 }
 </script>
@@ -178,7 +181,7 @@ const usunZwierzaka = async () => {
           <div class="mb-6 -mt-2">
             <Button
               icon="pi pi-arrow-left"
-              label="Wróć"
+              :label="$t('animals.profile.back')"
               text
               severity="secondary"
               class="!px-0 hover:bg-transparent hover:text-primary transition-colors font-semibold"
@@ -188,7 +191,7 @@ const usunZwierzaka = async () => {
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <p class="text-sm text-gray-400 font-semibold tracking-wider uppercase mb-1">
-                Profil Podopiecznego
+                {{ $t('animals.profile.subtitle') }}
               </p>
               <h1 class="text-3xl font-bold text-gray-800">{{ lokalneZwierze.imie }}</h1>
             </div>
@@ -197,7 +200,7 @@ const usunZwierzaka = async () => {
               :class="{ 'border-yellow-400 bg-primary/5': trybEdycji }"
             >
               <label for="edycja" class="font-semibold text-gray-700 cursor-pointer select-none">
-                {{ trybEdycji ? 'Tryb edycji: Wł.' : 'Tryb edycji: Wył.' }}
+                {{ trybEdycji ? $t('animals.profile.edit_mode_on') : $t('animals.profile.edit_mode_off') }}
               </label>
               <ToggleSwitch
                 id="edycja"
@@ -218,14 +221,14 @@ const usunZwierzaka = async () => {
         <template #footer>
           <template v-if="trybEdycji">
             <Button
-              label="Anuluj"
+              :label="$t('animals.profile.cancel')"
               severity="secondary"
               icon="pi pi-times"
               outlined
               @click="anulujEdycje"
             />
             <Button
-              label="Zapisz zmiany"
+              :label="$t('animals.profile.save_changes')"
               severity="success"
               icon="pi pi-check"
               @click="zapiszZmiany"
@@ -233,7 +236,7 @@ const usunZwierzaka = async () => {
           </template>
           <template v-else>
             <Button
-              label="Usuń"
+              :label="$t('animals.profile.delete')"
               icon="pi pi-trash"
               severity="danger"
               outlined
@@ -246,7 +249,7 @@ const usunZwierzaka = async () => {
     <ConfirmDialog />
     <SukcesModal
       :widoczny="pokazSukcesModal"
-      tytul="Zapisano zmiany!"
+      :tytul="$t('animals.profile.save_success')"
       @zamknij="pokazSukcesModal = false"
     />
   </div>

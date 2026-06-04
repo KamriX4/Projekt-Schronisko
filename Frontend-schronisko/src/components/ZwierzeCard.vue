@@ -36,10 +36,10 @@ const otworzSzczegoly = (id: number) => {
             {{ zwierze.imie }}
           </h2>
           <p class="text-gray-500">
-            Gatunek: <span class="font-bold">{{ zwierze.gatunek?.nazwa }}</span>
+            {{ $t('animals.species') }}: <span class="font-bold">{{ zwierze.gatunek?.nazwa }}</span>
           </p>
           <p class="text-gray-500">
-            Płeć: <span class="font-bold">{{ zwierze.plec }}</span>
+            {{ $t('animals.gender') }}: <span class="font-bold">{{ zwierze.plec }}</span>
           </p>
         </div>
         <Badge

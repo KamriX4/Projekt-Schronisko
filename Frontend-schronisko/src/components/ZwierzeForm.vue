@@ -11,6 +11,9 @@ import FileUpload from 'primevue/fileupload'
 import InputMask from 'primevue/inputmask'
 import DatePicker from 'primevue/datepicker'
 import Checkbox from 'primevue/checkbox'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const modelValue = defineModel<Partial<Zwierze>>({ required: true })
 // Props: Dane z zewnątrz i flaga blokady
@@ -25,21 +28,21 @@ const emit = defineEmits<{
 
 // Lokalne słowniki opcji
 const gatunki = [
-  { id: 1, nazwa: 'Pies' },
-  { id: 2, nazwa: 'Kot' },
+  { id: 1, nazwa: t('animals.dog') },
+  { id: 2, nazwa: t('animals.cat') },
 ]
 
 const plec = [
-  { id: 'Samiec', nazwa: 'Samiec' },
-  { id: 'Samica', nazwa: 'Samica' },
+  { id: 'Samiec', nazwa: t('animals.male') },
+  { id: 'Samica', nazwa: t('animals.female') },
 ]
 
 const statusy = [
-  { id: 'Do Adopcji', nazwa: 'Do Adopcji' },
-  { id: 'W kwarantannie', nazwa: 'W kwarantannie' },
-  { id: 'Adoptowany', nazwa: 'Adoptowany' },
-  { id: 'Zarezerwowany', nazwa: 'Zarezerwowany' },
-  { id: 'W leczeniu', nazwa: 'W leczeniu' },
+  { id: 'Do Adopcji', nazwa: t('statuses.available') },
+  { id: 'W kwarantannie', nazwa: t('statuses.quarantined') },
+  { id: 'Adoptowany', nazwa: t('statuses.adopted') },
+  { id: 'Zarezerwowany', nazwa: t('statuses.reserved') },
+  { id: 'W leczeniu', nazwa: t('statuses.in_treatment') },
 ]
 
 // Obsługa plików wizualna + przekazanie do rodzica
@@ -90,40 +93,40 @@ const walidujFormularz = () => {
 
   // 1. Walidacja imienia
   if (!modelValue.value.imie || modelValue.value.imie.trim() === '') {
-    bledy.value.imie = 'Imię jest wymagane.'
+    bledy.value.imie = t('validation.name_required')
     czyPoprawny = false
   } else if (modelValue.value.imie.length < 2) {
-    bledy.value.imie = 'Imię musi mieć co najmniej 2 znaki.'
+    bledy.value.imie = t('validation.name_min_length')
     czyPoprawny = false
   }
 
   // 2. Walidacja numeru (np. by miał dokładny format z maski)
   if (!modelValue.value.numerEwidencyjny || modelValue.value.numerEwidencyjny.includes('_')) {
-    bledy.value.numerEwidencyjny = 'Podaj pełny numer ewidencyjny.'
+    bledy.value.numerEwidencyjny = t('validation.registry_number_required')
     czyPoprawny = false
   }
 
   // 3. Walidacja statusu
   if (!modelValue.value.status) {
-    bledy.value.status = 'Wybierz status.'
+    bledy.value.status = t('validation.status_required')
     czyPoprawny = false
   }
 
   // 4. Walidacja daty przyjęcia
   if (!modelValue.value.dataPrzyjecia) {
-    bledy.value.dataPrzyjecia = 'Wybierz datę przyjęcia.'
+    bledy.value.dataPrzyjecia = t('validation.admission_date_required')
     czyPoprawny = false
   }
 
   // 5. Walidacja przybliżonej daty urodzenia
   if (!modelValue.value.przyblizonaDataUrodzenia) {
-    bledy.value.przyblizonaDataUrodzenia = 'Wybierz przybliżoną datę urodzenia.'
+    bledy.value.przyblizonaDataUrodzenia = t('validation.birth_date_required')
     czyPoprawny = false
   }
 
   // 6. Walidacja daty urodzenia (wymagana + logika logiczna)
   if (!modelValue.value.przyblizonaDataUrodzenia) {
-    bledy.value.przyblizonaDataUrodzenia = 'Data urodzenia jest wymagana.'
+    bledy.value.przyblizonaDataUrodzenia = t('validation.birth_date_required')
     czyPoprawny = false
   } else {
     // Sprawdzanie logicznych zależności między datami
@@ -132,10 +135,10 @@ const walidujFormularz = () => {
     const dataPrzyj = modelValue.value.dataPrzyjecia ? new Date(modelValue.value.dataPrzyjecia) : null
 
     if (dataUr > dzisiaj) {
-      bledy.value.przyblizonaDataUrodzenia = 'Data urodzenia nie może być z przyszłości.'
+      bledy.value.przyblizonaDataUrodzenia = t('validation.birth_date_future')
       czyPoprawny = false
     } else if (dataPrzyj && dataUr > dataPrzyj) {
-      bledy.value.przyblizonaDataUrodzenia = 'Zwierzak nie mógł urodzić się po dacie przyjęcia.'
+      bledy.value.przyblizonaDataUrodzenia = t('validation.birth_date_after_admission')
       czyPoprawny = false
     }
   }
@@ -156,7 +159,7 @@ defineExpose({
 <template>
   <div class="flex flex-col gap-1 mb-4">
     <div class="flex items-center gap-4 mb-4">
-      <label for="imie" class="font-semibold w-36">Imię</label>
+      <label for="imie" class="font-semibold w-36">{{ t('animals.name') }}</label>
       <InputText
         id="imie"
         v-model="modelValue.imie"
@@ -166,7 +169,7 @@ defineExpose({
         @blur="walidujFormularz"
         class="flex-auto"
         autocomplete="off"
-        placeholder="Wpisz imię..."
+        :placeholder="t('animals.form.name_placeholder')"
       />
     </div>
     <small v-if="bledy.imie" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.imie }}</small>
@@ -174,7 +177,7 @@ defineExpose({
 
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="gatunek" class="font-semibold w-36">Gatunek</label>
+      <label for="gatunek" class="font-semibold w-36">{{ t('animals.species') }}</label>
       <SelectButton
         id="gatunek"
         v-model="modelValue.gatunekId"
@@ -187,7 +190,7 @@ defineExpose({
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="plec" class="font-semibold w-36">Płeć</label>
+      <label for="plec" class="font-semibold w-36">{{ t('animals.gender') }}</label>
       <SelectButton
         id="plec"
         v-model="modelValue.plec"
@@ -199,7 +202,7 @@ defineExpose({
       />
     </div>
     <div class="flex items-center gap-4 mb-4">
-      <label for="status" class="font-semibold w-36">Status</label>
+      <label for="status" class="font-semibold w-36">{{ t('animals.status') }}</label>
       <Select
         id="status"
         v-model="modelValue.status"
@@ -207,7 +210,7 @@ defineExpose({
         :options="statusy"
         optionLabel="nazwa"
         optionValue="nazwa"
-        placeholder="Wybierz status..."
+        :placeholder="t('animals.form.status_placeholder')"
         :disabled="isReadonly"
         :invalid="bledy.status !== ''"
         @blur="walidujFormularz"
@@ -217,7 +220,7 @@ defineExpose({
     <small v-if="bledy.status" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.status }}</small>
 
     <div class="flex items-start gap-4 mb-4">
-      <label class="font-semibold w-36 pt-2">Zdjęcie</label>
+      <label class="font-semibold w-36 pt-2">{{ t('animals.form.photo') }}</label>
 
       <div class="flex-auto flex flex-col gap-4">
         <FileUpload
@@ -226,8 +229,8 @@ defineExpose({
           @clear="onFileClear"
           customUpload
           accept="image/*"
-          chooseLabel="Wybierz zdjęcie"
-          cancelLabel="Anuluj"
+          :chooseLabel="t('animals.form.choose_photo')"
+          :cancelLabel="t('animals.form.cancel')"
           :showUploadButton="false"
           severity="secondary"
           class="p-button-outlined"
@@ -237,7 +240,7 @@ defineExpose({
               class="flex items-center justify-center flex-col p-8 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
             >
               <i class="pi pi-cloud-upload text-5xl text-gray-400 mb-4"></i>
-              <p class="m-0 text-gray-500 font-medium">Przeciągnij i upuść zdjęcie tutaj</p>
+              <p class="m-0 text-gray-500 font-medium">{{ t('animals.form.drag_drop') }}</p>
             </div>
           </template>
 
@@ -257,13 +260,13 @@ defineExpose({
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="numerEwidencyjny" class="font-semibold w-36">Numer ewidencyjny</label>
+      <label for="numerEwidencyjny" class="font-semibold w-36">{{ t('animals.form.registry_number') }}</label>
       <InputMask
         id="numerEwidencyjny"
         v-model="modelValue.numerEwidencyjny"
         mask="a/9999/999"
         required
-        placeholder="P/2026/001"
+        :placeholder="t('animals.form.registry_number_placeholder')"
         :disabled="isReadonly"
         :invalid="bledy.numerEwidencyjny !== ''"
         @blur="walidujFormularz"
@@ -273,7 +276,7 @@ defineExpose({
     <small v-if="bledy.numerEwidencyjny" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.numerEwidencyjny }}</small>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="dataPrzyjecia" class="font-semibold w-36">Data przyjęcia</label>
+      <label for="dataPrzyjecia" class="font-semibold w-36">{{ t('animals.form.admission_date') }}</label>
       <DatePicker
         id="dataPrzyjecia"
         dateFormat="dd.mm.yy"
@@ -301,7 +304,7 @@ defineExpose({
     <small v-if="bledy.dataPrzyjecia" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.dataPrzyjecia }}</small>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="przyblizonaDataUrodzenia" class="font-semibold w-36">Data urodzenia</label>
+      <label for="przyblizonaDataUrodzenia" class="font-semibold w-36">{{ t('animals.form.birth_date') }}</label>
       <DatePicker
         id="przyblizonaDataUrodzenia"
         dateFormat="dd.mm.yy"
@@ -331,12 +334,12 @@ defineExpose({
     <small v-if="bledy.przyblizonaDataUrodzenia" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.przyblizonaDataUrodzenia }}</small>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="wiekMiesiace" class="font-semibold w-36">Wiek w miesiącach</label>
+      <label for="wiekMiesiace" class="font-semibold w-36">{{ t('animals.form.age_months') }}</label>
       <InputText id="wiekMiesiace" :value="wiekMiesiace" disabled class="flex-auto" />
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="czyZachipowany" class="font-semibold w-36">Czy zachipowany?</label>
+      <label for="czyZachipowany" class="font-semibold w-36">{{ t('animals.form.chipped') }}</label>
       <Checkbox
         id="czyZachipowany"
         v-model="modelValue.czyZachipowany"
@@ -348,7 +351,7 @@ defineExpose({
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="czySzczepiony" class="font-semibold w-36">Czy szczepiony?</label>
+      <label for="czySzczepiony" class="font-semibold w-36">{{ t('animals.form.vaccinated') }}</label>
       <Checkbox
         id="czySzczepiony"
         v-model="modelValue.czySzczepiony"
@@ -360,7 +363,7 @@ defineExpose({
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="czyKastrowanySterylizowany" class="font-semibold w-36">Czy kastrowany?</label>
+      <label for="czyKastrowanySterylizowany" class="font-semibold w-36">{{ t('animals.form.castrated') }}</label>
       <Checkbox
         id="czyKastrowanySterylizowany"
         v-model="modelValue.czyKastrowanySterylizowany"
