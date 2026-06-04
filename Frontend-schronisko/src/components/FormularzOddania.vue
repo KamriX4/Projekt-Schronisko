@@ -50,7 +50,7 @@
             <label class="label"><span class="label-text">Gatunek</span></label>
             <InputText
               v-model="formularz.gatunek"
-              placeholder="np. Pies, Kot, Królik"
+              placeholder="np. Pies, Kot"
               required
               class="w-full"
             />
@@ -78,7 +78,7 @@
         <div class="card-actions justify-end mt-6">
           <Button
             type="submit"
-            label="Zgłoś zwierzaka"
+            label="Wyślij formularz"
             icon="pi pi-send"
             :loading="trwaWysylanie"
             severity="danger"
@@ -124,8 +124,7 @@ const wyslijWniosek = async () => {
     })
 
     if (odpowiedz.ok) {
-      wiadomoscS.value =
-        'Zgłoszenie zostało wysłane. Skontaktujemy się z Tobą najszybciej jak to możliwe.'
+      wiadomoscS.value = 'Formularz został wysłany.'
       // Czyszczenie formularza
       formularz.value = {
         imieINazwiskoOddajacego: '',

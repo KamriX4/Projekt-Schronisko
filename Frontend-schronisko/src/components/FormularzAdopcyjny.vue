@@ -108,8 +108,7 @@ const wyslijWniosek = async () => {
   }
 
   try {
-    // Uwaga: Upewnij się, że port 7295 jest taki sam jak u Ciebie w Swaggerze!
-    const odpowiedz = await fetch('https://localhost:7295/api/Wnioski/adopcja', {
+    const odpowiedz = await fetch('http://localhost:5145/api/Wnioski/adopcja', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +117,7 @@ const wyslijWniosek = async () => {
     })
 
     if (odpowiedz.ok) {
-      wiadomoscS.value = 'Wniosek został wysłany! Sprawdź pocztę (i spam).'
+      wiadomoscS.value = 'Wniosek został wysłany!'
       // Czyszczenie formularza po sukcesie
       formularz.value = { imieINazwisko: '', telefon: '', email: '', uzasadnienie: '' }
     } else {

@@ -41,12 +41,13 @@ const wylogujSie = () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
             </svg>
           </div>
-
           <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow" @click="zamknijMenu">
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">Analityka</RouterLink></li>
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/wiadomosci">Wiadomości</RouterLink></li>
+            <li><RouterLink to="/analityka">Analityka</RouterLink></li>
+            <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
           </ul>
         </div>
 
@@ -56,8 +57,11 @@ const wylogujSie = () => {
           <ul class="menu menu-horizontal px-1 gap-2">
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
+
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">Analityka</RouterLink></li>
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/wiadomosci">Wiadomości</RouterLink></li>
+            <li><RouterLink to="/analityka">Analityka</RouterLink></li>
+            <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
           </ul>
         </div>
       </div>
@@ -116,6 +120,11 @@ const wylogujSie = () => {
     transition: all 0.3s ease-out;
   }
 
+/* Definiujemy czas trwania i rodzaj krzywej przejścia. */
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
   .slide-fade-leave-active {
     transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
   }
@@ -125,4 +134,10 @@ const wylogujSie = () => {
     transform: translateY(20px);
     opacity: 0;
   }
+/* Stan początkowy przy wchodzeniu na stronę oraz końcowy przy wychodzeniu. */
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
 </style>
