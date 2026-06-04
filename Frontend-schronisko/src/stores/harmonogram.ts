@@ -2,14 +2,14 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export interface ZadanieHarmonogramu {
-  id: number;
-  tytul: string;
-  opis: string;
-  kategoria: string;
-  dataCzas: string;
-  czyWykonane: boolean;
-  zwierzeId?: number | null;
-  zwierze?: any;
+  id: number
+  tytul: string
+  opis: string
+  kategoria: string
+  dataCzas: string
+  czyWykonane: boolean
+  zwierzeId?: number | null
+  zwierze?: any
 }
 
 export const useHarmonogramStore = defineStore('harmonogram', () => {
@@ -17,7 +17,7 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
 
   const pobierzZadania = async () => {
     try {
-      const response = await fetch('http://localhost:5145/api/harmonogram')
+      const response = await fetch('https://localhost:7295/api/harmonogram')
       if (response.ok) {
         zadania.value = await response.json()
       }
@@ -28,10 +28,10 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
 
   const dodajZadanie = async (noweZadanie: any) => {
     try {
-      const response = await fetch('http://localhost:5145/api/harmonogram', {
+      const response = await fetch('https://localhost:7295/api/harmonogram', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(noweZadanie)
+        body: JSON.stringify(noweZadanie),
       })
       if (response.ok) {
         await pobierzZadania()
@@ -46,10 +46,10 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
 
   const edytujZadanie = async (id: number, zaktualizowaneZadanie: any) => {
     try {
-      const response = await fetch(`http://localhost:5145/api/harmonogram/${id}`, {
+      const response = await fetch(`https://localhost:7295/api/harmonogram/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(zaktualizowaneZadanie)
+        body: JSON.stringify(zaktualizowaneZadanie),
       })
       if (response.ok) {
         await pobierzZadania()
@@ -64,8 +64,8 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
 
   const usunZadanie = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:5145/api/harmonogram/${id}`, {
-        method: 'DELETE'
+      const response = await fetch(`https://localhost:7295/api/harmonogram/${id}`, {
+        method: 'DELETE',
       })
       if (response.ok) {
         await pobierzZadania()
@@ -79,7 +79,7 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
   }
 
   const przelaczStatus = async (id: number) => {
-    await fetch(`http://localhost:5145/api/harmonogram/${id}/zrobione`, { method: 'PUT' })
+    await fetch(`https://localhost:7295/api/harmonogram/${id}/zrobione`, { method: 'PUT' })
     await pobierzZadania()
   }
 
@@ -89,6 +89,6 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
     dodajZadanie,
     edytujZadanie,
     usunZadanie,
-    przelaczStatus
+    przelaczStatus,
   }
 })

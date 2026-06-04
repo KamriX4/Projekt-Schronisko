@@ -44,10 +44,10 @@ const zmienJezyk = (nowyJezyk: string) => {
             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             @click="zamknijMenu"
           >
-            <li><RouterLink to="/">Strona Główna</RouterLink></li>
-            <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
-            <li><RouterLink to="/analityka">Analityka</RouterLink></li>
-            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
+            <li><RouterLink to="/">{{ $t('nav.home') }}</RouterLink></li>
+            <li><RouterLink to="/zwierzeta">{{ $t('nav.animals') }}</RouterLink></li>
+            <li><RouterLink to="/analityka">{{ $t('nav.analytics') }}</RouterLink></li>
+            <li><RouterLink to="/harmonogram">{{ $t('nav.schedule') }}</RouterLink></li>
           </ul>
         </div>
 
@@ -58,10 +58,10 @@ const zmienJezyk = (nowyJezyk: string) => {
 
         <div class="hidden lg:flex ml-2">
           <ul class="menu menu-horizontal px-1 gap-2">
-            <li><RouterLink to="/">Strona Główna</RouterLink></li>
-            <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
-            <li><RouterLink to="/analityka">Analityka</RouterLink></li>
-            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
+            <li><RouterLink to="/">{{ $t('nav.home') }}</RouterLink></li>
+            <li><RouterLink to="/zwierzeta">{{ $t('nav.animals') }}</RouterLink></li>
+            <li><RouterLink to="/analityka">{{ $t('nav.analytics') }}</RouterLink></li>
+            <li><RouterLink to="/harmonogram">{{ $t('nav.schedule') }}</RouterLink></li>
           </ul>
         </div>
       </div>
@@ -116,7 +116,7 @@ const zmienJezyk = (nowyJezyk: string) => {
     </main>
     <footer class="footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
       <aside>
-        <p>Copyright © {new Date().getFullYear()} - All right reserved by ACME Industries Ltd</p>
+        <p>{{ $t('footer.copyright') }}</p>
       </aside>
     </footer>
   </div>

@@ -6,7 +6,11 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Log out",
-    "new": "New"
+    "new": "New",
+    "schedule": "Schedule"
+  },
+    "footer": {
+    "copyright": "Copyright © 2026 - All rights reserved by Shelter \"Nasze Ogonki\""
   },
   "analytics": {
     "subtitle": "Current statistics and shelter capacity.",
@@ -94,5 +98,64 @@
     "registry_number_required": "Registry number is required.",
     "registry_number_unique": "Registry number must be unique.",
     "missing_date": "Missing date"
+  },
+  "home": {
+    "hero": {
+      "badge": "Together we create a better tomorrow",
+      "title": "Animal Shelter",
+      "shelter_name": "\"Nasze Ogonki\"",
+      "description": "We are a safe haven for harmed, abandoned, and needy animals. Our mission is not only to care for them but above all to find them loving, responsible homes. Every wag of a tail is proof to us that it's worth fighting for.",
+      "btn_meet": "Meet our animals",
+      "btn_contact": "Contact us",
+      "img_alt": "Shelter animals"
+    },
+    "stats": {
+      "animals": "Animals in our care",
+      "adoptions": "Successful adoptions this year",
+      "volunteers": "Wonderful volunteers"
+    },
+    "quiz": {
+      "title": "Find your friend",
+      "description": "Take our quick, interactive quiz and see what type of pet best suits your daily lifestyle!",
+      "step_0": {
+        "question": "Where do you live?",
+        "house": "House with a garden",
+        "apartment": "Apartment block"
+      },
+      "step_1": {
+        "question": "How much time a day can you dedicate to pet activities?",
+        "lot_of_time": "A lot (long walks and playtime)",
+        "little_time": "A little (mostly time at home)"
+      },
+      "step_2": {
+        "result_title": "Your ideal companion is:",
+        "restart": "Try again 🔄",
+        "results": {
+          "active_dog": "An energetic dog (e.g., Beagle) – loves space and long walks!",
+          "calm_cat": "A calm cat – the perfect companion for lazy afternoons on the couch.",
+          "independent": "An independent cat or an older dog who appreciates peace and quiet.",
+          "young": "A young pup or an energetic kitten – ready for lots of fun!"
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact us",
+      "description": "Do you have questions about adoption? Want to support volunteering? We are at your disposal!",
+      "phone": {
+        "title": "Phone",
+        "hours": "Mon - Fri: 8:00 AM - 4:00 PM"
+      },
+      "address": {
+        "title": "Shelter address"
+      },
+      "email": {
+        "title": "Write to us",
+        "response_time": "We respond within 24h"
+      },
+      "krs": {
+        "title": "KRS (Donations)",
+        "purpose": "Purpose: Pomoc Ogonkom"
+      }
+    }
   }
 }

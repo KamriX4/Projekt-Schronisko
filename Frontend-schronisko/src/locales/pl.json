@@ -6,7 +6,11 @@
     "profile": "Profil",
     "settings": "Ustawienia",
     "logout": "Wyloguj",
-    "new": "Nowy"
+    "new": "Nowy",
+    "schedule": "Harmonogram"
+  },
+  "footer": {
+    "copyright": "Copyright © 2026 - Wszelkie prawa zastrzeżone przez Schronisko \"Nasze Ogonki\""
   },
   "analytics": {
     "subtitle": "Bieżące statystyki i pojemność schroniska.",
@@ -94,5 +98,64 @@
     "registry_number_required": "Numer ewidencyjny jest wymagany.",
     "registry_number_unique": "Numer ewidencyjny musi być unikalny.",
     "missing_date": "Brak daty"
+  },
+  "home": {
+    "hero": {
+      "badge": "Wspólnie tworzymy lepsze jutro",
+      "title": "Schronisko dla Zwierząt",
+      "shelter_name": "\"Nasze Ogonki\"",
+      "description": "Jesteśmy bezpieczną przystanią dla skrzywdzonych, porzuconych i potrzebujących zwierząt. Naszą misją jest nie tylko opieka, ale przede wszystkim szukanie kochających, odpowiedzialnych domów. Każde merdanie ogona to dla nas dowód, że warto walczyć.",
+      "btn_meet": "Poznaj podopiecznych",
+      "btn_contact": "Skontaktuj się",
+      "img_alt": "Podopieczni schroniska"
+    },
+    "stats": {
+      "animals": "Zwierzaków pod opieką",
+      "adoptions": "Udana adopcja w tym roku",
+      "volunteers": "Cudownych wolontariuszy"
+    },
+    "quiz": {
+      "title": "Znajdź swojego przyjaciela",
+      "description": "Rozwiąż nasz szybki, interaktywny quiz i sprawdź, jaki typ zwierzaka najbardziej pasuje do Twojego codziennego stylu życia!",
+      "step_0": {
+        "question": "Gdzie mieszkasz?",
+        "house": "Dom z ogrodem",
+        "apartment": "Mieszkanie w bloku"
+      },
+      "step_1": {
+        "question": "Ile czasu dziennie możesz poświęcić na aktywność ze zwierzakiem?",
+        "lot_of_time": "Dużo (długie spacery i zabawy)",
+        "little_time": "Mało (głównie czas w domu)"
+      },
+      "step_2": {
+        "result_title": "Twój idealny kompan to:",
+        "restart": "Spróbuj ponownie 🔄",
+        "results": {
+          "active_dog": "Energetyczny pies (np. Beagle) – uwielbia przestrzeń i długie spacery!",
+          "calm_cat": "Spokojny kot – idealny towarzysz do leniwych popołudni na kanapie.",
+          "independent": "Niezależny kot lub starszy piesek, który ceni sobie ciszę i spokój.",
+          "young": "Młody psiak lub energiczny kotek – gotowy na mnóstwo zabawy!"
+        }
+      }
+    },
+    "contact": {
+      "title": "Skontaktuj się z nami",
+      "description": "Masz pytania dotyczące adopcji? Chcesz wesprzeć wolontariat? Jesteśmy do Twojej dyspozycji!",
+      "phone": {
+        "title": "Telefon",
+        "hours": "Pn - Pt: 8:00 - 16:00"
+      },
+      "address": {
+        "title": "Adres schroniska"
+      },
+      "email": {
+        "title": "Napisz do nas",
+        "response_time": "Odpowiadamy w 24h"
+      },
+      "krs": {
+        "title": "KRS (Darowizny)",
+        "purpose": "Cel: Pomoc Ogonkom"
+      }
+    }
   }
 }
