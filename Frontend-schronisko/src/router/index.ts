@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ZwierzetaView from '@/views/ZwierzetaView.vue'
 import ZwierzeSzczegolyView from '../views/ZwierzeSzczegolyView.vue'
 import AnalitykaView from '../views/AnalitykaView.vue'
-
+import HarmonogramView from '@/views/HarmonogramView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -27,6 +27,11 @@ const router = createRouter({
       name: 'analityka',
       component: AnalitykaView,
     },
+    {
+      path: '/harmonogram',
+      name: 'harmonogram',
+      component: HarmonogramView
+    }
   ],
 })
 

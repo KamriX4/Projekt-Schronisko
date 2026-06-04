@@ -10,6 +10,7 @@ namespace Backend_schronisko.Models
         }
         // Te właściwości reprezentują tabele w bazie MSSQL
         public DbSet<Zwierze> Zwierzeta { get; set; }
+        public DbSet<ZadanieHarmonogramu> ZadaniaHarmonogramu { get; set; }
         public DbSet<Gatunek> Gatunki { get; set; }
 
         // Główne miejsce do wpisywania danych na sztywno

@@ -48,6 +48,7 @@ const zmienJezyk = (nowyJezyk: string) => {
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
             <li><RouterLink to="/analityka">Analityka</RouterLink></li>
+            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
           </ul>
         </div>
 
@@ -58,6 +59,7 @@ const zmienJezyk = (nowyJezyk: string) => {
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
             <li><RouterLink to="/analityka">Analityka</RouterLink></li>
+            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
           </ul>
         </div>
       </div>
