@@ -108,7 +108,7 @@ const wyslijWniosek = async () => {
   }
 
   try {
-    const odpowiedz = await fetch('http://localhost:5145/api/Wnioski/adopcja', {
+    const odpowiedz = await fetch('https://localhost:7295/api/Wnioski/adopcja', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

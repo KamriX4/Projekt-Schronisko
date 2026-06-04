@@ -21,9 +21,6 @@ const store = useZwierzetaStore()
 // DODANE: Uruchamiamy magazyn pamięci logowania
 const authStore = useAuthStore()
 
-
-const store = useZwierzetaStore()
-
 /** [7] VUEUSE — useLocalStorage: zapamiętanie frazy wyszukiwania między wizytami */
 const searchInput = useLocalStorage('schronisko-search', '')
 const searchDebounced = ref(searchInput.value)

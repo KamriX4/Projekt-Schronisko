@@ -62,6 +62,7 @@ const wylogujSie = () => {
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/wiadomosci">Wiadomości</RouterLink></li>
             <li><RouterLink to="/analityka">Analityka</RouterLink></li>
             <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
+            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
           </ul>
         </div>
 
@@ -79,6 +80,7 @@ const wylogujSie = () => {
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/wiadomosci">Wiadomości</RouterLink></li>
             <li><RouterLink to="/analityka">Analityka</RouterLink></li>
             <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
+            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
           </ul>
         </div>
       </div>

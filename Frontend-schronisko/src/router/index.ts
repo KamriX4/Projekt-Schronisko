@@ -39,11 +39,12 @@ const router = createRouter({
       name: 'oddaj-zwierze',
       component: OddajZwierzeView,
     },
+    {
       path: '/harmonogram',
       name: 'harmonogram',
       component: HarmonogramView
     }
-  ],
+  ]
 })
 
 export default router

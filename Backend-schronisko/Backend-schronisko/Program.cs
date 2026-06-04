@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVueApp",
         policyBuilder =>
         {
-            policyBuilder.WithOrigins("https://localhost:5173", "https://localhost:5174") // dozwolone adresy
+            policyBuilder.WithOrigins("https://localhost:5173", "http://localhost:5173") // dozwolone adresy
                          .AllowAnyHeader()  // Pozwala na dowolne nagłówki
                          .AllowAnyMethod(); // Pozwala na GET, POST, PUT, DELETE itd.
         });
@@ -50,8 +50,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-//app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
+app.UseHttpsRedirection();
 
 app.UseCors("AllowVueApp");
 
