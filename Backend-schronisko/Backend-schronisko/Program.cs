@@ -56,4 +56,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SchroniskoContext>();
+    dbContext.Database.Migrate(); // Automatycznie tworzy tabele na podstawie migracji
+}
+
 app.Run();
