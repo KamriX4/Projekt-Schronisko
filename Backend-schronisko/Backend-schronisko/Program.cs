@@ -31,6 +31,8 @@ builder.Services.AddOpenApi();
 // 1. Rejestracja Swaggera
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// Wysyłanie maila
+builder.Services.AddScoped<Backend_schronisko.Services.EmailService>();
 
 var app = builder.Build();
 

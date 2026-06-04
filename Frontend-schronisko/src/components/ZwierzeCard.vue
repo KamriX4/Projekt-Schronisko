@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { Zwierze } from '@/types/zwierze'
 import { useRouter } from 'vue-router'
 import Badge from 'primevue/badge'
+import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
+import FormularzAdopcyjny from './FormularzAdopcyjny.vue'
 
-
-
-// Kafelek po prostu przyjmuje obiekt Zwierze z zewnątrz
+// Kafelek przyjmuje obiekt Zwierze z zewnątrz
 defineProps<{
   zwierze: Zwierze
 }>()
 
-// Domyślne zdjęcie, jeśli w bazie zdjecieUrl to null
+// Domyślne zdjęcie
 const domyslneZdjecie = 'https://placehold.co/400x300?text=Brak+zdjęcia'
-
 const router = useRouter()
+
+// Zmienna sterująca widocznością okienka z formularzem
+const pokazFormularz = ref(false)
 
 const otworzSzczegoly = (id: number) => {
   router.push(`/zwierze/${id}`)
@@ -21,7 +25,10 @@ const otworzSzczegoly = (id: number) => {
 </script>
 
 <template>
-  <div @click="otworzSzczegoly(zwierze.id)" class="card bg-base-100 w-96 h-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+  <div
+    @click="otworzSzczegoly(zwierze.id)"
+    class="card bg-base-100 w-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+  >
     <figure>
       <img
         :src="zwierze.zdjecieUrl || domyslneZdjecie"
@@ -44,12 +51,33 @@ const otworzSzczegoly = (id: number) => {
         </div>
         <Badge
           size="xlarge"
-          :severity="zwierze.status === 'Do Adopcji' ? 'success' : 'warning'"
+          :severity="zwierze.status?.toLowerCase() === 'do adopcji' ? 'success' : 'warning'"
           class="p-4 font-semibold shadow-sm"
         >
           {{ zwierze.status }}
         </Badge>
       </div>
+
+      <div
+        class="card-actions justify-end mt-4"
+        v-if="zwierze.status?.toLowerCase() === 'do adopcji'"
+      >
+        <Button
+          label="Adoptuj"
+          icon="pi pi-heart"
+          severity="success"
+          @click.stop="pokazFormularz = true"
+        />
+      </div>
     </div>
   </div>
+
+  <Dialog
+    v-model:visible="pokazFormularz"
+    modal
+    header="Wypełnij Wniosek Adopcyjny"
+    :style="{ width: '90vw', maxWidth: '500px' }"
+  >
+    <FormularzAdopcyjny :zwierzeId="zwierze.id" />
+  </Dialog>
 </template>

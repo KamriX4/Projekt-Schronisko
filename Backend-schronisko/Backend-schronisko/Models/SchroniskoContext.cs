@@ -15,6 +15,8 @@ namespace Backend_schronisko.Models
         public DbSet<Uzytkownik> Uzytkownicy { get; set; }
         public DbSet<Wiadomosc> Wiadomosci { get; set; }
         public DbSet<Komentarz> Komentarze { get; set; }
+        public DbSet<WniosekAdopcyjny> WnioskiAdopcyjne { get; set; }
+        public DbSet<WniosekOddania> WnioskiOddania { get; set; }
 
         // Główne miejsce do wpisywania danych na sztywno
         protected override void OnModelCreating(ModelBuilder modelBuilder)
