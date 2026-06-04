@@ -48,12 +48,13 @@
           </div>
           <div class="form-control">
             <label class="label"><span class="label-text">Gatunek</span></label>
-            <InputText
-              v-model="formularz.gatunek"
-              placeholder="np. Pies, Kot"
-              required
-              class="w-full"
-            />
+            <select v-model="formularz.gatunek"
+                    required
+                    class="p-inputtext w-full">
+              <option value="" disabled>Wybierz z listy...</option>
+              <option value="Pies">Pies</option>
+              <option value="Kot">Kot</option>
+            </select>
           </div>
         </div>
 
