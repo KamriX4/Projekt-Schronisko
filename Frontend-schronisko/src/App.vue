@@ -56,12 +56,12 @@ const wylogujSie = () => {
             </svg>
           </div>
           <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow" @click="zamknijMenu">
-            <li><RouterLink to="/">Strona Główna</RouterLink></li>
-            <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
-            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">Analityka</RouterLink></li>
-            <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
+            <li><RouterLink to="/">{{ $t('nav.home') }}</RouterLink></li>
+            <li><RouterLink to="/zwierzeta">{{ $t('nav.animals') }}</RouterLink></li>
+            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">{{ $t('nav.analytics') }}</RouterLink></li>
+            <li><RouterLink to="/oddaj-zwierze">{{ $t('nav.give_away') }}</RouterLink></li>
 
-            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
+            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/harmonogram">{{ $t('nav.schedule') }}</RouterLink></li>
           </ul>
         </div>
 
@@ -72,12 +72,12 @@ const wylogujSie = () => {
 
         <div class="hidden lg:flex ml-2">
           <ul class="menu menu-horizontal px-1 gap-2">
-            <li><RouterLink to="/">Strona Główna</RouterLink></li>
-            <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
-            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">Analityka</RouterLink></li>
-            <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
+            <li><RouterLink to="/">{{ $t('nav.home') }}</RouterLink></li>
+            <li><RouterLink to="/zwierzeta">{{ $t('nav.animals') }}</RouterLink></li>
+            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">{{ $t('nav.analytics') }}</RouterLink></li>
+            <li><RouterLink to="/oddaj-zwierze">{{ $t('nav.give_away') }}</RouterLink></li>
 
-            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
+            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/harmonogram">{{ $t('nav.schedule') }}</RouterLink></li>
           </ul>
         </div>
       </div>
@@ -87,7 +87,7 @@ const wylogujSie = () => {
         <RouterLink v-if="authStore.rola === 'pracownik'"
                     to="/wiadomosci"
                     class="btn btn-ghost text-base font-medium hidden sm:flex">
-          <i class="pi pi-envelope mr-1"></i> Wiadomości
+          <i class="pi pi-envelope mr-1"></i> {{ $t('nav.message') }}
         </RouterLink>
 
         <div v-if="authStore.czyZalogowany" class="dropdown dropdown-end">
@@ -98,14 +98,14 @@ const wylogujSie = () => {
           </div>
           <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow" @click="zamknijMenu">
             <li class="sm:hidden text-primary font-bold">
-              <RouterLink to="/wiadomosci">Wiadomości</RouterLink>
+              <RouterLink to="/wiadomosci">{{ $t('nav.message') }}</RouterLink>
             </li>
             <li>
               <a class="justify-between">
-                Profil ({{ authStore.nazwaUzytkownika }})
+                {{ $t('nav.profile') }} ({{ authStore.nazwaUzytkownika }})
               </a>
             </li>
-            <li><a @click="wylogujSie">Wyloguj</a></li>
+            <li><a @click="wylogujSie">{{ $t('nav.logout') }}</a></li>
           </ul>
         </div>
 

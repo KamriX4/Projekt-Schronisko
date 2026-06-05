@@ -1,12 +1,14 @@
 {
   "nav": {
-    "animals": "Nasi podopieczni",
+    "animals": "Nasze Zwierzaki",
     "analytics": "Analityka",
     "home": "Strona główna",
     "profile": "Profil",
     "settings": "Ustawienia",
     "logout": "Wyloguj",
     "new": "Nowy",
+    "give_away": "Oddaj Zwierzaka",
+    "message": "Wiadomości",
     "schedule": "Harmonogram"
   },
   "footer": {

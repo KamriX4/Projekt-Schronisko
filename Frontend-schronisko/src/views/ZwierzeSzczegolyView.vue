@@ -161,7 +161,6 @@ const usunZwierzaka = async () => {
   if (!lokalneZwierze.value) return
 
   try {
-    // Zakładam, że w pliku zwierzeta.ts masz funkcję do usuwania (np. DELETE do API)
     const sukces = await store.usunZwierze(lokalneZwierze.value.id)
 
     if (sukces) {

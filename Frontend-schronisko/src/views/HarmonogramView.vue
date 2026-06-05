@@ -2,10 +2,6 @@
   <div class="container mx-auto p-6">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold">Harmonogram Schroniska</h1>
-      <p v-if="kolorAkcentu" class="text-sm text-gray-500 hidden sm:block">
-        <!-- [5] PROVIDE/INJECT — kolor akcentu z kontekstu App -->
-        Akcent UI: <span class="font-mono">{{ kolorAkcentu }}</span>
-      </p>
       <button
         type="button"
         class="bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold py-2 px-6 rounded-xl shadow-sm transition-colors text-lg flex items-center gap-2"
