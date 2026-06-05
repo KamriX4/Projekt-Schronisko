@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Zwierze, NoweZwierze } from '@/types/zwierze'
 
+const baseUrl = import.meta.env.VITE_API_URL
+
 export const useZwierzetaStore = defineStore('zwierzeta', () => {
   // Stan (State)
   const zwierzeta = ref<Zwierze[]>([])
@@ -10,21 +12,21 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
   const aktualneZwierze = ref<Zwierze | null>(null)
 
   const formatujDateLokalnie = (data: Date | string | null): string | null => {
-    if (!data) return null;
+    if (!data) return null
 
-    const d = new Date(data);
+    const d = new Date(data)
 
     // Neutralizujemy offset: przesuwamy czas sztucznie do przodu,
     // aby po odcięciu strefy czasowej przez toISOString() data pozostała nienaruszona.
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
 
-    return d.toISOString().split('T')[0] ?? null; // Zawsze zwróci bezpieczne "YYYY-MM-DD"
-  };
+    return d.toISOString().split('T')[0] ?? null // Zawsze zwróci bezpieczne "YYYY-MM-DD"
+  }
 
   // Akcja: Pobieranie
   const pobierzZwierzeta = async () => {
     try {
-      const response = await fetch('https://localhost:7295/api/zwierze')
+      const response = await fetch(`${baseUrl}/api/zwierze`)
       if (response.ok) {
         zwierzeta.value = await response.json()
       }
@@ -38,7 +40,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
     try {
       aktualneZwierze.value = null // Czyścimy stare dane, żeby nie "mignęły" na ekranie
 
-      const response = await fetch(`https://localhost:7295/api/zwierze/${id}`)
+      const response = await fetch(`${baseUrl}/api/zwierze/${id}`)
 
       if (response.ok) {
         aktualneZwierze.value = await response.json()
@@ -60,7 +62,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
         przyblizonaDataUrodzenia: formatujDateLokalnie(noweZwierze.przyblizonaDataUrodzenia),
       }
 
-      const response = await fetch('https://localhost:7295/api/zwierze', {
+      const response = await fetch(`${baseUrl}/api/zwierze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadDoWyslania), // 2. Wysyłamy bezpieczny ładunek
@@ -88,7 +90,7 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
         przyblizonaDataUrodzenia: formatujDateLokalnie(zaktualizowaneDane.przyblizonaDataUrodzenia),
       }
 
-      const response = await fetch(`https://localhost:7295/api/zwierze/${id}`, {
+      const response = await fetch(`${baseUrl}/api/zwierze/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadDoWyslania), // 2. Wysyłamy bezpieczny ładunek
@@ -120,13 +122,13 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
   // Akcja: Usuwanie (DELETE)
   const usunZwierze = async (id: number) => {
     try {
-      const response = await fetch(`https://localhost:7295/api/zwierze/${id}`, {
+      const response = await fetch(`${baseUrl}/api/zwierze/${id}`, {
         method: 'DELETE',
       })
 
       if (response.ok) {
         // 1. Usuwamy zwierzaka z lokalnej listy, żeby UI od razu się zaktualizowało
-        zwierzeta.value = zwierzeta.value.filter(z => z.id !== id)
+        zwierzeta.value = zwierzeta.value.filter((z) => z.id !== id)
 
         // 2. Jeśli usuwany zwierzak był akurat otwarty w podglądzie, czyścimy stan
         if (aktualneZwierze.value && aktualneZwierze.value.id === id) {

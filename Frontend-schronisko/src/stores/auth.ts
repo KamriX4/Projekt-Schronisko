@@ -1,14 +1,18 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+
+const baseUrl = import.meta.env.VITE_API_URL;
+
 export const useAuthStore = defineStore('auth', () => {
   const czyZalogowany = ref(false)
   const nazwaUzytkownika = ref('')
   const rola = ref('') // zmienna zapamiętująca rolę użytkownika
 
+
   const zaloguj = async (login: string, haslo: string) => {
     try {
-      const response = await fetch('https://localhost:7295/api/auth/login', {
+      const response = await fetch(`${baseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ login, haslo })

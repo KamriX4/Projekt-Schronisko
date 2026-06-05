@@ -15,3 +15,7 @@ C:\Projekt schronisko\Frontend schronisko> pnpm install
 
 Uruchom serwer deweloperski
 C:\Projekt schronisko\Frontend schronisko> pnpm dev
+
+3. Zmiana localhosta bazy danych Frontend-schornisko
+
+Otwórz C:\Projekt schronisko\Frontend schronisko\.env.local i wklej swój adres portu backendu

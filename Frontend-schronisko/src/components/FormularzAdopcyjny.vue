@@ -92,6 +92,8 @@ const trwaWysylanie = ref(false)
 const wiadomoscS = ref('')
 const wiadomoscE = ref('')
 
+
+const baseUrl = import.meta.env.VITE_API_URL;
 // Funkcja wysyłająca dane do C#
 const wyslijWniosek = async () => {
   trwaWysylanie.value = true
@@ -108,7 +110,7 @@ const wyslijWniosek = async () => {
   }
 
   try {
-    const odpowiedz = await fetch('https://localhost:7295/api/Wnioski/adopcja', {
+    const odpowiedz = await fetch(`${baseUrl}/api/Wnioski/adopcja`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

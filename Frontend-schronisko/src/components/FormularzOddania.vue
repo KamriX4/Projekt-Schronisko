@@ -106,6 +106,7 @@ const formularz = ref({
   powodOddania: '',
 })
 
+const baseUrl = import.meta.env.VITE_API_URL;
 // Zmienne pomocnicze
 const trwaWysylanie = ref(false)
 const wiadomoscS = ref('')
@@ -118,7 +119,7 @@ const wyslijWniosek = async () => {
   wiadomoscE.value = ''
 
   try {
-    const odpowiedz = await fetch('https://localhost:7295/api/Wnioski/oddanie', {
+    const odpowiedz = await fetch(`${baseUrl}/api/Wnioski/oddanie`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formularz.value),
