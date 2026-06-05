@@ -16,16 +16,19 @@ export interface Wiadomosc {
   komentarze?: Komentarz[]
 }
 
+
+const baseUrl = import.meta.env.VITE_API_URL;
+
 export const useWiadomosciStore = defineStore('wiadomosci', () => {
   const listaWiadomosci = ref<Wiadomosc[]>([])
 
   const pobierzWiadomosci = async (loginUzytkownika: string) => {
-    const response = await fetch(`https://localhost:7295/api/Wiadomosci/${loginUzytkownika}`)
+    const response = await fetch(`${baseUrl}/api/Wiadomosci/${loginUzytkownika}`)
     if (response.ok) listaWiadomosci.value = await response.json()
   }
 
   const wyslijWiadomosc = async (nowaWiadomosc: Wiadomosc) => {
-    const response = await fetch('https://localhost:7295/api/Wiadomosci', {
+    const response = await fetch(`${baseUrl}/api/Wiadomosci`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(nowaWiadomosc)
@@ -35,14 +38,14 @@ export const useWiadomosciStore = defineStore('wiadomosci', () => {
 
   // DODANE: brakujące funkcje
   const usunWiadomosc = async (id: number, login: string) => {
-    const response = await fetch(`https://localhost:7295/api/Wiadomosci/${id}?loginUzytkownika=${login}`, {
+    const response = await fetch(`${baseUrl}/api/Wiadomosci/${id}?loginUzytkownika=${login}`, {
       method: 'DELETE'
     })
     return response.ok
   }
 
   const dodajKomentarz = async (id: number, komentarz: Komentarz) => {
-    const response = await fetch(`https://localhost:7295/api/Wiadomosci/${id}/komentarz`, {
+    const response = await fetch(`${baseUrl}/api/Wiadomosci/${id}/komentarz`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(komentarz)

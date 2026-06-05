@@ -12,12 +12,15 @@ export interface ZadanieHarmonogramu {
   zwierze?: any
 }
 
+const baseUrl = import.meta.env.VITE_API_URL;
+
 export const useHarmonogramStore = defineStore('harmonogram', () => {
   const zadania = ref<ZadanieHarmonogramu[]>([])
 
   const pobierzZadania = async () => {
     try {
-      const response = await fetch('https://localhost:7295/api/harmonogram')
+
+      const response = await fetch(`${baseUrl}/api/harmonogram`)
       if (response.ok) {
         zadania.value = await response.json()
       }
@@ -28,7 +31,7 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
 
   const dodajZadanie = async (noweZadanie: any) => {
     try {
-      const response = await fetch('https://localhost:7295/api/harmonogram', {
+      const response = await fetch(`${baseUrl}/api/harmonogram`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(noweZadanie),
@@ -46,7 +49,7 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
 
   const edytujZadanie = async (id: number, zaktualizowaneZadanie: any) => {
     try {
-      const response = await fetch(`https://localhost:7295/api/harmonogram/${id}`, {
+      const response = await fetch(`${baseUrl}/api/harmonogram/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(zaktualizowaneZadanie),
@@ -64,7 +67,7 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
 
   const usunZadanie = async (id: number) => {
     try {
-      const response = await fetch(`https://localhost:7295/api/harmonogram/${id}`, {
+      const response = await fetch(`${baseUrl}/api/harmonogram/${id}`, {
         method: 'DELETE',
       })
       if (response.ok) {
@@ -79,7 +82,7 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
   }
 
   const przelaczStatus = async (id: number) => {
-    await fetch(`https://localhost:7295/api/harmonogram/${id}/zrobione`, { method: 'PUT' })
+    await fetch(`${baseUrl}/api/harmonogram/${id}/zrobione`, { method: 'PUT' })
     await pobierzZadania()
   }
 
