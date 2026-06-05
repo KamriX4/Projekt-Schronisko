@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ZwierzetaView from '@/views/ZwierzetaView.vue'
 import ZwierzeSzczegolyView from '../views/ZwierzeSzczegolyView.vue'
-import AnalitykaView from '../views/AnalitykaView.vue'
+import AnalitykaView from '../views/AnalitykaView.vue' //komponent asynchroniczny
 import OddajZwierzeView from '../views/OddajZwierzeView.vue'
 
 import HarmonogramView from '@/views/HarmonogramView.vue'

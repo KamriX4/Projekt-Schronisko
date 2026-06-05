@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const zaloguj = async (login: string, haslo: string) => {
     try {
-      const response = await fetch('https://localhost:7295/api/auth/login', {
+      const response = await fetch('http://localhost:5145/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ login, haslo })

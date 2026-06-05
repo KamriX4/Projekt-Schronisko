@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 import Badge from 'primevue/badge'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
-import FormularzAdopcyjny from './FormularzAdopcyjny.vue'
+import FormularzAdopcyjny from './FormularzAdopcyjny.vue' //korzystanie z formularza
 
 // Kafelek przyjmuje obiekt Zwierze z zewnątrz
 import { schroniskoContextKey } from '@/context/schroniskoContext'
@@ -88,6 +88,6 @@ const otworzSzczegoly = (id: number) => {
     header="Wypełnij Wniosek Adopcyjny"
     :style="{ width: '90vw', maxWidth: '500px' }"
   >
-    <FormularzAdopcyjny :zwierzeId="zwierze.id" />
+    <FormularzAdopcyjny :zwierzeId="zwierze.id" /> 
   </Dialog>
 </template>
