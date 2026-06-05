@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 
-// TUTAJA NASTĘPUJE MAGIA ASYNCHRONICZNOŚCI
-// Komponent zostanie pobrany z sieci przez przeglądarkę DOPIERO, gdy ten widok się zamontuje
+// Komponent zostanie pobrany z sieci przez przeglądarkę dopiero, gdy ten widok się zamontuje
 const PojemnoscChart = defineAsyncComponent(() => import('@/components/PojemnoscChart.vue'))
 </script>
 

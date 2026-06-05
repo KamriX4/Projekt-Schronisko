@@ -1,3 +1,4 @@
+using System;
 using Backend_schronisko.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,94 +17,130 @@ namespace Backend_schronisko.Controllers
             _context = context;
         }
 
-        /// <summary>Pobiera listę wszystkich zwierząt.</summary>
+        /// READ
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Zwierze>>> PobierzWszystkie()
         {
-            var zwierzeta = await _context.Zwierzeta
-                .Include(z => z.Gatunek)
-                .AsNoTracking()
-                .ToListAsync();
+            try
+            {
+                var zwierzeta = await _context.Zwierzeta
+                    .Include(z => z.Gatunek)
+                    .AsNoTracking()
+                    .ToListAsync();
 
-            return Ok(zwierzeta);
+                return Ok(zwierzeta); // Kod 200 sukces, odsyłanie danych
+            }
+            catch (Exception ex)
+            {
+                // Kod 500 - Błąd wewnętrzny serwera
+                return StatusCode(500, new { komunikat = "Wystąpił błąd podczas pobierania listy zwierząt.", szczegoly = ex.Message });
+            }
         }
 
-        /// <summary>Dodaje nowe zwierzę do bazy danych.</summary>
+        /// CREATE
         [HttpPost]
         public async Task<ActionResult<Zwierze>> Utworz([FromBody] Zwierze zwierze)
         {
-            if (!await _context.Gatunki.AnyAsync(g => g.Id == zwierze.GatunekId))
+            try
             {
-                return BadRequest(new { komunikat = $"Gatunek o id {zwierze.GatunekId} nie istnieje." });
+                if (!await _context.Gatunki.AnyAsync(g => g.Id == zwierze.GatunekId))
+                {
+                    return BadRequest(new { komunikat = $"Gatunek o id {zwierze.GatunekId} nie istnieje." }); // Kod 400 - złe zapytanie
+                }
+
+                zwierze.Id = 0;
+                zwierze.Gatunek = null!;
+
+                _context.Zwierzeta.Add(zwierze);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(Pobierz), new { id = zwierze.Id }, zwierze); // Kod 201 - utworzono
             }
-
-            zwierze.Id = 0;
-            zwierze.Gatunek = null!;
-
-            _context.Zwierzeta.Add(zwierze);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(Pobierz), new { id = zwierze.Id }, zwierze);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { komunikat = "Wystąpił błąd podczas zapisywania nowego zwierzaka.", szczegoly = ex.Message });
+            }
         }
 
-        /// <summary>Aktualizuje istniejące zwierzę.</summary>
+        /// UPDATE
         [HttpPut("{id}")]
         public async Task<ActionResult<Zwierze>> Edytuj(int id, [FromBody] Zwierze zwierze)
         {
-            if (id != zwierze.Id)
+            try
             {
-                return BadRequest(new { komunikat = "Id w adresie URL nie zgadza się z id w treści żądania." });
-            }
+                if (id != zwierze.Id)
+                {
+                    return BadRequest(new { komunikat = "Id w adresie URL nie zgadza się z id w treści żądania." }); // Kod 400 - złe zapytanie
+                }
 
-            if (!await _context.Gatunki.AnyAsync(g => g.Id == zwierze.GatunekId))
+                if (!await _context.Gatunki.AnyAsync(g => g.Id == zwierze.GatunekId))
+                {
+                    return BadRequest(new { komunikat = $"Gatunek o id {zwierze.GatunekId} nie istnieje." }); // Kod 400 - złe zapytanie
+                }
+
+                var istniejace = await _context.Zwierzeta.FindAsync(id);
+                if (istniejace is null)
+                {
+                    return NotFound(new { komunikat = $"Zwierzę o id {id} nie zostało znalezione." }); // Kod 404 - nie znaleziono
+                }
+
+                _context.Entry(istniejace).CurrentValues.SetValues(zwierze);
+                istniejace.Gatunek = null!;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(istniejace); // Kod 200 - sukces
+            }
+            catch (Exception ex)
             {
-                return BadRequest(new { komunikat = $"Gatunek o id {zwierze.GatunekId} nie istnieje." });
+                return StatusCode(500, new { komunikat = "Wystąpił błąd podczas aktualizacji danych zwierzaka.", szczegoly = ex.Message });
             }
-
-            var istniejace = await _context.Zwierzeta.FindAsync(id);
-            if (istniejace is null)
-            {
-                return NotFound(new { komunikat = $"Zwierzę o id {id} nie zostało znalezione." });
-            }
-
-            _context.Entry(istniejace).CurrentValues.SetValues(zwierze);
-            istniejace.Gatunek = null!;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(istniejace);
         }
 
-        /// <summary>Usuwa zwierzę z bazy danych.</summary>
+        /// DELETE
         [HttpDelete("{id}")]
         public async Task<IActionResult> Usun(int id)
         {
-            var zwierze = await _context.Zwierzeta.FindAsync(id);
-            if (zwierze is null)
+            try
             {
-                return NotFound(new { komunikat = $"Zwierzę o id {id} nie zostało znalezione." });
+                var zwierze = await _context.Zwierzeta.FindAsync(id);
+                if (zwierze is null)
+                {
+                    return NotFound(new { komunikat = $"Zwierzę o id {id} nie zostało znalezione." }); // Kod 404 - nie znaleziono
+                }
+
+                _context.Zwierzeta.Remove(zwierze);
+                await _context.SaveChangesAsync();
+
+                return NoContent(); // Kod 204 - brak zawartosci (usunięto pomyślnie)
             }
-
-            _context.Zwierzeta.Remove(zwierze);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { komunikat = "Wystąpił błąd podczas usuwania zwierzaka.", szczegoly = ex.Message });
+            }
         }
 
-        /// <summary>Pobiera jedno zwierzę (używane m.in. przez CreatedAtAction).</summary>
+        /// READ pobieranie szczegółowych danych o zwierzaku
         [HttpGet("{id}")]
         public async Task<ActionResult<Zwierze>> Pobierz(int id)
         {
-            var zwierze = await _context.Zwierzeta
-                .AsNoTracking()
-                .FirstOrDefaultAsync(z => z.Id == id);
-
-            if (zwierze is null)
+            try
             {
-                return NotFound(new { komunikat = $"Zwierzę o id {id} nie zostało znalezione." });
-            }
+                var zwierze = await _context.Zwierzeta
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(z => z.Id == id);
 
-            return Ok(zwierze);
+                if (zwierze is null)
+                {
+                    return NotFound(new { komunikat = $"Zwierzę o id {id} nie zostało znalezione." }); // Kod 404 - nie znaleziono
+                }
+
+                return Ok(zwierze); // Kod 200 - sukces
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { komunikat = "Wystąpił błąd podczas pobierania danych zwierzaka.", szczegoly = ex.Message });
+            }
         }
     }
 }

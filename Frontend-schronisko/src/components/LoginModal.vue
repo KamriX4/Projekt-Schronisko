@@ -44,7 +44,7 @@ const zaloguj = async () => {
 </script>
 
 <template>
-  <!-- Korzystamy z wbudowanego okienka DaisyUI -->
+  <!--DaisyUI -->
   <div class="modal" :class="{ 'modal-open': otwarty }">
     <div class="modal-box relative">
       <!-- Krzyżyk w rogu -->

@@ -3,7 +3,7 @@ import '@/assets/main.css'
 import { provide, ref, watchEffect } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import LoginModal from '@/components/LoginModal.vue' // Podłączamy nasz nowy klocek
+import LoginModal from '@/components/LoginModal.vue'
 import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
 import { schroniskoContextKey } from '@/context/schroniskoContext'
@@ -12,7 +12,7 @@ const { locale } = useI18n()
 const authStore = useAuthStore()
 const router = useRouter()
 
-const pokazModalLogowania = ref(false) // Zmienna sterująca okienkiem
+const pokazModalLogowania = ref(false)
 
 /** [5] PROVIDE / INJECT — kontekst udostępniany całemu drzewu komponentów */
 const kolorAkcentu = ref('#22c55e')
@@ -41,7 +41,7 @@ const zmienJezyk = (nowyJezyk: string) => {
 const wylogujSie = () => {
   zamknijMenu()
   authStore.wyloguj()
-  router.push('/') // Wyrzuca bezpiecznie na stronę główną
+  router.push('/')
 }
 </script>
 
@@ -59,10 +59,9 @@ const wylogujSie = () => {
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">Analityka</RouterLink></li>
-            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/wiadomosci">Wiadomości</RouterLink></li>
-            <li><RouterLink to="/analityka">Analityka</RouterLink></li>
             <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
-            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
+
+            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
           </ul>
         </div>
 
@@ -75,17 +74,21 @@ const wylogujSie = () => {
           <ul class="menu menu-horizontal px-1 gap-2">
             <li><RouterLink to="/">Strona Główna</RouterLink></li>
             <li><RouterLink to="/zwierzeta">Nasze Zwierzaki</RouterLink></li>
-
             <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/analityka">Analityka</RouterLink></li>
-            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/wiadomosci">Wiadomości</RouterLink></li>
-            <li><RouterLink to="/analityka">Analityka</RouterLink></li>
             <li><RouterLink to="/oddaj-zwierze">Oddaj Zwierzaka</RouterLink></li>
-            <li><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
+
+            <li v-if="authStore.rola === 'pracownik'"><RouterLink to="/harmonogram">Harmonogram</RouterLink></li>
           </ul>
         </div>
       </div>
 
       <div class="navbar-end w-auto flex items-center gap-4">
+
+        <RouterLink v-if="authStore.rola === 'pracownik'"
+                    to="/wiadomosci"
+                    class="btn btn-ghost text-base font-medium hidden sm:flex">
+          <i class="pi pi-envelope mr-1"></i> Wiadomości
+        </RouterLink>
 
         <div v-if="authStore.czyZalogowany" class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
@@ -94,6 +97,9 @@ const wylogujSie = () => {
             </div>
           </div>
           <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow" @click="zamknijMenu">
+            <li class="sm:hidden text-primary font-bold">
+              <RouterLink to="/wiadomosci">Wiadomości</RouterLink>
+            </li>
             <li>
               <a class="justify-between">
                 Profil ({{ authStore.nazwaUzytkownika }})
@@ -139,11 +145,6 @@ const wylogujSie = () => {
     transition: all 0.3s ease-out;
   }
 
-/* Definiujemy czas trwania i rodzaj krzywej przejścia. */
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
   .slide-fade-leave-active {
     transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
   }
@@ -153,10 +154,4 @@ const wylogujSie = () => {
     transform: translateY(20px);
     opacity: 0;
   }
-/* Stan początkowy przy wchodzeniu na stronę oraz końcowy przy wychodzeniu. */
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateY(20px);
-  opacity: 0;
-}
 </style>
