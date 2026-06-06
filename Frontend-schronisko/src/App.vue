@@ -160,7 +160,7 @@ const wylogujSie = () => {
 
         <Button
           v-if="!authStore.czyZalogowany"
-          label="Zaloguj się"
+          :label="$t('nav.login')"
           icon="pi pi-user"
           severity="primary"
           @click="pokazModalLogowania = true"

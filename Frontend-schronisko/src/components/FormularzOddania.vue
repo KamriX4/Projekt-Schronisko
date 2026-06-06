@@ -2,12 +2,12 @@
   <div class="card bg-base-100 shadow-xl max-w-xl mx-auto mt-2">
     <div class="card-body">
       <form @submit.prevent="wyslijWniosek" class="space-y-4">
-        <h3 class="text-lg font-bold border-b pb-2">Twoje dane</h3>
+        <h3 class="text-lg font-bold border-b pb-2">{{ $t('submission_form.your_data') }}</h3>
         <div class="form-control">
-          <label class="label"><span class="label-text">Imię i Nazwisko</span></label>
+          <label class="label"><span class="label-text">{{ $t('submission_form.name') }}</span></label>
           <InputText
             v-model="formularz.imieINazwiskoOddajacego"
-            placeholder="np. Anna Nowak"
+            :placeholder="t('submission_form.eg_name')"
             required
             class="w-full"
           />
@@ -15,55 +15,55 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div class="form-control">
-            <label class="label"><span class="label-text">Telefon</span></label>
+            <label class="label"><span class="label-text">{{ $t('submission_form.phone') }}</span></label>
             <InputText
               v-model="formularz.telefon"
-              placeholder="np. 123456789"
+              :placeholder="t('submission_form.eg_phone')"
               required
               class="w-full"
             />
           </div>
           <div class="form-control">
-            <label class="label"><span class="label-text">E-mail</span></label>
+            <label class="label"><span class="label-text">{{ $t('submission_form.email') }}</span></label>
             <InputText
               v-model="formularz.email"
               type="email"
-              placeholder="np. anna@example.com"
+              :placeholder="t('submission_form.eg_email')"
               required
               class="w-full"
             />
           </div>
         </div>
 
-        <h3 class="text-lg font-bold border-b pb-2 mt-4">Dane zwierzaka</h3>
+        <h3 class="text-lg font-bold border-b pb-2 mt-4">{{ $t('submission_form.pet_data') }}</h3>
         <div class="grid grid-cols-2 gap-4">
           <div class="form-control">
-            <label class="label"><span class="label-text">Imię zwierzaka</span></label>
+            <label class="label"><span class="label-text">{{ $t('submission_form.pet_name') }}</span></label>
             <InputText
               v-model="formularz.imieZwierzaka"
-              placeholder="np. Puszek"
+              :placeholder="t('submission_form.eg_pet_name')"
               required
               class="w-full"
             />
           </div>
           <div class="form-control">
-            <label class="label"><span class="label-text">Gatunek</span></label>
+            <label class="label"><span class="label-text">{{ $t('submission_form.species') }}</span></label>
             <select v-model="formularz.gatunek"
                     required
                     class="p-inputtext w-full">
-              <option value="" disabled>Wybierz z listy...</option>
-              <option value="Pies">Pies</option>
-              <option value="Kot">Kot</option>
+              <option value="" disabled>{{ $t('submission_form.select') }}</option>
+              <option value="Pies">{{ $t('animals.dog') }}</option>
+              <option value="Kot">{{ $t('animals.cat') }}</option>
             </select>
           </div>
         </div>
 
         <div class="form-control">
-          <label class="label"><span class="label-text">Powód oddania</span></label>
+          <label class="label"><span class="label-text">{{ $t('submission_form.reason') }}</span></label>
           <Textarea
             v-model="formularz.powodOddania"
             rows="4"
-            placeholder="Napisz krótko, dlaczego musisz oddać zwierzaka..."
+            :placeholder="t('submission_form.eg_reason')"
             required
             class="w-full"
           />
@@ -79,7 +79,7 @@
         <div class="card-actions justify-end mt-6">
           <Button
             type="submit"
-            label="Wyślij formularz"
+            :label="$t('submission_form.submit')"
             icon="pi pi-send"
             :loading="trwaWysylanie"
             severity="danger"
@@ -95,7 +95,9 @@ import { ref } from 'vue'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 // Stan formularza (musi pasować do pól z C#!)
 const formularz = ref({
   imieINazwiskoOddajacego: '',
@@ -126,7 +128,7 @@ const wyslijWniosek = async () => {
     })
 
     if (odpowiedz.ok) {
-      wiadomoscS.value = 'Formularz został wysłany.'
+      wiadomoscS.value = t('submission_form.alerts.success')
       // Czyszczenie formularza
       formularz.value = {
         imieINazwiskoOddajacego: '',
@@ -137,10 +139,10 @@ const wyslijWniosek = async () => {
         powodOddania: '',
       }
     } else {
-      wiadomoscE.value = 'Wystąpił błąd. Sprawdź poprawność wpisanych danych (np. format telefonu).'
+      wiadomoscE.value = t('submission_form.alerts.error')
     }
   } catch (error) {
-    wiadomoscE.value = 'Błąd połączenia z serwerem. Upewnij się, że backend działa.'
+    wiadomoscE.value = t('submission_form.alerts.connection_error')
   } finally {
     trwaWysylanie.value = false
   }

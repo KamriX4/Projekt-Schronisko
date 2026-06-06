@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Zwierze } from '@/types/zwierze'
-import { computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import Badge from 'primevue/badge'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import FormularzAdopcyjny from './FormularzAdopcyjny.vue' //korzystanie z formularza
+import { useI18n } from 'vue-i18n'
 
-// Komponent karty zwierzęcia, renderuje dane i przycisk adopcji
-import { schroniskoContextKey } from '@/context/schroniskoContext'
+const { t } = useI18n()
 
-defineProps<{
+const { zwierze } = defineProps<{
   zwierze: Zwierze
 }>()
-
-/**
- * Pobiera ustawienia kontekstowe z App i dodaje kolor ramki karty.
- */
-const schroniskoCtx = inject(schroniskoContextKey)
-const stylRamki = computed(() =>
-  schroniskoCtx ? { boxShadow: `0 0 0 2px ${schroniskoCtx.kolorAkcentu.value}33` } : undefined,
-)
 
 const domyslneZdjecie = 'https://placehold.co/400x300?text=Brak+zdjęcia'
 const router = useRouter()
@@ -33,6 +24,39 @@ const pokazFormularz = ref(false)
 const otworzSzczegoly = (id: number) => {
   router.push(`/zwierze/${id}`)
 }
+
+const gatunekLabel = computed(() => {
+  const nazwa = zwierze.gatunek?.nazwa || ''
+  return nazwa === 'Pies'
+    ? t('animals.dog')
+    : nazwa === 'Kot'
+    ? t('animals.cat')
+    : nazwa
+})
+
+const statusLabel = computed(() => {
+  const status = zwierze.status?.toLowerCase().trim()
+  if (!status) return ''
+
+  if (status === 'do adopcji') return t('statuses.available')
+  if (status === 'adoptowany') return t('statuses.adopted')
+  if (status === 'w kwarantannie') return t('statuses.quarantined')
+  if (status === 'zarezerwowany') return t('statuses.reserved')
+  if (status === 'w leczeniu') return t('statuses.in_treatment')
+
+  return zwierze.status
+
+})
+
+const plecLabel = computed(() => {
+  const plec = zwierze.plec?.toLowerCase().trim()
+  if (!plec) return ''
+  return plec === 'samiec'
+    ? t('animals.male')
+    : plec === 'samica'
+      ? t('animals.female')
+      : zwierze.plec
+})
 </script>
 
 <template>
@@ -54,10 +78,10 @@ const otworzSzczegoly = (id: number) => {
             {{ zwierze.imie }}
           </h2>
           <p class="text-gray-500">
-            {{ $t('animals.species') }}: <span class="font-bold">{{ zwierze.gatunek?.nazwa }}</span>
+            {{ $t('animals.species') }}: <span class="font-bold">{{ gatunekLabel }}</span>
           </p>
           <p class="text-gray-500">
-            {{ $t('animals.gender') }}: <span class="font-bold">{{ zwierze.plec }}</span>
+            {{ $t('animals.gender') }}: <span class="font-bold">{{ plecLabel }}</span>
           </p>
         </div>
         <Badge
@@ -65,7 +89,7 @@ const otworzSzczegoly = (id: number) => {
           :severity="zwierze.status?.toLowerCase() === 'do adopcji' ? 'success' : 'warning'"
           class="p-4 font-semibold shadow-sm"
         >
-          {{ zwierze.status }}
+          {{ statusLabel }}
         </Badge>
       </div>
 
@@ -74,7 +98,7 @@ const otworzSzczegoly = (id: number) => {
         v-if="zwierze.status?.toLowerCase() === 'do adopcji'"
       >
         <Button
-          label="Adoptuj"
+          :label="t('statuses.adopt')"
           icon="pi pi-heart"
           severity="success"
           @click.stop="pokazFormularz = true"
@@ -87,7 +111,7 @@ const otworzSzczegoly = (id: number) => {
   <Dialog
     v-model:visible="pokazFormularz"
     modal
-    header="Wypełnij Wniosek Adopcyjny"
+    :header="t('adoption_form.title')"
     :style="{ width: '90vw', maxWidth: '500px' }"
   >
     <FormularzAdopcyjny :zwierzeId="zwierze.id" />

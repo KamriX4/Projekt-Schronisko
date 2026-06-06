@@ -1,35 +1,35 @@
 <template>
   <div class="card bg-base-100 shadow-xl max-w-lg mx-auto mt-10">
     <div class="card-body">
-      <h2 class="card-title text-2xl mb-4">Wniosek Adopcyjny</h2>
+      <h2 class="card-title text-2xl mb-4">{{$t('adoption_form.sub_title')}}</h2>
 
       <form @submit.prevent="wyslijWniosek" class="space-y-4">
         <div class="form-control">
-          <label class="label"><span class="label-text">Imię i Nazwisko</span></label>
+          <label class="label"><span class="label-text">{{$t('adoption_form.name')}}</span></label>
           <InputText
             v-model="formularz.imieINazwisko"
-            placeholder="np. Jan Kowalski"
+            :placeholder="t('adoption_form.eg_name')"
             required
             class="w-full"
           />
         </div>
 
         <div class="form-control">
-          <label class="label"><span class="label-text">Numer telefonu</span></label>
+          <label class="label"><span class="label-text">{{$t('adoption_form.phone')}}</span></label>
           <InputText
             v-model="formularz.telefon"
-            placeholder="np. 123456789"
+            :placeholder="t('adoption_form.eg_phone')"
             required
             class="w-full"
           />
         </div>
 
         <div class="form-control">
-          <label class="label"><span class="label-text">Adres E-mail</span></label>
+          <label class="label"><span class="label-text">{{$t('adoption_form.email')}}</span></label>
           <InputText
             v-model="formularz.email"
             type="email"
-            placeholder="np. jan@example.com"
+            :placeholder="t('adoption_form.eg_email')"
             required
             class="w-full"
           />
@@ -37,12 +37,12 @@
 
         <div class="form-control">
           <label class="label"
-            ><span class="label-text">Dlaczego chcesz adoptować tego zwierzaka?</span></label
+            ><span class="label-text">{{$t('adoption_form.motivation')}}</span></label
           >
           <Textarea
             v-model="formularz.uzasadnienie"
             rows="4"
-            placeholder="Napisz kilka słów..."
+            :placeholder="t('adoption_form.eg_motivation')"
             required
             class="w-full"
           />
@@ -58,7 +58,7 @@
         <div class="card-actions justify-end mt-6">
           <Button
             type="submit"
-            label="Wyślij Wniosek"
+            :label="t('adoption_form.submit')"
             :loading="trwaWysylanie"
             class="p-button-primary"
           />
@@ -73,7 +73,9 @@ import { ref } from 'vue'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 //IMPORTUJEMY MAGAZYN ZWIERZĄT
 import { useZwierzetaStore } from '@/stores/zwierzeta'
 
@@ -124,7 +126,7 @@ const wyslijWniosek = async () => {
     })
 
     if (odpowiedz.ok) {
-      wiadomoscS.value = 'Wniosek został wysłany!'
+      wiadomoscS.value = t('adoption_form.alerts.success')
 
       // Czyszczenie formularza po sukcesie
       formularz.value = { imieINazwisko: '', telefon: '', email: '', uzasadnienie: '' }
@@ -143,10 +145,10 @@ const wyslijWniosek = async () => {
       // Na sam koniec zmuszamy przeglądarkę do pobrania świeżej listy z nowym statusem
       await zwierzetaStore.pobierzZwierzeta()
     } else {
-      wiadomoscE.value = 'Wystąpił błąd podczas wysyłania. Sprawdź poprawność danych.'
+      wiadomoscE.value = t('adoption_form.alerts.error')
     }
   } catch (error) {
-    wiadomoscE.value = 'Błąd połączenia z serwerem. Upewnij się, że backend działa!'
+    wiadomoscE.value = t('adoption_form.alerts.connection_error')
   } finally {
     trwaWysylanie.value = false
   }

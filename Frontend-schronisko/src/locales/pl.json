@@ -9,7 +9,8 @@
     "new": "Nowy",
     "give_away": "Oddaj Zwierzaka",
     "message": "Wiadomości",
-    "schedule": "Harmonogram"
+    "schedule": "Harmonogram",
+    "login": "Zaloguj się"
   },
   "footer": {
     "copyright": "Copyright © 2026 - Wszelkie prawa zastrzeżone przez Schronisko \"Nasze Ogonki\""
@@ -86,7 +87,8 @@
     "adopted": "Adoptowany",
     "quarantined": "W kwarantannie",
     "reserved": "Zarezerwowany",
-    "in_treatment": "W leczeniu"
+    "in_treatment": "W leczeniu",
+    "adopt": "Adoptuj"
   },
   "validation": {
     "name_required": "Imię jest wymagane.",
@@ -159,5 +161,57 @@
         "purpose": "Cel: Pomoc Ogonkom"
       }
     }
+  },
+  "adoption_form": {
+    "title": "Wypełnij Wniosek Adopcyjny",
+    "sub_title": "Wniosek Adopcyjny",
+    "name": "Imię i nazwisko",
+    "eg_name": "np. Jan Kowalski",
+    "email": "Adres e-mail",
+    "eg_email": "np. jan@example.com",
+    "phone": "Numer telefonu",
+    "eg_phone": "np. 123456789",
+    "motivation": "Dlaczego chcesz adoptować tego zwierzaka?",
+    "eg_motivation": "Napisz kilka słów...",
+    "submit": "Wyślij wniosek",
+    "alerts": {
+      "error": "Wystąpił błąd podczas wysyłania. Sprawdź poprawność danych.",
+      "success": "Wniosek został wysłany!",
+      "connection_error": "Nie można połączyć się z serwerem. Spróbuj ponownie później."
+    }
+  },
+  "submission_form": {
+    "title": "Zgłoszenie oddania zwierzaka",
+    "description": "Rozumiemy, że sytuacje życiowe bywają trudne. Wypełnij poniższy formularz, aby zgłosić pupila pod opiekę naszego schroniska.",
+    "your_data": "Twoje dane",
+    "name": "Imię i nazwisko",
+    "eg_name": "np. Anna Nowak",
+    "email": "E-mail",
+    "eg_email": "np. anna@example.com",
+    "phone": "Telefon",
+    "eg_phone": "np. 123456789",
+    "pet_data": "Dane zwierzaka",
+    "pet_name": "Imię zwierzaka",
+    "eg_pet_name": "np. Puszek",
+    "species": "Gatunek",
+    "select": "Wybierz z listy...",
+    "reason": "Powód oddania",
+    "eg_reason": "Napisz króko, dlaczego musisz oddać zwierzaka...",
+    "submit": "Wyślij formularz",
+    "alerts": {
+      "error": "Wystąpił błąd podczas wysyłania. Sprawdź poprawność danych.",
+      "success": "Formularz został wysłany!",
+      "connection_error": "Nie można połączyć się z serwerem. Spróbuj ponownie później."
+    }
+  },
+  "login_modal": {
+    "title": "Panel logowania",
+    "login": "Zaloguj się",
+    "your_login": "Twój login",
+    "eg_login": "Wpisz login...",
+    "password": "Hasło",
+    "eg_password": "Wpisz hasło...",
+    "error": "Wpisz login i hasło."
   }
 }
+

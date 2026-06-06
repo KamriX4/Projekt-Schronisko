@@ -9,7 +9,8 @@
     "new": "New",
     "give_away": "Give Away Animal",
     "message": "Messages",
-    "schedule": "Schedule"
+    "schedule": "Schedule",
+    "login": "Log in"
   },
     "footer": {
     "copyright": "Copyright © 2026 - All rights reserved by Shelter \"Nasze Ogonki\""
@@ -86,7 +87,8 @@
     "adopted": "Adopted",
     "quarantined": "In Quarantine",
     "reserved": "Reserved",
-    "in_treatment": "In Treatment"
+    "in_treatment": "In Treatment",
+    "adopt": "Adopt"
   },
   "validation": {
     "name_required": "Name is required.",
@@ -159,5 +161,57 @@
         "purpose": "Purpose: Pomoc Ogonkom"
       }
     }
+  },
+  "adoption_form": {
+    "sub_title": "Adoption Application",
+    "title": "Fill out the Adoption Application",
+    "name": "Full Name",
+    "eg_name": "e.g., John Doe",
+    "phone": "Phone Number",
+    "eg_phone": "e.g., 123456789",
+    "email": "Email Address",
+    "eg_email": "e.g., john@example.com",
+    "motivation": "Why do you want to adopt this animal?",
+    "eg_motivation": "Write a few words...",
+    "submit": "Submit Application",
+    "alerts": {
+      "error": "Please fill in all required fields correctly before submitting the application!",
+      "success": "Your application has been submitted!",
+      "connection_error": "Unable to connect to the server. Please try again later."
+    }
+  },
+  "submission_form": {
+    "title": "Pet Submission Form",
+    "description": "We understand that life circumstances can be challenging. Please fill out the form below to submit your pet for care at our shelter.",
+    "your_data": "Your Data",
+    "name": "Full Name",
+    "eg_name": "e.g., John Doe",
+    "email": "Email",
+    "eg_email": "e.g., john@example.com",
+    "phone": "Phone Number",
+    "eg_phone": "e.g., 123456789",
+    "pet_data": "Pet Data",
+    "pet_name": "Pet Name",
+    "eg_pet_name": "e.g., Max",
+    "species": "Species",
+    "select": "Select from the list...",
+    "reason": "Reason for Submission",
+    "eg_reason": "Briefly explain why you need to submit your pet...",
+    "submit": "Submit Form",
+    "alerts": {
+      "error": "Please fill in all required fields correctly before submitting the form!",
+      "success": "Your form has been submitted!",
+      "connection_error": "Unable to connect to the server. Please try again later."
+    }
+  },
+  "login_modal":
+    {
+    "title": "Login Panel",
+    "login": "Log in",
+    "your_login": "Your login",
+    "eg_login": "type login...",
+    "password": "Password",
+    "eg_password": "type password...",
+    "error": "Please enter your login and password."
   }
 }
