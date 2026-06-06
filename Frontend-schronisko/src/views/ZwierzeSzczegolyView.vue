@@ -4,20 +4,20 @@ import { useRoute, useRouter } from 'vue-router'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
 import { uploadZdjecia } from '@/stores/pliki'
 
-// DODANE: Importujemy magazyn pamięci, żeby wiedzieć, kto jest zalogowany
 import { useAuthStore } from '@/stores/auth'
 
 import type { Zwierze } from '@/types/zwierze'
 import BaseKarta from '@/components/BaseKarta.vue'
-import ZwierzeForm from '@/components/ZwierzeForm.vue' // Twój nowy klocek!
+import ZwierzeForm from '@/components/ZwierzeForm.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
 import Button from 'primevue/button'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
 import SukcesModal from '@/components/SukcesModal.vue'
-import { useI18n } from 'vue-i18n' // <-- Import i18n
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n() // <-- Inicjalizacja i18n
+// Widok szczegółów zwierzęcia, umożliwia przegląd, edycję i usunięcie
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -25,12 +25,11 @@ const store = useZwierzetaStore()
 const confirm = useConfirm()
 const pokazSukcesModal = ref(false)
 
-// magazyn pamięci z logowaniem
+// Dostęp do roli użytkownika pozwala pokazać przyciski edycji/usunięcia
 const authStore = useAuthStore()
 
 // Funkcja cofająca
 const wroc = () => {
-  // router.back() cofa do poprzedniej strony w historii przeglądarki
   router.back()
 }
 
@@ -39,7 +38,6 @@ const trybEdycji = ref(false)
 const lokalneZwierze = ref<Zwierze | null>(null) // Lokalna kopia do edycji
 const wybranyPlikRaw = ref<File | null>(null) // Przechowuje ewentualne nowe zdjęcie
 
-// 1. DODAJ REFERENCJĘ DO FORMULARZA (Tak samo jak w Modalu!)
 const formularzRef = ref<InstanceType<typeof ZwierzeForm> | null>(null)
 
 // 1. Pobieranie danych przy wejściu na stronę
@@ -73,13 +71,11 @@ const odbierzPlikZFormularza = (plik: File | null) => {
 const zapiszZmiany = async () => {
   if (!lokalneZwierze.value) return
 
-  // 2. WYWOŁAJ WALIDACJĘ Z DZIECKA (ZwierzeForm)
   const czyPoprawny = formularzRef.value?.walidujFormularz()
 
-  // 3. ZABLOKUJ ZAPIS JEŚLI SĄ BŁĘDY
   if (!czyPoprawny) {
-    alert(t('animals.alerts.edit_validation_error')) // <-- Użycie tłumaczenia
-    return // PRZERYWAMY DZIAŁANIE! Zmiany nie zostaną zapisane.
+    alert(t('animals.alerts.edit_validation_error'))
+    return
   }
 
   // Formatowanie numeru
@@ -100,16 +96,13 @@ const zapiszZmiany = async () => {
   }
 
   try {
-    // Zakładam, że w pliku zwierzeta.ts masz funkcję do edycji (PUT/PATCH).
-    // Jeśli się nazywa inaczej, podmień poniższą linijkę:
     await store.edytujZwierze(lokalneZwierze.value.id, lokalneZwierze.value)
 
-    trybEdycji.value = false // Wyłączamy tryb edycji
-    wybranyPlikRaw.value = null // Czyścimy pamięć pliku
+    trybEdycji.value = false
+    wybranyPlikRaw.value = null
 
-    // (Opcjonalnie) aktualizujemy Store, żeby miał nowe dane
     store.aktualneZwierze = { ...lokalneZwierze.value }
-    pokazSukcesModal.value = true // Pokazujemy modal sukcesu
+    pokazSukcesModal.value = true
   } catch (error) {
     console.error('Błąd zapisu:', error)
     alert(t('animals.alerts.save_error'))
@@ -124,7 +117,6 @@ const anulujEdycje = () => {
   if (store.aktualneZwierze) {
     lokalneZwierze.value = {
       ...store.aktualneZwierze,
-      // Tutaj też robimy konwersję przy resecie!
       dataPrzyjecia: store.aktualneZwierze.dataPrzyjecia
         ? new Date(store.aktualneZwierze.dataPrzyjecia)
         : null,
@@ -150,7 +142,6 @@ const potwierdzUsuniecie = () => {
       severity: 'danger',
     },
     accept: async () => {
-      // Ta funkcja wykona się tylko, gdy użytkownik kliknie "Usuń"
       await usunZwierzaka()
     },
   })
@@ -164,7 +155,6 @@ const usunZwierzaka = async () => {
     const sukces = await store.usunZwierze(lokalneZwierze.value.id)
 
     if (sukces) {
-      // Jeśli się udało, wracamy do głównej listy
       router.push('/zwierzeta')
     } else {
       alert(t('animals.alerts.delete_fail'))
@@ -202,23 +192,34 @@ const usunZwierzaka = async () => {
               </p>
               <h1 class="text-3xl font-bold text-gray-800">{{ lokalneZwierze.imie }}</h1>
             </div>
-            <div v-if="authStore.rola === 'pracownik'"
-                 class="flex items-center gap-3 bg-gray-50 px-5 py-3 rounded-xl border border-gray-200 shadow-sm transition-colors"
-                 :class="{ 'border-yellow-400 bg-primary/5': trybEdycji }">
+            <!-- Tylko pracownik może włączać tryb edycji -->
+            <div
+              v-if="authStore.rola === 'pracownik'"
+              class="flex items-center gap-3 bg-gray-50 px-5 py-3 rounded-xl border border-gray-200 shadow-sm transition-colors"
+              :class="{ 'border-yellow-400 bg-primary/5': trybEdycji }"
+            >
               <label for="edycja" class="font-semibold text-gray-700 cursor-pointer select-none">
-                {{ trybEdycji ? $t('animals.profile.edit_mode_on') : $t('animals.profile.edit_mode_off') }}
+                {{
+                  trybEdycji
+                    ? $t('animals.profile.edit_mode_on')
+                    : $t('animals.profile.edit_mode_off')
+                }}
               </label>
-              <ToggleSwitch id="edycja"
-                            v-model="trybEdycji"
-                            @change="!trybEdycji && anulujEdycje()" />
+              <ToggleSwitch
+                id="edycja"
+                v-model="trybEdycji"
+                @change="!trybEdycji && anulujEdycje()"
+              />
             </div>
           </div>
         </template>
 
-        <ZwierzeForm ref="formularzRef"
-                     v-model="lokalneZwierze"
-                     :isReadonly="!trybEdycji"
-                     @fileSelected="odbierzPlikZFormularza" />
+        <ZwierzeForm
+          ref="formularzRef"
+          v-model="lokalneZwierze"
+          :isReadonly="!trybEdycji"
+          @fileSelected="odbierzPlikZFormularza"
+        />
 
         <template #footer>
           <template v-if="trybEdycji">

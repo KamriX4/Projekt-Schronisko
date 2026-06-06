@@ -15,8 +15,9 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+// Generyczny formularz zwierzęcia używany do dodawania i edycji danych
 const modelValue = defineModel<Partial<Zwierze>>({ required: true })
-// Props: Dane z zewnątrz i flaga blokady
+// Props: zewnętrzny stan tylko do odczytu lub edytowalny formularz
 defineProps<{
   isReadonly: boolean
 }>()
@@ -45,7 +46,7 @@ const statusy = [
   { id: 'W leczeniu', nazwa: t('statuses.in_treatment') },
 ]
 
-// Obsługa plików wizualna + przekazanie do rodzica
+// Obsługa wczytywania zdjęcia i przekazywanie pliku w górę do rodzica
 const onFileSelect = (event: FileUploadSelectEvent) => {
   const plik = event.files[0]
   if (!plik) return
@@ -54,10 +55,8 @@ const onFileSelect = (event: FileUploadSelectEvent) => {
     URL.revokeObjectURL(modelValue.value.zdjecieUrl)
   }
 
-  // 2. Bezpośrednie, w 100% legalne przypisanie
   modelValue.value.zdjecieUrl = URL.createObjectURL(plik)
 
-  // 3. Wysyłamy fizyczny plik wyżej
   emit('fileSelected', plik)
 }
 
@@ -69,9 +68,8 @@ const onFileClear = () => {
   emit('fileSelected', null) // Informujemy, że anulowano plik
 }
 
-// 2. Wyciągasz datę do osobnej, reaktywnej zmiennej, żeby Composable mogło ją śledzić
 const dataUrodzeniaRef = computed(() => modelValue.value.przyblizonaDataUrodzenia)
-// 3. Destrukturyzujesz wynik z Composable!
+
 const { wiekMiesiace } = useWiekZwierzecia(dataUrodzeniaRef)
 
 // Stan błędów
@@ -80,16 +78,20 @@ const bledy = ref({
   numerEwidencyjny: '',
   status: '',
   dataPrzyjecia: '',
-  przyblizonaDataUrodzenia: ''
+  przyblizonaDataUrodzenia: '',
 })
 
-// Funkcja walidująca - możesz ją wywołać w komponencie-rodzicu
-// lub przypiąć pod przycisk @click="zapisz"
 const walidujFormularz = () => {
   let czyPoprawny = true
 
-  // Czyszczenie starych błędów
-  bledy.value = { imie: '', numerEwidencyjny: '', status: '', dataPrzyjecia: '', przyblizonaDataUrodzenia: '' }
+  // Czyszczenie poprzednich komunikatów błędów
+  bledy.value = {
+    imie: '',
+    numerEwidencyjny: '',
+    status: '',
+    dataPrzyjecia: '',
+    przyblizonaDataUrodzenia: '',
+  }
 
   // 1. Walidacja imienia
   if (!modelValue.value.imie || modelValue.value.imie.trim() === '') {
@@ -132,7 +134,9 @@ const walidujFormularz = () => {
     // Sprawdzanie logicznych zależności między datami
     const dataUr = new Date(modelValue.value.przyblizonaDataUrodzenia)
     const dzisiaj = new Date()
-    const dataPrzyj = modelValue.value.dataPrzyjecia ? new Date(modelValue.value.dataPrzyjecia) : null
+    const dataPrzyj = modelValue.value.dataPrzyjecia
+      ? new Date(modelValue.value.dataPrzyjecia)
+      : null
 
     if (dataUr > dzisiaj) {
       bledy.value.przyblizonaDataUrodzenia = t('validation.birth_date_future')
@@ -146,14 +150,9 @@ const walidujFormularz = () => {
   return czyPoprawny
 }
 
-// Udostępniamy funkcję na zewnątrz (jeśli przycisk Zapisu jest w innym pliku)
 defineExpose({
-  walidujFormularz
+  walidujFormularz,
 })
-
-
-
-
 </script>
 
 <template>
@@ -172,9 +171,9 @@ defineExpose({
         :placeholder="t('animals.form.name_placeholder')"
       />
     </div>
-    <small v-if="bledy.imie" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.imie }}</small>
-
-
+    <small v-if="bledy.imie" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{
+      bledy.imie
+    }}</small>
 
     <div class="flex items-center gap-4 mb-4">
       <label for="gatunek" class="font-semibold w-36">{{ t('animals.species') }}</label>
@@ -217,7 +216,9 @@ defineExpose({
         class="flex-auto"
       />
     </div>
-    <small v-if="bledy.status" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.status }}</small>
+    <small v-if="bledy.status" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{
+      bledy.status
+    }}</small>
 
     <div class="flex items-start gap-4 mb-4">
       <label class="font-semibold w-36 pt-2">{{ t('animals.form.photo') }}</label>
@@ -260,7 +261,9 @@ defineExpose({
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="numerEwidencyjny" class="font-semibold w-36">{{ t('animals.form.registry_number') }}</label>
+      <label for="numerEwidencyjny" class="font-semibold w-36">{{
+        t('animals.form.registry_number')
+      }}</label>
       <InputMask
         id="numerEwidencyjny"
         v-model="modelValue.numerEwidencyjny"
@@ -273,10 +276,14 @@ defineExpose({
         class="flex-auto uppercase"
       />
     </div>
-    <small v-if="bledy.numerEwidencyjny" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.numerEwidencyjny }}</small>
+    <small v-if="bledy.numerEwidencyjny" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{
+      bledy.numerEwidencyjny
+    }}</small>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="dataPrzyjecia" class="font-semibold w-36">{{ t('animals.form.admission_date') }}</label>
+      <label for="dataPrzyjecia" class="font-semibold w-36">{{
+        t('animals.form.admission_date')
+      }}</label>
       <DatePicker
         id="dataPrzyjecia"
         dateFormat="dd.mm.yy"
@@ -284,7 +291,6 @@ defineExpose({
         :model-value="modelValue.dataPrzyjecia ? new Date(modelValue.dataPrzyjecia) : null"
         @update:model-value="
           (val: any) => {
-            // Bezpiecznie sprawdzamy co przyszło, niezależnie od tego co mówi TS
             if (Array.isArray(val)) {
               modelValue.dataPrzyjecia = val[0] || null
             } else {
@@ -301,10 +307,14 @@ defineExpose({
       />
     </div>
 
-    <small v-if="bledy.dataPrzyjecia" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.dataPrzyjecia }}</small>
+    <small v-if="bledy.dataPrzyjecia" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{
+      bledy.dataPrzyjecia
+    }}</small>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="przyblizonaDataUrodzenia" class="font-semibold w-36">{{ t('animals.form.birth_date') }}</label>
+      <label for="przyblizonaDataUrodzenia" class="font-semibold w-36">{{
+        t('animals.form.birth_date')
+      }}</label>
       <DatePicker
         id="przyblizonaDataUrodzenia"
         dateFormat="dd.mm.yy"
@@ -314,7 +324,6 @@ defineExpose({
         "
         @update:model-value="
           (val: any) => {
-            // Bezpiecznie sprawdzamy co przyszło, niezależnie od tego co mówi TS
             if (Array.isArray(val)) {
               modelValue.przyblizonaDataUrodzenia = val[0] || null
             } else {
@@ -331,10 +340,16 @@ defineExpose({
       />
     </div>
 
-    <small v-if="bledy.przyblizonaDataUrodzenia" class="text-red-500 font-medium ml-40 -mt-4 mb-4">{{ bledy.przyblizonaDataUrodzenia }}</small>
+    <small
+      v-if="bledy.przyblizonaDataUrodzenia"
+      class="text-red-500 font-medium ml-40 -mt-4 mb-4"
+      >{{ bledy.przyblizonaDataUrodzenia }}</small
+    >
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="wiekMiesiace" class="font-semibold w-36">{{ t('animals.form.age_months') }}</label>
+      <label for="wiekMiesiace" class="font-semibold w-36">{{
+        t('animals.form.age_months')
+      }}</label>
       <InputText id="wiekMiesiace" :value="wiekMiesiace" disabled class="flex-auto" />
     </div>
 
@@ -351,7 +366,9 @@ defineExpose({
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="czySzczepiony" class="font-semibold w-36">{{ t('animals.form.vaccinated') }}</label>
+      <label for="czySzczepiony" class="font-semibold w-36">{{
+        t('animals.form.vaccinated')
+      }}</label>
       <Checkbox
         id="czySzczepiony"
         v-model="modelValue.czySzczepiony"
@@ -363,7 +380,9 @@ defineExpose({
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="czyKastrowanySterylizowany" class="font-semibold w-36">{{ t('animals.form.castrated') }}</label>
+      <label for="czyKastrowanySterylizowany" class="font-semibold w-36">{{
+        t('animals.form.castrated')
+      }}</label>
       <Checkbox
         id="czyKastrowanySterylizowany"
         v-model="modelValue.czyKastrowanySterylizowany"
@@ -374,5 +393,4 @@ defineExpose({
       />
     </div>
   </div>
-
 </template>

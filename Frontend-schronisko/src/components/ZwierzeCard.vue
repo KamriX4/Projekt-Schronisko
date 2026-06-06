@@ -8,19 +8,19 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import FormularzAdopcyjny from './FormularzAdopcyjny.vue' //korzystanie z formularza
 
-// Kafelek przyjmuje obiekt Zwierze z zewnątrz
+// Komponent karty zwierzęcia, renderuje dane i przycisk adopcji
 import { schroniskoContextKey } from '@/context/schroniskoContext'
 
 defineProps<{
   zwierze: Zwierze
 }>()
 
-/** [5] PROVIDE/INJECT — kolor ramki karty z kontekstu App */
+/**
+ * Pobiera ustawienia kontekstowe z App i dodaje kolor ramki karty.
+ */
 const schroniskoCtx = inject(schroniskoContextKey)
 const stylRamki = computed(() =>
-  schroniskoCtx
-    ? { boxShadow: `0 0 0 2px ${schroniskoCtx.kolorAkcentu.value}33` }
-    : undefined,
+  schroniskoCtx ? { boxShadow: `0 0 0 2px ${schroniskoCtx.kolorAkcentu.value}33` } : undefined,
 )
 
 const domyslneZdjecie = 'https://placehold.co/400x300?text=Brak+zdjęcia'
@@ -29,6 +29,7 @@ const router = useRouter()
 // Zmienna sterująca widocznością okienka z formularzem
 const pokazFormularz = ref(false)
 
+// Przejście do strony szczegółów zwierzaka po kliknięciu karty
 const otworzSzczegoly = (id: number) => {
   router.push(`/zwierze/${id}`)
 }
@@ -82,12 +83,13 @@ const otworzSzczegoly = (id: number) => {
     </div>
   </div>
 
+  <!-- Modal z formularzem adopcyjnym, otwierany po kliknięciu przycisku Adoptuj -->
   <Dialog
     v-model:visible="pokazFormularz"
     modal
     header="Wypełnij Wniosek Adopcyjny"
     :style="{ width: '90vw', maxWidth: '500px' }"
   >
-    <FormularzAdopcyjny :zwierzeId="zwierze.id" /> 
+    <FormularzAdopcyjny :zwierzeId="zwierze.id" />
   </Dialog>
 </template>

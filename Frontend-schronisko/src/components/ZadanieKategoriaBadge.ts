@@ -1,8 +1,8 @@
 import { h, type FunctionalComponent } from 'vue'
 
-/**
- * [9] KOMPONENT FUNKCYJNY — renderuje tylko badge kategorii (bez stanu wewnętrznego).
- * FunctionalComponent w Vue 3 = funkcja zwracająca VNode przez h().
+/*
+[9] KOMPONENT FUNKCYJNY — renderuje tylko badge kategorii (bez stanu wewnętrznego).
+FunctionalComponent w Vue 3 = funkcja zwracająca VNode przez h().
  */
 export interface BadgeProps {
   kategoria: string

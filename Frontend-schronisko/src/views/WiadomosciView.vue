@@ -21,7 +21,6 @@ const odswiezWiadomosci = () => {
 const usunWiadomosc = async (id?: number) => {
   if (!id || !confirm('Czy na pewno usunąć tę wiadomość?')) return
 
-  // Zakładając, że masz funkcję 'usunWiadomosc' w wiadomosciStore
   const sukces = await wiadomosciStore.usunWiadomosc(id, authStore.nazwaUzytkownika)
   if (sukces) odswiezWiadomosci()
   else alert('Błąd usuwania!')

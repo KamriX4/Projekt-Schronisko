@@ -5,10 +5,9 @@ import type { Zwierze, NoweZwierze } from '@/types/zwierze'
 const baseUrl = import.meta.env.VITE_API_URL
 
 export const useZwierzetaStore = defineStore('zwierzeta', () => {
-  // Stan (State)
+
   const zwierzeta = ref<Zwierze[]>([])
 
-  // NOWE: Zmienna trzymająca dane tylko tego zwierzaka, którego aktualnie oglądamy
   const aktualneZwierze = ref<Zwierze | null>(null)
 
   const formatujDateLokalnie = (data: Date | string | null): string | null => {
@@ -16,11 +15,9 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
 
     const d = new Date(data)
 
-    // Neutralizujemy offset: przesuwamy czas sztucznie do przodu,
-    // aby po odcięciu strefy czasowej przez toISOString() data pozostała nienaruszona.
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
 
-    return d.toISOString().split('T')[0] ?? null // Zawsze zwróci bezpieczne "YYYY-MM-DD"
+    return d.toISOString().split('T')[0] ?? null
   }
 
   // Akcja: Pobieranie
@@ -35,10 +32,9 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
     }
   }
 
-  // NOWE: Akcja pobierania jednego konkretnego zwierzaka po ID
   const pobierzZwierze = async (id: number) => {
     try {
-      aktualneZwierze.value = null // Czyścimy stare dane, żeby nie "mignęły" na ekranie
+      aktualneZwierze.value = null // Czyścimy stan przed pobraniem, żeby nie pokazywać starego zwierzaka podczas ładowania
 
       const response = await fetch(`${baseUrl}/api/zwierze/${id}`)
 
@@ -65,13 +61,13 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
       const response = await fetch(`${baseUrl}/api/zwierze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payloadDoWyslania), // 2. Wysyłamy bezpieczny ładunek
+        body: JSON.stringify(payloadDoWyslania),
       })
 
       if (response.ok) {
         const stworzoneZwierze = await response.json()
-        zwierzeta.value.unshift(stworzoneZwierze) // Dodaj na początek listy
-        await pobierzZwierzeta() // Pobierz ponownie, aby załadować relacje (Gatunek)
+        zwierzeta.value.unshift(stworzoneZwierze)
+        await pobierzZwierzeta()
         return true
       }
       return false
@@ -93,19 +89,15 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
       const response = await fetch(`${baseUrl}/api/zwierze/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payloadDoWyslania), // 2. Wysyłamy bezpieczny ładunek
+        body: JSON.stringify(payloadDoWyslania),
       })
 
       if (response.ok) {
-        // Opcjonalnie: zaktualizuj zwierzaka na głównej liście w pamięci (jeśli jest załadowana),
-        // żeby po powrocie do listy od razu było widać zmiany bez drugiego strzału do API.
         const index = zwierzeta.value.findIndex((z) => z.id === id)
         if (index !== -1) {
-          // Aktualizujemy listę DANYMI Z PAYLOADU, żeby Vue miało poprawne daty w pamięci
           zwierzeta.value[index] = { ...zwierzeta.value[index], ...payloadDoWyslania } as Zwierze
         }
 
-        // Zaktualizuj aktualnie oglądanego zwierzaka (też danymi z payloadu)
         aktualneZwierze.value = { ...payloadDoWyslania } as Zwierze
 
         return true
@@ -127,10 +119,8 @@ export const useZwierzetaStore = defineStore('zwierzeta', () => {
       })
 
       if (response.ok) {
-        // 1. Usuwamy zwierzaka z lokalnej listy, żeby UI od razu się zaktualizowało
         zwierzeta.value = zwierzeta.value.filter((z) => z.id !== id)
 
-        // 2. Jeśli usuwany zwierzak był akurat otwarty w podglądzie, czyścimy stan
         if (aktualneZwierze.value && aktualneZwierze.value.id === id) {
           aktualneZwierze.value = null
         }

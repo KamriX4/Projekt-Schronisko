@@ -6,36 +6,46 @@
       <form @submit.prevent="wyslijWniosek" class="space-y-4">
         <div class="form-control">
           <label class="label"><span class="label-text">Imię i Nazwisko</span></label>
-          <InputText v-model="formularz.imieINazwisko"
-                     placeholder="np. Jan Kowalski"
-                     required
-                     class="w-full" />
+          <InputText
+            v-model="formularz.imieINazwisko"
+            placeholder="np. Jan Kowalski"
+            required
+            class="w-full"
+          />
         </div>
 
         <div class="form-control">
           <label class="label"><span class="label-text">Numer telefonu</span></label>
-          <InputText v-model="formularz.telefon"
-                     placeholder="np. 123456789"
-                     required
-                     class="w-full" />
+          <InputText
+            v-model="formularz.telefon"
+            placeholder="np. 123456789"
+            required
+            class="w-full"
+          />
         </div>
 
         <div class="form-control">
           <label class="label"><span class="label-text">Adres E-mail</span></label>
-          <InputText v-model="formularz.email"
-                     type="email"
-                     placeholder="np. jan@example.com"
-                     required
-                     class="w-full" />
+          <InputText
+            v-model="formularz.email"
+            type="email"
+            placeholder="np. jan@example.com"
+            required
+            class="w-full"
+          />
         </div>
 
         <div class="form-control">
-          <label class="label"><span class="label-text">Dlaczego chcesz adoptować tego zwierzaka?</span></label>
-          <Textarea v-model="formularz.uzasadnienie"
-                    rows="4"
-                    placeholder="Napisz kilka słów..."
-                    required
-                    class="w-full" />
+          <label class="label"
+            ><span class="label-text">Dlaczego chcesz adoptować tego zwierzaka?</span></label
+          >
+          <Textarea
+            v-model="formularz.uzasadnienie"
+            rows="4"
+            placeholder="Napisz kilka słów..."
+            required
+            class="w-full"
+          />
         </div>
 
         <div v-if="wiadomoscS" class="alert alert-success mt-4">
@@ -46,10 +56,12 @@
         </div>
 
         <div class="card-actions justify-end mt-6">
-          <Button type="submit"
-                  label="Wyślij Wniosek"
-                  :loading="trwaWysylanie"
-                  class="p-button-primary" />
+          <Button
+            type="submit"
+            label="Wyślij Wniosek"
+            :loading="trwaWysylanie"
+            class="p-button-primary"
+          />
         </div>
       </form>
     </div>
@@ -86,8 +98,7 @@ const trwaWysylanie = ref(false)
 const wiadomoscS = ref('')
 const wiadomoscE = ref('')
 
-
-const baseUrl = import.meta.env.VITE_API_URL;
+const baseUrl = import.meta.env.VITE_API_URL
 // Funkcja wysyłająca dane do C#
 const wyslijWniosek = async () => {
   trwaWysylanie.value = true
@@ -119,19 +130,18 @@ const wyslijWniosek = async () => {
       formularz.value = { imieINazwisko: '', telefon: '', email: '', uzasadnienie: '' }
 
       // Szukamy w magazynie zwierzaka, którego dotyczy ten wniosek
-      const obecneZwierze = zwierzetaStore.zwierzeta.find(z => z.id === props.zwierzeId)
+      const obecneZwierze = zwierzetaStore.zwierzeta.find((z) => z.id === props.zwierzeId)
 
       if (obecneZwierze) {
         // Zmieniamy jego status na "Zarezerwowany" w bazie danych
         await zwierzetaStore.edytujZwierze(props.zwierzeId, {
           ...obecneZwierze,
-          status: 'Zarezerwowany'
+          status: 'Zarezerwowany',
         })
       }
 
       // Na sam koniec zmuszamy przeglądarkę do pobrania świeżej listy z nowym statusem
       await zwierzetaStore.pobierzZwierzeta()
-
     } else {
       wiadomoscE.value = 'Wystąpił błąd podczas wysyłania. Sprawdź poprawność danych.'
     }

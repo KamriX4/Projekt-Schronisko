@@ -36,7 +36,6 @@ export const useWiadomosciStore = defineStore('wiadomosci', () => {
     return response.ok
   }
 
-  // DODANE: brakujące funkcje
   const usunWiadomosc = async (id: number, login: string) => {
     const response = await fetch(`${baseUrl}/api/Wiadomosci/${id}?loginUzytkownika=${login}`, {
       method: 'DELETE'

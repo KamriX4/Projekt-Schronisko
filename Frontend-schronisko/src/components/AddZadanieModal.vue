@@ -5,9 +5,10 @@ import Button from 'primevue/button'
 import ZadanieForm, { type NoweZadanie } from '@/components/ZadanieForm.vue'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
 
+// Props: kontrola widoczności modala i opcjonalne zadanie do edycji
 const props = defineProps<{
   otwarty: boolean
-  zadanieDoEdycji?: NoweZadanie | null // Jeśli przekazane - tryb edycji
+  zadanieDoEdycji?: NoweZadanie | null // tryb edycji
 }>()
 
 const emit = defineEmits<{
@@ -22,31 +23,35 @@ onMounted(async () => {
 })
 
 const domyslnyStan = (): NoweZadanie => ({
-  tytul: '', opis: '', kategoria: '', dataCzas: null, zwierzeId: null, czyWykonane: false
+  tytul: '',
+  opis: '',
+  kategoria: '',
+  dataCzas: null,
+  zwierzeId: null,
+  czyWykonane: false,
 })
 
 const formularzZadanie = ref<NoweZadanie>(domyslnyStan())
 const formularzRef = ref<InstanceType<typeof ZadanieForm> | null>(null)
 
+// Watcher resetuje formularz przy otwarciu modala, a w trybie edycji wczytuje istniejące dane
 watch(
   () => props.otwarty,
   (czyOtwarty) => {
     if (czyOtwarty) {
       if (props.zadanieDoEdycji) {
-        // Tryb edycji: wczytaj dane do formularza
         formularzZadanie.value = { ...props.zadanieDoEdycji }
-        // Zamień datę tekstową z bazy na obiekt Date dla kalendarza
         if (typeof formularzZadanie.value.dataCzas === 'string') {
           formularzZadanie.value.dataCzas = new Date(formularzZadanie.value.dataCzas)
         }
       } else {
-        // Tryb dodawania: pusty formularz
         formularzZadanie.value = domyslnyStan()
       }
     }
-  }
+  },
 )
 
+// Waliduje i emituje dane zadania do rodzica po kliknięciu "Zapisz"
 const handleZapisz = async () => {
   if (!formularzRef.value?.walidujFormularz()) {
     alert('Popraw błędy w formularzu!')
@@ -64,10 +69,20 @@ const handleZapisz = async () => {
     :header="zadanieDoEdycji ? 'Edytuj zadanie' : 'Zaplanuj nowe zadanie'"
     :style="{ width: '40rem' }"
   >
-    <ZadanieForm ref="formularzRef" v-model="formularzZadanie" :isReadonly="false" :listaZwierzat="zwierzetaStore.zwierzeta" />
+    <ZadanieForm
+      ref="formularzRef"
+      v-model="formularzZadanie"
+      :isReadonly="false"
+      :listaZwierzat="zwierzetaStore.zwierzeta"
+    />
     <div class="flex justify-end gap-2 mt-4">
       <Button type="button" label="Anuluj" severity="secondary" @click="emit('zamknij')"></Button>
-      <Button type="button" :label="zadanieDoEdycji ? 'Zapisz zmiany' : 'Dodaj zadanie'" severity="success" @click="handleZapisz"></Button>
+      <Button
+        type="button"
+        :label="zadanieDoEdycji ? 'Zapisz zmiany' : 'Dodaj zadanie'"
+        severity="success"
+        @click="handleZapisz"
+      ></Button>
     </div>
   </Dialog>
 </template>

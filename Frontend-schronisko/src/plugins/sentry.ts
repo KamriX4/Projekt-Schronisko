@@ -1,9 +1,9 @@
 import type { App } from 'vue'
 import * as Sentry from '@sentry/vue'
 
-/**
- * [8] SENTRY — monitorowanie błędów i wydajności w Vue.
- * DSN z .env (VITE_SENTRY_DSN); bez DSN inicjalizacja jest pomijana (dev lokalny).
+/*
+[8] SENTRY — monitorowanie błędów i wydajności w Vue.
+DSN z .env (VITE_SENTRY_DSN); bez DSN inicjalizacja jest pomijana (dev lokalny).
  */
 export function initSentry(app: App): void {
   const dsn = import.meta.env.VITE_SENTRY_DSN as string | undefined

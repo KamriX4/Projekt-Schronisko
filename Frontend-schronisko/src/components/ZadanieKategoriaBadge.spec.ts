@@ -1,6 +1,6 @@
-/**
- * [1] VITEST + [9] komponent funkcyjny — render badge kategorii.
- */
+
+//[1] VITEST + [9] komponent funkcyjny — render badge kategorii.
+
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { ZadanieKategoriaBadge } from './ZadanieKategoriaBadge'

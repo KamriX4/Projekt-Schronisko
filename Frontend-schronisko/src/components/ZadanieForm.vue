@@ -5,7 +5,7 @@ import Select from 'primevue/select'
 import DatePicker from 'primevue/datepicker'
 import Textarea from 'primevue/textarea'
 
-// Typ dla formularza (najlepiej docelowo przenieść do '@/types/harmonogram.ts')
+
 export interface NoweZadanie {
   id?: number;
   tytul: string;

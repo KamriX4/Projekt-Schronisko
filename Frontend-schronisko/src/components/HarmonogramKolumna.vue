@@ -1,7 +1,7 @@
 <script setup lang="ts">
-/**
- * [6] DRAG & DROP — kolumna harmonogramu z Vue Draggable (Sortable.js).
- * Przeciąganie kart zmienia kolejność zadań w danej kategorii (stan Pinia).
+/*
+[6] DRAG & DROP — kolumna harmonogramu z Vue Draggable (Sortable.js).
+Przeciąganie kart zmienia kolejność zadań w danej kategorii (stan Pinia).
  */
 import draggable from 'vuedraggable'
 import type { ZadanieHarmonogramu } from '@/stores/harmonogram'

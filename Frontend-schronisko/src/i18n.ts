@@ -3,9 +3,9 @@ import pl from './locales/pl.json'
 import en from './locales/en.json'
 
 const i18n = createI18n({
-  legacy: false, // BARDZO WAŻNE: wyłącza tryb Options API, pozwala na użycie z Composition API
+  legacy: false,
   locale: 'pl',  // Język domyślny
-  fallbackLocale: 'en', // Język rezerwowy, gdyby brakowało jakiegoś tłumaczenia
+  fallbackLocale: 'en', // Język rezerwowy
   messages: {
     pl,
     en

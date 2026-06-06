@@ -4,6 +4,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
 import { useI18n } from 'vue-i18n'
 
+// Tłumaczenia i dostęp do store z liczbą zwierząt
 const { t } = useI18n()
 const store = useZwierzetaStore()
 const MAKSYMALNA_POJEMNOSC = 100
@@ -18,6 +19,7 @@ const chartData = computed(() => {
   const zajete = store.zwierzeta.length
   const wolne = Math.max(0, MAKSYMALNA_POJEMNOSC - zajete)
 
+  // Dane wykresu kołowego: zajęta i dostępna pojemność schroniska
   return {
     labels: [t('analytics.occupied'), t('analytics.available')],
     datasets: [
@@ -68,6 +70,7 @@ const chartOptions = ref({
     <div
       class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none -mt-8"
     >
+      <!-- Wyświetla liczbę obecnych zwierząt na środku wykresu -->
       <span class="text-4xl font-bold text-gray-800">{{ store.zwierzeta.length }}</span>
       <span class="text-sm text-gray-500">/ {{ MAKSYMALNA_POJEMNOSC }}</span>
     </div>

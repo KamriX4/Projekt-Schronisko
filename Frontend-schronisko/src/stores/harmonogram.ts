@@ -86,7 +86,6 @@ export const useHarmonogramStore = defineStore('harmonogram', () => {
     await pobierzZadania()
   }
 
-  /** [6] DRAG & DROP — lokalna zmiana kolejności zadań w kolumnie (kategoria) */
   const ustawKolejnoscKategorii = (kategoria: string, nowaLista: ZadanieHarmonogramu[]) => {
     const kolejnoscKategorii = ['Zywienie', 'Szczepienia', 'Leki', 'Sprzatanie'] as const
     const wynik: ZadanieHarmonogramu[] = []

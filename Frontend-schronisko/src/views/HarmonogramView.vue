@@ -91,7 +91,7 @@ const zadaniaZaładowane = ref(false)
 const czyModalOtwarty = ref(false)
 const edytowaneZadanie = ref<NoweZadanie | null>(null)
 
-/** [5] PROVIDE/INJECT — odczyt współdzielonego kontekstu z App.vue */
+/* [5] PROVIDE/INJECT — odczyt współdzielonego kontekstu z App.vue */
 const schroniskoCtx = inject(schroniskoContextKey)
 const kolorAkcentu = computed(() => schroniskoCtx?.kolorAkcentu.value ?? '')
 

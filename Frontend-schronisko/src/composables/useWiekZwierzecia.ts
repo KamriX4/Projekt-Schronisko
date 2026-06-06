@@ -2,9 +2,8 @@
 import { computed, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-
-
-// Eksportujemy funkcję, która przyjmuje datę (jako zmienną reaktywną Ref)
+// Eksportujemy funkcję, która przyjmuje datę urodzenia jako reaktywny Ref
+// i udostępnia wiek w miesiącach oraz sformatowaną wersję tekstową.
 export function useWiekZwierzecia(dataUrodzenia: Ref<Date | string | null | undefined>) {
   const { t } = useI18n()
 
@@ -19,11 +18,10 @@ export function useWiekZwierzecia(dataUrodzenia: Ref<Date | string | null | unde
     const roznicaCzasu = dzisiaj.getTime() - birthDate.getTime()
     const roznicaDni = roznicaCzasu / (1000 * 3600 * 24)
 
+    // Przeliczenie dni na miesiące przybliżone średnią długością miesiąca
     return Math.floor(roznicaDni / 30.436875)
   })
 
-  // Dodajemy mały bonus: sformatowany tekst (np. "2 lata i 3 miesiące"),
-  // co pokaże prowadzącemu, że Composable jest przemyślane i zwraca różne przydatne formaty
   const wiekSformatowany = computed(() => {
     if (typeof wiekMiesiace.value === 'string') return wiekMiesiace.value
 
@@ -35,9 +33,8 @@ export function useWiekZwierzecia(dataUrodzenia: Ref<Date | string | null | unde
     return resztaMiesiecy > 0 ? `${lata} lat i ${resztaMiesiecy} mies.` : `${lata} lat`
   })
 
-  // Composable zawsze musi zwracać obiekt z reaktywnymi danymi/funkcjami
   return {
     wiekMiesiace,
-    wiekSformatowany
+    wiekSformatowany,
   }
 }

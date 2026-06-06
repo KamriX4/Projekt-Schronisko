@@ -218,9 +218,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useZwierzetaStore } from '@/stores/zwierzeta'
-import { useI18n } from 'vue-i18n' // <-- Import i18n
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n() // <-- Inicjalizacja i18n
+const { t } = useI18n()
 
 const zwierzetaStore = useZwierzetaStore()
 const aktywneZdjecie = ref(0)
@@ -269,13 +269,13 @@ const nastepnyKrok = (klucz: 'miejsce' | 'czas', wartosc: string) => {
     aktualnyKrokQuizu.value++
   } else {
     if (preferencje.value.miejsce === 'dom' && preferencje.value.czas === 'duzo') {
-      wynikQuizu.value = t('home.quiz.step_2.results.active_dog') // <-- Użycie klucza i18n
+      wynikQuizu.value = t('home.quiz.step_2.results.active_dog') 
     } else if (preferencje.value.miejsce === 'mieszkanie' && preferencje.value.czas === 'malo') {
-      wynikQuizu.value = t('home.quiz.step_2.results.calm_cat') // <-- Użycie klucza i18n
+      wynikQuizu.value = t('home.quiz.step_2.results.calm_cat') 
     } else if (preferencje.value.czas === 'malo') {
-      wynikQuizu.value = t('home.quiz.step_2.results.independent') // <-- Użycie klucza i18n
+      wynikQuizu.value = t('home.quiz.step_2.results.independent') 
     } else {
-      wynikQuizu.value = t('home.quiz.step_2.results.young') // <-- Użycie klucza i18n
+      wynikQuizu.value = t('home.quiz.step_2.results.young') 
     }
     aktualnyKrokQuizu.value = 2
   }

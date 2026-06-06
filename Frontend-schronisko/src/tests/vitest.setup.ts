@@ -1,5 +1,5 @@
-/**
- * [1] VITEST — globalna konfiguracja testów jednostkowych.
+/*
+[1] VITEST — globalna konfiguracja testów jednostkowych.
  */
 import { config } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'

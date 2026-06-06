@@ -1,14 +1,14 @@
 <script setup lang="ts">
+// Modal do dodawania nowego zwierzęcia. Zawiera formularz ZwierzeForm i obsługę uploadu obrazu.
 import { ref, watch } from 'vue'
 import type { NoweZwierze } from '@/types/zwierze'
 import { uploadZdjecia } from '@/stores/pliki'
 import Dialog from 'primevue/dialog'
 import Button from 'primevue/button'
 import ZwierzeForm from '@/components/ZwierzeForm.vue'
-// import InputNumber from 'primevue/inputnumber'
-import { useI18n } from 'vue-i18n' // <-- Import i18n
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n() // <-- Wyciągnięcie funkcji tłumaczącej
+const { t } = useI18n()
 
 const props = defineProps<{
   otwarty: boolean
@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'zamknij'): void
-  (e: 'zapisz', noweZwierze: NoweZwierze): void // Tu możesz użyć Partial<Zwierze> docelowo
+  (e: 'zapisz', noweZwierze: NoweZwierze): void
 }>()
 
 const domyslnyStan = (): NoweZwierze => ({
@@ -35,9 +35,7 @@ const domyslnyStan = (): NoweZwierze => ({
 })
 
 const formularzZwierze = ref<NoweZwierze>(domyslnyStan())
-const wybranyPlikRaw = ref<File | null>(null) // Przechowuje fizyczny plik przekazany z ZwierzeForm
-
-// 1. ZDEFINIUJ REFERENCJĘ DO FORMULARZA
+const wybranyPlikRaw = ref<File | null>(null) // zdjecie wybrane w formularzu
 const formularzRef = ref<InstanceType<typeof ZwierzeForm> | null>(null)
 
 watch(
@@ -50,22 +48,18 @@ watch(
   },
 )
 
-// Odbiera plik od komponentu ZwierzeForm
 const odbierzPlikZFormularza = (plik: File | null) => {
   wybranyPlikRaw.value = plik
 }
 
+// Waliduje formularz, ewentualnie wysyła zdjęcie i emituje dane do rodzica
 const handleDodaj = async () => {
-  // 2. WYWOŁAJ WALIDACJĘ Z DZIECKA (ZwierzeForm)
   const czyPoprawny = formularzRef.value?.walidujFormularz()
-
-  // 3. ZABLOKUJ ZAPIS JEŚLI SĄ BŁĘDY
   if (!czyPoprawny) {
-    alert(t('animals.alerts.validation_error')) // Użyj tłumaczenia z i18n
-    return // PRZERYWAMY DZIAŁANIE! Zwierzak nie zostanie dodany.
+    alert(t('animals.alerts.validation_error'))
+    return
   }
 
-  // === Reszta wykonuje się tylko, gdy walidacja przeszła ===
   if (formularzZwierze.value.numerEwidencyjny) {
     formularzZwierze.value.numerEwidencyjny = formularzZwierze.value.numerEwidencyjny.toUpperCase()
   }
@@ -76,7 +70,7 @@ const handleDodaj = async () => {
       formularzZwierze.value.zdjecieUrl = wygenerowanyLink
     } catch (error) {
       console.error('Szczegóły błędu uploadu:', error)
-      alert(t('animals.alerts.upload_error')) // Użyj tłumaczenia z i18n
+      alert(t('animals.alerts.upload_error'))
       return
     }
   }

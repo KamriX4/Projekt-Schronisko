@@ -1,5 +1,5 @@
-/**
- * [1] VITEST — testy store harmonogramu (m.in. drag & drop / kolejność).
+/*
+[1] VITEST — testy store harmonogramu (m.in. drag & drop / kolejność).
  */
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'

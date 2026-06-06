@@ -1,5 +1,5 @@
-/**
- * [1] VITEST + [4] własna dyrektywa v-focus.
+/*
+[1] VITEST + [4] własna dyrektywa v-focus.
  */
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'

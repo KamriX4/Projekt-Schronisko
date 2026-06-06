@@ -33,10 +33,10 @@ const SzaryMotyw = definePreset(Aura, {
 
 const app = createApp(App)
 
-/** [8] SENTRY — inicjalizacja monitorowania (przed mount) */
+/* [8] SENTRY — inicjalizacja monitorowania (przed mount) */
 initSentry(app)
 
-/** [4] WŁASNA DYREKTYWA — globalna rejestracja v-focus */
+/* [4] WŁASNA DYREKTYWA — globalna rejestracja v-focus */
 app.directive('focus', vFocus)
 
 app.use(PrimeVue, {
