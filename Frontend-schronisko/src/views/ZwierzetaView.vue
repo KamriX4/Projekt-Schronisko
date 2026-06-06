@@ -23,7 +23,9 @@ const searchDebounced = ref(searchInput.value)
 const aktualizujDebounced = useDebounceFn((wartosc: string) => {
   searchDebounced.value = wartosc
 }, 300)
-
+// Za każdym razem, gdy użytkownik wpisze nową literę w polu wyszukiwania, watch to zauważy i wywoła aktualizujDebounced,
+// która po 300ms zaktualizuje searchDebounced.
+// Dzięki temu filtrowanie będzie się odbywać dopiero po chwili od ostatniego wpisu, co poprawia wydajność.
 watch(searchInput, (v) => aktualizujDebounced(v), { immediate: true })
 
 const czyModalOtwarty = ref(false)
@@ -88,7 +90,6 @@ onUnmounted(() => {
           <InputIcon class="pi pi-search" />
           <InputText
             v-model="searchInput"
-            v-focus
             :placeholder="$t('animals.search')"
             class="w-full"
           />

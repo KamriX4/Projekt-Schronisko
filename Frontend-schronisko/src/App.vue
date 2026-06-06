@@ -22,7 +22,7 @@ const ustawKolorAkcentu = (hex: string) => {
 }
 provide(schroniskoContextKey, { kolorAkcentu, ustawKolorAkcentu })
 
-/* [3] WATCHEFFECT — automatyczna synchronizacja atrybutu lang w <html> z locale i18n */
+/* [3] WATCHEFFECT — automatycznie zmienia język w <html> korzystając z locale i18n */
 watchEffect(() => {
   document.documentElement.lang = locale.value
   document.documentElement.dataset.locale = locale.value

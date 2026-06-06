@@ -1,5 +1,5 @@
 <template>
-  <!-- Modal pojawiający się na środku ekranu, renderowany do <body> dzięki Teleport -->
+  <!-- Modal pojawiający się na środku ekranu, renderowany do <body> dzięki Teleport. Modal jest ponad resztą treści -->
   <Teleport to="body">
     <div
       v-if="widoczny"

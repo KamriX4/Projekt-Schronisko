@@ -9,7 +9,7 @@ import FormularzAdopcyjny from './FormularzAdopcyjny.vue' //korzystanie z formul
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-
+//Zdefiniowane właściwości wejściowe komponentów
 const { zwierze } = defineProps<{
   zwierze: Zwierze
 }>()

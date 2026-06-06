@@ -15,6 +15,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+// Dwukierunkowe wiązanie danych w komponentach potomnych
 // Generyczny formularz zwierzęcia używany do dodawania i edycji danych
 const modelValue = defineModel<Partial<Zwierze>>({ required: true })
 // Props: zewnętrzny stan tylko do odczytu lub edytowalny formularz
@@ -22,7 +23,7 @@ defineProps<{
   isReadonly: boolean
 }>()
 
-// Emits: Przesyłanie wybranego pliku wyżej
+// Emits: Wysyłania zdarzeń do rodzica przy wyborze/odrzuceniu pliku
 const emit = defineEmits<{
   (e: 'fileSelected', plik: File | null): void
 }>()

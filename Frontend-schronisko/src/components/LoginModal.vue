@@ -47,7 +47,7 @@ const zaloguj = async () => {
 
 <template>
   <!--DaisyUI -->
-  <div class="modal" :class="{ 'modal-open': otwarty }">
+  <div v-if="otwarty" class="modal modal-open">
     <div class="modal-box relative">
       <!-- Krzyżyk w rogu -->
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="zamknij">✕</button>
@@ -56,7 +56,7 @@ const zaloguj = async () => {
 
       <div class="form-control w-full">
         <label class="label"><span class="label-text font-semibold">{{ $t('login_modal.your_login') }}</span></label>
-        <InputText v-model="login" :placeholder="$t('login_modal.eg_login')" class="w-full" />
+        <InputText v-model="login" v-focus="otwarty" :placeholder="$t('login_modal.eg_login')" class="w-full" />
       </div>
 
       <div class="form-control w-full mt-3">

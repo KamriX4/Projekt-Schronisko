@@ -3,7 +3,6 @@ import type { Directive } from 'vue'
 /*
 [4] WŁASNA DYREKTYWA — v-focus
 Po zamontowaniu elementu ustawia na nim fokus (np. pole wyszukiwania).
-Użycie w szablonie: <input v-focus />
  */
 export const vFocus: Directive<HTMLElement, boolean | undefined> = {
   mounted(el, binding) {
