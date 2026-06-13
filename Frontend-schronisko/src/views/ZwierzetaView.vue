@@ -36,7 +36,18 @@ const filtrowaneZwierzeta = computed(() => {
 
   if (searchDebounced.value) {
     const wpisanyTekst = searchDebounced.value.toLowerCase()
-    lista = lista.filter((z) => z.imie.toLowerCase().includes(wpisanyTekst))
+
+    lista = lista.filter((z) => {
+      // Zabezpieczamy się przed brakiem danych (gdyby któreś pole było puste/null)
+      const imie = z.imie?.toLowerCase() || ''
+      const gatunek = z.gatunek?.nazwa?.toLowerCase() || ''
+      const plec = z.plec?.toLowerCase() || ''
+
+      // Zwracamy true, jeśli wpisany tekst pasuje do imienia LUB gatunku LUB płci
+      return (
+        imie.includes(wpisanyTekst) || gatunek.includes(wpisanyTekst) || plec.includes(wpisanyTekst)
+      )
+    })
   }
 
   if (authStore.rola !== 'pracownik') {
@@ -88,11 +99,7 @@ onUnmounted(() => {
       <div class="flex flex-row items-center gap-3 w-full sm:w-auto">
         <IconField class="flex-1">
           <InputIcon class="pi pi-search" />
-          <InputText
-            v-model="searchInput"
-            :placeholder="$t('animals.search')"
-            class="w-full"
-          />
+          <InputText v-model="searchInput" :placeholder="$t('animals.search')" class="w-full" />
         </IconField>
         <Button
           v-if="authStore.rola === 'pracownik'"
